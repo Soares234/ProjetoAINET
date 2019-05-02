@@ -14,3 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('aeronaves','AeronaveController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
