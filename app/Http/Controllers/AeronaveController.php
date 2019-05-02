@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Aeronave;
 
 class AeronaveController extends Controller
 {
@@ -13,7 +14,10 @@ class AeronaveController extends Controller
      */
     public function index()
     {
-        //
+        $aeronaves = Aeronave::All();
+        $title = 'Lista de Aeronaves';
+
+        return view('list-aeronaves', compact('title', 'aeronaves'));
     }
 
     /**
