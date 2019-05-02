@@ -1,0 +1,154 @@
+Projeto AiNet
+
+OBJETIVOS:
+	- Gestão dos sócios e utilizadores;
+	- Gestão das aeronaves do aeroclube;
+	- Gestão das licenças e certificados dos pilotos;
+	- Registo e análise dos movimentos (voos).
+
+SÓCIOS E UTILIZADORES:
+	- Categorias:
+		- Pilotos;
+		- Não-Pilotos;
+		- Aeromodelistas;
+		Têm quotas diferentes uns dos outros.
+	- Apenas Sócios e quem tem as quotas em dia é podem utilizar a aplicação;
+	- Todos os Sócios são Utilizadores e vice-versa;
+	- Perfis:
+		- Normal;
+		- Piloto;
+		- Direção.
+	- A aplicação deverá permitir à Direção criar, alterar e apagar registos de sócios (se necessário, apagar através de soft deletes);
+	- Os sócios são criados por elementos da Direção e são desde logo considerados utilizadores (embora desativados);
+	- Registo de Sócio:
+		- Nº de Sócio;
+		- Nome Informal ("nome informal" corresponde ao nome pelo qual os sócios são conhecidos – geralmente o primeiro e último nome);
+		- Nome Completo;
+		- Sexo;
+		- Data de nascimento;
+		- E-mail (a usar como credencial de acesso);
+		- Foto;
+		- NIF;
+		- Telefone;
+		- Endereço;
+		- Tipo de Sócio (P- piloto, NP – não piloto, A - aeromodelista);
+		- Quotas em Dia (indicação se as quotas estão ou não pagas);
+		- Sócio Ativo (indicação se o sócio está ou não ativo);
+		- Password Inicial (indicação se o sócio já alterou a password inicial);
+		- Direção (indicação se o sócio pertence ou não à direção);
+		- Pilotos:
+			- Nº da Licença de Piloto;
+			- Mais informação será detalhada posteriormente (na secção relativa à gestão dos pilotos).
+		 A senha inicial de todos os utilizadores é gerada automaticamente, e é igual à sua data de nascimento (exemplo: "1990-07-23");
+	- Depois do registo ser criado, é enviado um e-mail para o sócio com uma hiperligação para confirmar a conta;
+	- Depois de confirmada a conta o utilizador poderá aceder à aplicação com as suas credenciais (email/senha);
+	- Enquanto o utilizador não alterar a senha inicial, ao entrar na aplicação deverá ser redirecionado para uma página de alteração de senha;
+	- Os sócios que não pagam as quotas podem deixar de poder aceder à aplicação, caso a direção assim o decida;
+	- Todos os Utilizadores podem alterar uma parte da sua informação pessoal: 
+		- Nome Informal;
+		- Nome completo;
+		- E-mail;
+		- NIF;
+		- Foto;
+		- Telefone;
+		- Endereço.
+	- Todos os Utilizadores podem consultar toda a informação sobre os outros sócios (exceto se tem ou não as quotas em dia e se é ou não um utilizador ativo).
+
+AERONAVES:
+	- A aplicação deverá fazer a gestão das aeronaves do aeroclube, cuja lista e informação detalhada deve ser disponibilizada a todos os sócios.
+	- Os elementos da direção podem criar, alterar e apagar registos de aeronaves (se necessário, apagar através de soft deletes).
+	- Cada aeronave deverá incluir:
+		- Matrícula;
+		- Marca;
+		- Modelo;
+		- Nº de Lugares;
+		- Conta-horas (total de horas que a aeronave esteve em uso);
+		- Preço/Hora.
+	- CONTA-HORAS:
+		- Contabiliza o total de horas que a aeronave esteve a ser utilizada (com o motor ligado);
+		- Pode-se considerar que o conta-horas de uma aeronave é similar ao conta-quilómetros de um automóvel, mas em vez de se contabilizar os kms percorridos, contabiliza-se o tempo de utilização;
+		- A informação sobre as "horas" da aeronave advém do valor atual do conta-horas;
+		- A unidade nos conta-horas das aeronaves é a décima de hora, que corresponde a 6 minutos. Exemplo: 2583 = 258,3h = 258h18min;
+		- Para facilitar os cálculos do tempo e do preço de utilização das aeronaves, a aplicação irá manter uma tabela que mapeia os valores do conta-horas (1 a 10) com os tempos e preços de utilização.
+
+PILOTOS:
+	- Os Pilotos são sócios que têm uma licença de piloto (incluindo alunos que têm uma licença especial de aluno-piloto);
+	- Para que os sócios pilotos possam voar nas aeronaves do Aeroclube deverão ter uma licença de piloto válida e um certificado médico válido;
+	- Lincença
+		- Nº da licença;
+		- Tipo de licença:
+			- Aluno-piloto;
+			- SEP – Single Engine Piston;
+			- MEP – Multiple Engine Piston;
+			- FI – Flight Instrutor.
+		- Instrutor (se permite ou não dar instrução);
+		- Validade;
+		- Confirmado (indica se a licença já foi confirmada pela direção);
+		- Imagem (cópia digital da licença em formato PDF).
+	- Certificado Médico:
+		- Nº certificado;
+		- Classe;
+		- Validade;
+		- Confirmado (indica se o certificado já foi confirmado pela direção);
+		- Imagem (cópia digital do certificado em formato PDF).
+	- Além das licenças e certificados válidos, um piloto só poderá voar uma aeronave depois de fazer uma adaptação à mesma por um Instrutor qualificado, e depois deste o declarar como autorizado a pilotar a aeronave;
+	- Para cada piloto só será guardada uma licença (a licença válida que é utilizada para voar as aeronaves do Aeroclube) e um certificado médico (o certificado médico válido);
+	- Só poderá voar na aeronave se mantiver a proficiência de voo, ou seja, se nos 90 dias anteriores tiver efetuado 3 descolagens/aterragens numa aeronave do mesmo tipo/classe;
+	- É responsabilidade da Direção manter atualizada para cada aeronave uma lista de pilotos autorizados a voar essa aeronave. A aplicação deverá permitir atualizar estas listas com:
+		- Validades da licença e certificado médico
+		- Adaptações às Aeronaves
+		- Manutenção da Proficiência de Voo
+		- Cumprimento de Regras Internas de Utilização das Aeronaves.
+	- A aplicação deverá auxiliar a Direção, informando os utilizadores (membros da direção e os próprios) da aproximação/ultrapassagem dos limites de validade das licenças e certificados.
+
+MOVIMENTOS (Voos): 
+	- As aeronaves e os pilotos têm que manter um registo de todos os movimentos realizados numa caderneta de voo (flight log). Isto significa que quando um voo é realizado, o piloto tem que registar os dados desse voo em duas cadernetas (ambas em papel), a do piloto (Pilot Logbook) e a da aeronave (Diário de Navegação);
+	- Os dados dos registos de ambas as cadernetas estão sujeitas à fiscalização da entidade reguladora da aviação civil em Portugal, Autoridade Nacional da Aviação Civil (ANAC), pelo que é fundamental que os dados dos dois registos do mesmo voo sejam consistentes;
+	- Para além do registo em papel, quando um piloto voa numa das aeronaves do Aeroclube está obrigado a fazer o registo digital do movimento na aplicação Web "FlightClub" (faz parte das regras internas de utilização das aeronaves);
+	- Registo dos Movimentos:
+		- Identificador Único ("id");
+		- Data do Voo;
+		- Hora Descolagem;
+		- Hora Aterragem;
+		- Aeronave" (matrícula, marca, modelo);
+		- Nº Diário" (nº da caderneta/diário de navegação da aeronave);
+		- Nº Serviço" (nº do serviço/movimento dentro do diário);
+		- Piloto;
+		- Nº Licença Piloto;
+		- Tipo Licença Piloto;
+		- Validade Licença Piloto;
+		- Nº Certificado Médico Piloto;
+		- Classe Certificado Médico Piloto;
+		- Validade Certificado Médico Piloto;
+		- Natureza do Voo;
+			- T – Treino;
+			- I – Instrução;
+			- E – Especial.
+		- Aeródromo de Partida;
+		- Aeródromo de Chegada (código e nome dos aeródromos);
+		- Nº de Aterragens;
+		- Nº de Descolagens;
+		- Nº Pessoas a Bordo;
+		- Conta-horas Inicial;
+		- Conta-horas Final;
+		- Tempo Voo (calcular o tempo total de voo a partir dos valores do conta-horas);
+		- Preço Voo (calcular a partir do tempo de voo e preço hora da aeronave);
+		- Modo de Pagamento:
+			- N – numerário; 
+			- M – Multibanco; 
+			- T – Transferência; 
+			- P – Pacote de horas.
+		- Nº de Recibo (nº do recibo em papel onde o voo foi pago);
+		- Confirmado (indica se o movimento já foi confirmado pela direção);
+		- Observações.
+	- Se for um voo de instrução deverá também incluir:
+		- Tipo de Instrução:
+			- D – Duplo Comando;
+			- S – Solo.
+		- Instrutor;
+		- Nº Licença Instrutor;
+		- Tipo Licença Instrutor;
+		- Validade Licença Instrutor;
+		- Nº Certificado Médico Instrutor;
+		- Classe Certificado Médico Instrutor;
+		- Validade Certificado Médico Instrutor.
