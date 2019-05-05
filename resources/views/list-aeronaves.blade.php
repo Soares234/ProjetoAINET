@@ -1,7 +1,9 @@
 @extends('master')
 @section('content')
 
-@if (count($aeronaves)) 
+@if (count($aeronaves))
+
+    <div><a class="btn btn-primary" href="/aeronaves/create">Nova Aeronave</a></div>
 
 <table class="table table-striped">
     <thead>
