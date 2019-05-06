@@ -1,7 +1,7 @@
 @extends('master')
 @section('content')
 
-    <form action="/aeronaves/create" method="post" class="form-group">
+    <form action="/aeronaves" method="POST" class="form-group">
 
         @csrf
 
@@ -9,7 +9,7 @@
             <label for="inputMatricula">Matricula</label>
             <input
                 type="text" class="form-control"
-                name="name" id="inputMatricula"
+                name="matricula" id="inputMatricula"
                 placeholder="Matricula" value="{{ old('matricula', $aeronave->matricula) }}" />
             @if ($errors->has('matricula'))
                 <em>{{ $errors->first('matricula') }}</em>

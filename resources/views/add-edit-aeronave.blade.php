@@ -41,30 +41,3 @@
         <em>{{ $errors->first('preco_hora') }}</em>
     @endif
 </div>
-
-
-
-{{--
-<div class="form-group">
-    <label for="inputType">Type</label>
-    <select name="type" id="inputType" class="form-control">
-        <option disabled selected> -- select an option -- </option>
-        <option {{ $user->type=='0' ? "selected" : "" }} value="0">Administrator</option>
-        <option {{ $user->type=='1' ? "selected" : "" }} value="1">Publisher</option>
-        <option {{ $user->type=='2' ? "selected" : "" }} value="2">Client</option>
-    </select>
-    @if ($errors->has('type'))
-        <em>{{ $errors->first('type') }}</em>
-    @endif
-</div>
-<div class="form-group">
-    <label for="inputEmail">Email</label>
-    <input
-        type="email" class="form-control"
-        name="email" id="inputEmail"
-        placeholder="Email address" value="{{ old('email', $user->email) }}"/>
-    @if ($errors->has('email'))
-        <em>{{ $errors->first('email') }}</em>
-    @endif
-</div>
---}}
