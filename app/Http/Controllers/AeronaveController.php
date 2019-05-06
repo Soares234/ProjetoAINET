@@ -43,12 +43,24 @@ class AeronaveController extends Controller
     {
         $matricula = $request->matricula;
 
+
+        //dd($request);
+
         $aeronave = $request->validate(
-            ['matricula' => 'required|regex:/^[A-Z]{1,2}-[A-Z]{3,4}$/'],
+            ['matricula' => 'required|regex:/^[A-Z]{1,2}-[A-Z]{3,4}$/u',
+             'marca'=> 'required|max:40|regex:/^[\pL\s]+$/u',
+             'modelo'=>'required|max:40|regex:/^[-\pL\s0-9]+$/u'],
             ['matricula.regex' => 'Matricula deverá ser do seguinte formato AA(A)-ZZZ(Z), 
-            em que o valor entre parenteses pode ser opcional']);
+            em que o valor entre parenteses pode ser opcional',
+             'marca.regex'=>'Marca só poderá conter Letras e espaços',
+             'modelo.regex'=>'Modelo poderá conter Letras, número e hífens (-)']);
 
         dd($request);
+
+        /*
+            num_lugares	int(11)
+            preco_hora
+        */
 
     }
 
