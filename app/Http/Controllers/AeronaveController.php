@@ -41,7 +41,15 @@ class AeronaveController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $matricula = $request->matricula;
+
+        $aeronave = $request->validate(
+            ['matricula' => 'required|regex:/^[A-Z]{1,2}-[A-Z]{3,4}$/'],
+            ['matricula.regex' => 'Matricula deverá ser do seguinte formato AA(A)-ZZZ(Z), 
+            em que o valor entre parenteses pode ser opcional']);
+
+        dd($request);
+
     }
 
     /**
