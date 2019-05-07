@@ -10,7 +10,7 @@
             <input
                 type="text" class="form-control"
                 name="matricula" id="inputMatricula"
-                placeholder="Matricula" value="{{ old('matricula', $aeronave->matricula) }}" />
+                placeholder="Matricula" value="{{ old('matricula') }}" />
             @if ($errors->has('matricula'))
                 <em>{{ $errors->first('matricula') }}</em>
             @endif
