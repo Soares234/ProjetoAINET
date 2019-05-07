@@ -24,10 +24,10 @@
     <label for="inputNumLugares">Nº de Lugares</label>
     <input
         type="number" class="form-control"
-        name="numLugares" id="inputNumLugares"
-        placeholder="0" value="{{ old('numLugares', $aeronave->num_lugares) }}" />
-    @if ($errors->has('numLugares'))
-        <em>{{ $errors->first('numLugares') }}</em>
+        name="num_lugares" id="inputNumLugares"
+        placeholder="0" value="{{ old('num_lugares', $aeronave->num_lugares) }}" />
+    @if ($errors->has('num_lugares'))
+        <em>{{ $errors->first('num_lugares') }}</em>
     @endif
 </div>
 

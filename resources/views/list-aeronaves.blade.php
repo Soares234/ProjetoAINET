@@ -25,7 +25,18 @@
             <td>{{$aeronave->num_lugares}}</td>
             <td>{{$aeronave->conta_horas}}</td>
             <td>{{$aeronave->preco_hora}}</td>
-            
+            <td>
+                <a class="btn btn-xs btn-primary" href="/Aeronaves/{{$aeronave->matricula}}/edit">Edit</a>
+
+                <form action="{{ action('AeronaveController@destroy', $aeronave->matricula) }}" method="POST" role="form" class="inline">
+                    @csrf
+                    @method('delete')
+
+                    <input type="hidden" name="user_id" value="{{$aeronave->matricula}}">
+                    <button type="submit" class="btn btn-xs btn-danger">Delete</button>
+
+                </form>
+            </td>
         </tr>
         @endforeach
 </table>
