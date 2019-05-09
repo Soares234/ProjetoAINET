@@ -58,7 +58,8 @@ class AeronaveController extends Controller
             em que o valor entre parenteses é opcional',
              'marca.regex'=>'Marca só poderá conter Letras e espaços',
              'modelo.regex'=>'Modelo poderá conter Letras, número e hífens (-)',
-             'num_lugares.regex'=>'Número de lugares deverá ser entre 1 e 100']);
+             'num_lugares.between'=>'Número de lugares deverá ser entre 1 e 100']
+            );
 
         //dd($request);
 
@@ -80,24 +81,42 @@ class AeronaveController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *     * @param  string  $matricula
+     *     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($matricula)
     {
-        //
+        $title = 'Editar Aeronave';
+        $aeronave = Aeronave::findOrFail($matricula);
+
+        return view('edit-aeronave',compact('title','aeronave'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  string  $matricula
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $matricula)
     {
-        //
+        $aeronave = $request->validate(
+            ['marca'=> 'required|max:40|regex:/^[\pL\s]+$/u',
+                'modelo'=>'required|max:40|regex:/^[-\pL\s0-9]+$/u',
+                'num_lugares'=>'required|integer|between:1,100',
+                'conta_horas'=>'required|integer|min:0',
+                'preco_hora'=>'required|numeric|min:0'],
+            ['marca.regex'=>'Marca só poderá conter Letras e espaços',
+                'modelo.regex'=>'Modelo poderá conter Letras, número e hífens (-)',
+                'num_lugares.between'=>'Número de lugares deverá ser entre 1 e 100']
+        );
+
+        $aeronaveModel = Aeronave::findOrFail($matricula);
+        $aeronaveModel->fill($aeronave);
+        $aeronaveModel->save();
+
+        return redirect()->action('AeronaveController@index');
     }
 
     /**

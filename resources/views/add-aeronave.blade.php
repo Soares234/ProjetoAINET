@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.app')
 @section('content')
 
     <form action="/aeronaves" method="POST" class="form-group">

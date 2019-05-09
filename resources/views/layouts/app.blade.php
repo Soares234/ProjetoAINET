@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="alternate stylesheet" href="css/style.css">
 </head>
 <body>
     <div id="app">
@@ -73,7 +74,16 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+            <div class="container">
+                <div class="jumbotron">
+                    <h1>{{$title}}</h1>
+                </div>
+
+                <div class="container">
+                    @yield('content')
+                </div>
+
+            </div>
         </main>
     </div>
 </body>
