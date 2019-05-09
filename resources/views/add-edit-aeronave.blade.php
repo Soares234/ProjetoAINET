@@ -32,6 +32,17 @@
 </div>
 
 <div class="form-group">
+    <label for="inputPrecoHora">Contador de Horas</label>
+    <input
+        type="number" class="form-control"
+        name="conta_horas" id="inputPrecoHora"
+        placeholder="0" value="{{ old('conta_horas', $aeronave->conta_horas) }}" />
+    @if ($errors->has('conta_horas'))
+        <em>{{ $errors->first('conta_horas') }}</em>
+    @endif
+</div>
+
+<div class="form-group">
     <label for="inputPrecoHora">Preço/hora</label>
     <input
         type="number" class="form-control"
