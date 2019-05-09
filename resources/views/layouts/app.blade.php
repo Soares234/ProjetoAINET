@@ -18,7 +18,6 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link rel="alternate stylesheet" href="css/style.css">
 </head>
 <body>
     <div id="app">
@@ -76,7 +75,7 @@
         <main class="py-4">
             <div class="container">
                 <div class="jumbotron">
-                    <h1>{{$title}}</h1>
+                    <h1>{{ $title ?? "FlightClub"}}</h1>
                 </div>
 
                 <div class="container">

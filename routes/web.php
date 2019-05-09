@@ -15,7 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('aeronaves','AeronaveController');
+//Route::middleware('auth')->group(function () {});
+
+Route::resource('aeronaves','AeronaveController')->middleware('auth');
 
 Auth::routes();
 
