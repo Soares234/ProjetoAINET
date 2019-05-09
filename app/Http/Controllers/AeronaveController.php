@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Movimento;
 use Illuminate\Http\Request;
 use App\Aeronave;
-use App\Rules\Number_between;
 
 class AeronaveController extends Controller
 {
@@ -122,11 +122,30 @@ class AeronaveController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  string  $matricula
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($matricula)
     {
-        //
+
+        //$aeronave = Movimento::find($matricula)->movimentos;
+
+        $numero_de_aeronaves = Movimento::where('aeronave', '=', $matricula)->count();
+
+        //dd($aux_recebido);
+
+        $aeronaveModel = Aeronave::findOrFail($matricula);
+
+        if($numero_de_aeronaves == 0){
+            $aeronaveModel->forceDelete();
+        }else{
+            $aeronaveModel->delete();
+        }
+
+        return redirect()->action('AeronaveController@index');
+
+
+        //User::destroy($id);
+        //return redirect()->action('UserController@index')->with('message','User deleted successfully');
     }
 }

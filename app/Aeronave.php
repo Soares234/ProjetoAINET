@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Aeronave extends Model
 {
@@ -15,6 +16,9 @@ class Aeronave extends Model
 
     // Enables auto timestamps
     public $timestamps = true;
+
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
 
     protected $fillable = [
         'matricula', 'marca', 'modelo', 'num_lugares','preco_hora', 'conta_horas'
