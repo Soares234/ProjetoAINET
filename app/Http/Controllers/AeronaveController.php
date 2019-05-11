@@ -135,7 +135,7 @@ class AeronaveController extends Controller
         //dd($aux_recebido);
 
         $aeronaveModel = Aeronave::findOrFail($matricula);
-
+        /**Da complete  delete se a aeronave não tiver movimentos, else soft delete*/
         if($numero_de_aeronaves == 0){
             $aeronaveModel->forceDelete();
         }else{
