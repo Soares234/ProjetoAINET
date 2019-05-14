@@ -146,6 +146,6 @@ class AeronaveController extends Controller
 
 
         //User::destroy($id);
-        //return redirect()->action('UserController@index')->with('message','User deleted successfully');
+        //return redirect()->action('UtilizadorController@index')->with('message','User deleted successfully');
     }
 }

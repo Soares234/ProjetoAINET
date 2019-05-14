@@ -19,6 +19,9 @@ Route::get('/', function () {
 
 Route::resource('aeronaves','AeronaveController')->middleware('auth');
 
+Route::resource('utilizadores','UtilizadorController@index');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+

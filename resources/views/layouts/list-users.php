@@ -21,12 +21,13 @@
         @foreach ($aeronaves as $aeronave)
             @if ($aeronave->deleted_at == null)
                 <tr>
-                    <td>{{$aeronave->matricula}}</td>
-                    <td>{{$aeronave->marca}}</td>
-                    <td>{{$aeronave->modelo}}</td>
-                    <td>{{$aeronave->num_lugares}}</td>
-                    <td>{{$aeronave->conta_horas}}</td>
-                    <td>{{$aeronave->preco_hora}}</td>
+                    <td>{{$user->id}}</td>
+                    <td>{{$user->name}}</td>
+                    <td>{{$user->email}}</td>
+                    <td>{{$user->sexo}}</td>
+                    <td>{{$user-data_nascimento}}</td>
+                    <td>{{$user->num_socio}}</td>
+                    <td>{{$user->nif}}</td>
                     <td>
                         <a class="btn btn-xs btn-primary" href="/aeronaves/{{$aeronave->matricula}}/edit">Edit</a>
 
