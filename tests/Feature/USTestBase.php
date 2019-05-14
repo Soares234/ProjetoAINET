@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use Illuminate\Support\Facades\DB;
 
-use App\User;
+use App\Socio;
 
 class USTestBase extends TestCase
 {
@@ -140,8 +140,8 @@ class USTestBase extends TestCase
             "aluno" => "0",
             "instrutor" => "0",
             "num_socio" => "1001",
-            "name" => "User Complete Name",
-            "nome_informal"=> "User Name",
+            "name" => "Socio Complete Name",
+            "nome_informal"=> "Socio Name",
             "data_nascimento" => "1994-12-16",
             "sexo" => "M",
             "email" => "user_standard@mail.pt",
@@ -165,9 +165,9 @@ class USTestBase extends TestCase
 
     private function addUserToDB($user)
     {
-        //return factory(User::class)->create($user);
+        //return factory(Socio::class)->create($user);
         $id =  DB::table('users')->insertGetId($user);
-        return User::findOrFail($id);
+        return Socio::findOrFail($id);
     }
 
     protected function addPilotoToAeronaves($userid, $arrayAeronaves)
@@ -185,16 +185,16 @@ class USTestBase extends TestCase
         $normalUser = array_merge($this->standardUser(),
             [
             "num_socio" => "1001",
-            "name" => "Normal User Complete Name",
-            "nome_informal"=> "Normal User",
+            "name" => "Normal Socio Complete Name",
+            "nome_informal"=> "Normal Socio",
             "email" => "normal@usermail.pt",
             ]);
         $this->normalUser = $this->addUserToDB($normalUser);
         $normalUser2 = array_merge($this->standardUser(),
             [
             "num_socio" => "1013",
-            "name" => "Seconda Normal User Complete Name",
-            "nome_informal"=> "Second Normal User",
+            "name" => "Seconda Normal Socio Complete Name",
+            "nome_informal"=> "Second Normal Socio",
             "email" => "normal2@usermail.pt",
             ]);
         $this->normalUser2 = $this->addUserToDB($normalUser2);
@@ -226,8 +226,8 @@ class USTestBase extends TestCase
         $direcaoUser = array_merge($this->standardUser(),
             [
             "num_socio" => "1003",
-            "name" => "Direcao User Complete Name",
-            "nome_informal"=> "Direcao User",
+            "name" => "Direcao Socio Complete Name",
+            "nome_informal"=> "Direcao Socio",
             "email" => "direcao@usermail.pt",
             "direcao" => "1",
             ]);
@@ -239,8 +239,8 @@ class USTestBase extends TestCase
         $semQuotaUser = array_merge($this->standardUser(),
             [
             "num_socio" => "1004",
-            "name" => "User Sem Quotas Pagas Complete Name",
-            "nome_informal"=> "Sem Quota User",
+            "name" => "Socio Sem Quotas Pagas Complete Name",
+            "nome_informal"=> "Sem Quota Socio",
             "email" => "semquota@usermail.pt",
             "quota_paga" => "0",
             ]);
@@ -252,8 +252,8 @@ class USTestBase extends TestCase
         $desativadoUser = array_merge($this->standardUser(),
             [
             "num_socio" => "1005",
-            "name" => "User Desativado Complete Name",
-            "nome_informal"=> "Desativado User",
+            "name" => "Socio Desativado Complete Name",
+            "nome_informal"=> "Desativado Socio",
             "email" => "desativado@usermail.pt",
             "ativo" => "0",
             ]);
@@ -265,8 +265,8 @@ class USTestBase extends TestCase
         $softDeletedUser = array_merge($this->standardUser(true),
             [
             "num_socio" => "1006",
-            "name" => "User Soft Deleted Complete Name",
-            "nome_informal"=> "Soft Deleted User",
+            "name" => "Socio Soft Deleted Complete Name",
+            "nome_informal"=> "Soft Deleted Socio",
             "email" => "softdeleted@usermail.pt",
             ]);
         $this->softDeletedUser = $this->addUserToDB($softDeletedUser);
@@ -277,8 +277,8 @@ class USTestBase extends TestCase
         $passwordInicialUser = array_merge($this->standardUser(),
             [
             "num_socio" => "1007",
-            "name" => "User Desativado Complete Name",
-            "nome_informal"=> "Desativado User",
+            "name" => "Socio Desativado Complete Name",
+            "nome_informal"=> "Desativado Socio",
             "email" => "passwordinicial@usermail.pt",
             "password_inicial" => "1",
             ]);
@@ -378,8 +378,8 @@ class USTestBase extends TestCase
         $emailNaoVerificadoUser = array_merge($this->standardUser(),
             [
             "num_socio" => "1012",
-            "name" => "User sem e-Mail Verificado Complete Name",
-            "nome_informal"=> "Email Nao Verificado User",
+            "name" => "Socio sem e-Mail Verificado Complete Name",
+            "nome_informal"=> "Email Nao Verificado Socio",
             "email" => "emailnaoverificado@usermail.pt",
             "email_verified_at" => null,
             ]);
