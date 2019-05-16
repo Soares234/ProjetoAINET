@@ -20,6 +20,30 @@ class SocioController extends Controller
         return view('list-socios', compact('title', 'socios'));
     }
     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $id = $request->id;
+
+
+        //dd($request);
+
+        $socio = $request->validate(
+            /**TRABALHA FRED*/
+        );
+
+        $socio->password = $request->data_nascimento;
+
+        //dd($request);
+
+        Socio::create($socio);
+        return redirect()->action('SocioController@index')->with('message','Socio criado com sucesso');
+    }
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
