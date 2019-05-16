@@ -20,17 +20,17 @@
     </thead>
     <tbody>
         @foreach ($socios as $socio)
-            @if ($socio->quota_paga == 1) //so da para ver socios com a cota paga,sugeito a alterações mais tarde//
+            @if ($socio->quota_paga == 1) {{-- so da para ver socios com a cota paga,sugeito a alterações mais tarde --}}
                 <tr>
-                    <td>{{$user->id}}</td>
-                    <td>{{$user->name}}</td>
-                    <td>{{$user->email}}</td>
-                    <td>{{$user->sexo}}</td>
-                    <td>{{$user-data_nascimento}}</td>
-                    <td>{{$user->num_socio}}</td>
-                    <td>{{$user->nif}}</td>
+                    <td>{{$socio->id}}</td>
+                    <td>{{$socio->name}}</td>
+                    <td>{{$socio->email}}</td>
+                    <td>{{$socio->sexo}}</td>
+                    <td>{{$socio->data_nascimento}}</td>
+                    <td>{{$socio->num_socio}}</td>
+                    <td>{{$socio->nif}}</td>
                     <td>
-                        <a class="btn btn-xs btn-primary" href="/User/{{$socio->id}}/edit">Edit</a>
+                        <a class="btn btn-xs btn-primary" href="/socios/{{$socio->id}}/edit">Edit</a>
 
                         <form action="{{ action('SocioController@destroy', $socio->id) }}" method="POST" role="form" class="inline">
                             @csrf

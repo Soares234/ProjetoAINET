@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use app\Socio;
 
 class SocioController extends Controller
 {
@@ -13,10 +14,10 @@ class SocioController extends Controller
      */
     public function index()
     {
-        $users = User::All();
-        $title = 'Lista de Utilizadores';
+        $socios = Socio::All();
+        $title = 'Lista de Socios';
 
-        return view('list-utilizadores', compact('title', 'utilizadores'));
+        return view('list-socios', compact('title', 'socios'));
     }
     /**
      * Show the form for creating a new resource.

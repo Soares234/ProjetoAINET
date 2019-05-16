@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::resource('aeronaves','AeronaveController')->middleware('auth');
 
-Route::resource('utilizadores','SocioController@index');
+Route::resource('socios','SocioController')->middleware('auth');
 
 Auth::routes();
 
