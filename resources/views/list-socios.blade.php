@@ -10,12 +10,11 @@
     <thead>
         <tr>
             <th>Id</th>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Sexo</th>
-            <th>Data de Nascimento</th>
             <th>Numero de sócio</th>
-            <th>NIF</th>
+            <th>Nome Informal</th>
+            <th>Email</th>
+            <th>Tipo de Sócio</th>
+            <th>Direção</th>
         </tr>
     </thead>
     <tbody>
@@ -23,12 +22,24 @@
             @if ($socio->quota_paga == 1) {{-- so da para ver socios com a cota paga,sugeito a alterações mais tarde --}}
                 <tr>
                     <td>{{$socio->id}}</td>
-                    <td>{{$socio->name}}</td>
-                    <td>{{$socio->email}}</td>
-                    <td>{{$socio->sexo}}</td>
-                    <td>{{$socio->data_nascimento}}</td>
                     <td>{{$socio->num_socio}}</td>
-                    <td>{{$socio->nif}}</td>
+                    <td>{{$socio->nome_informal}}</td>
+                    <td>{{$socio->email}}</td>
+                    <td>
+                        @switch($socio->tipo_socio)
+                            @case("P")
+                            {{"Piloto"}}
+                            @break
+
+                            @case("NP")
+                            {{"Não Piloto"}}
+                            @break
+
+                            @case("A")
+                            {{"Aeromodelista"}}
+                        @endswitch
+                    </td>
+                    <td>{{$socio->direcao ? "Sim" : "Não"}}</td>
                     <td>
                         <a class="btn btn-xs btn-primary" href="/socios/{{$socio->id}}/edit">Edit</a>
 
