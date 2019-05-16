@@ -26,10 +26,10 @@ class SocioController extends Controller
      */
     public function create()
     {
-        $title = 'Adicionar novo Utilizador';
-        $user= new User();
+        $title = 'Adicionar novo Sócio';
+        $socio= new Socio();
 
-        return view('add-utilizador',compact('title','utilizador'));
+        return view('add-socio',compact('title','socio'));
     }
     /**
      * Display the specified resource.

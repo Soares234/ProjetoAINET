@@ -41,7 +41,7 @@
                     </td>
                     <td>{{$socio->direcao ? "Sim" : "Não"}}</td>
                     <td>
-                        <a class="btn btn-xs btn-primary" href="/socios/{{$socio->id}}/edit">Edit</a>
+                        <a class="btn btn-xs btn-primary inline" href="/socios/{{$socio->id}}/edit">Edit</a>
 
                         <form action="{{ action('SocioController@destroy', $socio->id) }}" method="POST" role="form" class="inline">
                             @csrf

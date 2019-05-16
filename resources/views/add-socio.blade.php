@@ -5,18 +5,7 @@
 
         @csrf
 
-        <div class="form-group">
-            <label for="inputMatricula">Matricula</label>
-            <input
-                type="text" class="form-control"
-                name="matricula" id="inputMatricula"
-                placeholder="Matricula" value="{{ old('matricula') }}" />
-            @if ($errors->has('matricula'))
-                <em>{{ $errors->first('matricula') }}</em>
-            @endif
-        </div>
-
-        @include('add-edit-aeronave')
+        @include('add-edit-socio')
 
         <div class="form-group">
             <button type="submit" class="btn btn-success" name="ok">Adicionar</button>
