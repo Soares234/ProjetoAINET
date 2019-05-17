@@ -19,11 +19,11 @@ class SocioController extends Controller
 public function parseData($date, $modo){
     if ($modo){
         //Existem funções para isto mas menos pesado computacionalmente assim
-        $date[2] = '-';
-        $date[5] = '-';
+        $date[4] = '-';
+        $date[7] = '-';
     }else{
-        $date[2]= '/';
-        $date[5]='/';
+        $date[4]= '/';
+        $date[7]='/';
     }
     return $date;
 }
@@ -63,27 +63,26 @@ public function parseData($date, $modo){
              'nif'=>'required|numeric',
              'telefone'=>'required|numeric',
              'tipo_socio'=>'required',
-             'quota'=>'required',
+             'quota_paga'=>'required',
              'direcao'=>'required',
-             'ativo'=>'required'
-            ],[
-                'name.regex'=>'O nome não deverá conter caracteres especias nem números',
-                'nome_informal.regex'=>'O nome não deverá conter caracteres especias nem números',
-                'nif.numeric'=>'O nif deverá ser apenas numérico',
-                'telefone.numeric'=>'O numero de telefone deverá ser um número!'
+             'ativo'=>'required'],
+            ['name.regex'=>'O nome não deverá conter caracteres especias nem números',
+             'nome_informal.regex'=>'O nome não deverá conter caracteres especias nem números',
+             'nif.numeric'=>'O nif deverá ser apenas numérico',
+             'telefone.numeric'=>'O numero de telefone deverá ser um número!'
             ]
-
         );
 
         $user['password'] = Hash::make((string)$request->input('data_nascimento'));
         echo  $this->parseData($request->input('data_nascimento'),0);
 
-        dd($user);
-        $user['num_socio']=(string)1;//+ User::orderBy('created_at','desc')->first()->value('num_socio');// latest da order by da tabela invertida, o ultimo valor passa a first e como tal o num socio mais alto esta no topo da tabela, ordena pelo criterio Created_AT;
+        $last_user_numb = User::orderBy('id','desc')->take(1)->value('num_socio');
+        // latest da order by da tabela invertida, o ultimo valor passa a first e
+        // como tal o num socio mais alto esta no topo da tabela, ordena pelo criterio Created_AT;
+         echo "<br> $last_user_numb";
 
+        $user['num_socio']=$last_user_numb + 1;
 
-        //dd($request);
-        dump($user);
         User::create($user);
         return redirect()->action('SocioController@index')->with('message','Sócio criado com sucesso');
     }

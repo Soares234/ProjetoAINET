@@ -118,7 +118,7 @@
 
 </div>
 <div class="custom-control custom-checkbox">
-    <input name="quota" type="checkbox" class="custom-control-input" id="CheckQuotas" value="1"  {{old('quota',$user->quota_paga)=='1' ? 'checked' : ''}}>
+    <input name="quota_paga" type="checkbox" class="custom-control-input" id="CheckQuotas" value="1"  {{old('quota_paga',$user->quota_paga)=='1' ? 'checked' : ''}}>
     <label class="custom-control-label" for="CheckQuotas" >Quotas Pagas</label>
 </div>
 <div class="custom-control custom-checkbox">
