@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use app\User;
@@ -33,7 +34,9 @@ public function parseData($date, $modo){
      */
     public function index()
     {
-        $users = User::All();
+        $users = DB::table('users')->paginate(20);
+        //paginar 20 sócios por página
+        //laravel 4. pages 21 & 33
         $title = 'Lista de Socios';
 
         return view('socios.list-socios', compact('title', 'users'));

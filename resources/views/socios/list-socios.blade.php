@@ -56,6 +56,8 @@
             @endif
         @endforeach
 </table>
+    {{ $users->links() }}
+    {{-- Paginar os Sócios--}}
     @else
         <h2>Não foram encontrados Sócios</h2>
     @endif
