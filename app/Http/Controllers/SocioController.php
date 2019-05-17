@@ -3,10 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use app\User;
 
 class SocioController extends Controller
 {
+    /**
+     * @param $date  String de entrada, por questão de simplicidade o proximo param foi adicionado para gerir melhor o comportamento da função
+     * @param $modo  Int decide como estamos a tranformar a data, 0 faz a transformação data xx/xx/xxxx para xx-xx-xxxx
+     *
+     *
+     *@return string correta
+     */
+public function parseData($date, $modo){
+    if ($modo){
+        //Existem funções para isto mas menos pesado computacionalmente assim
+        $date[2] = '-';
+        $date[5] = '-';
+    }else{
+        $date[2]= '/';
+        $date[5]='/';
+    }
+    return $date;
+}
     /**
      * Display a listing of the resource.
      *
@@ -32,16 +51,34 @@ class SocioController extends Controller
 
         //dd($request);
 
-        $user = $request->validate(/**Sujeito a alterações, comentem se quiseres */
+        $user = $request->validate(
+            ['name'=>'required|regex:/^[a-zA-Z]+$/u',
+             'nome_informal'=>'required|regex:/^[a-zA-Z]+$/u',
+             'email'=>'required|email',
+             'sexo'=>'required',
+             'data_nascimento'=>'required',
+             'nif'=>'required|numeric',
+             'telefone'=>'required|numeric',
+             'tipo_socio'=>'required',
+             'quota'=>'required',
+             'direcao'=>'required',
+             'ativo'=>'required'
+            ],[
+                'name.regex'=>'O nome não deverá conter caracteres especias nem números',
+                'nome_informal.regex'=>'O nome não deverá conter caracteres especias nem números',
+                'nif.numeric'=>'O nif deverá ser apenas numérico',
+                'telefone.numeric'=>'O numero de telefone deverá ser um número!'
+            ]
 
         );
 
-        $user->password = $request->data_nascimento;
-        $user->num_socio = ($request->latest()->first())+1; // latest da order by da tabela invertida, o ultimo valor passa a first e como tal o num socio mais alto esta no topo da tabela, ordena pelo criterio Created_AT;
+        $user['password'] = Hash::make((string)$request->input('data_nascimento'));
+        echo  $this->parseData($request->input('data_nascimento'),0);
+        $user['num_socio']=(string)1;//+ User::orderBy('created_at','desc')->first()->value('num_socio');// latest da order by da tabela invertida, o ultimo valor passa a first e como tal o num socio mais alto esta no topo da tabela, ordena pelo criterio Created_AT;
 
 
         //dd($request);
-
+        dump($user);
         User::create($user);
         return redirect()->action('SocioController@index')->with('message','Sócio criado com sucesso');
     }

@@ -14,7 +14,7 @@
     <input
         type="text" class="form-control"
         name="name" id="inputNome"
-        placeholder="Nome" value="{{ old('name', $user->name) }}" />
+        placeholder="Nome" value="{{ old('nome_completo', $user->name) }}" />
     @if ($errors->has('name'))
         <em>{{ $errors->first('name') }}</em>
     @endif
@@ -28,6 +28,16 @@
         placeholder="Nome Informal" value="{{ old('nome_informal', $user->nome_informal) }}" />
     @if ($errors->has('nome_informal'))
         <em>{{ $errors->first('nome') }}</em>
+    @endif
+</div>
+<div class="form-group">
+    <label for="inputNome">email</label>
+    <input
+        type="text" class="form-control"
+        name="email" id="inputEmail"
+        placeholder="xxxx@yy.zz" value="{{ old('nome_completo', $user->email) }}" />
+    @if ($errors->has('name'))
+        <em>{{ $errors->first('name') }}</em>
     @endif
 </div>
 
@@ -182,15 +192,15 @@
 
 </div>--}}
 <div class="custom-control custom-checkbox">
-    <input type="checkbox" class="custom-control-input" id="CheckQuotas" {{old('quotas_pagas',$user->quota_paga)=='1' ? 'checked':' '}}>
-    <label class="custom-control-label" for="checkQuotas" >Quotas Pagas</label>
+    <input name="quota" type="checkbox" class="custom-control-input" id="CheckQuotas" value="1"  {{old('quotas_pagas',$user->quota_paga)=='1' ? 'checked':' '}}>
+    <label class="custom-control-label" for="CheckQuotas" >Quotas Pagas</label>
 </div>
 <div class="custom-control custom-checkbox">
-    <input type="checkbox" class="custom-control-input" id="checkDirecao" {{old('direcao',$user->direcao)=='1' ? 'checked' : ''}}>
+    <input name="direcao" type="checkbox" class="custom-control-input" id="checkDirecao" value="1" {{old('direcao',$user->direcao)=='1' ? 'checked' : ''}}>
     <label class="custom-control-label" for="checkDirecao">É direção</label>
 </div>
 <div class="custom-control custom-checkbox">
-    <input type="checkbox" class="custom-control-input" id="checkAtivo" {{old('ativo',$user->ativo)=='1' ? 'checked': ''}}>
+    <input name="ativo" type="checkbox" class="custom-control-input" id="checkAtivo" value="1" {{old('ativo',$user->ativo)=='1' ? 'checked': ''}}>
     <label class="custom-control-label" for="checkAtivo">Está Ativo</label>
 </div>
 
