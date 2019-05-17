@@ -14,7 +14,7 @@
         </div>
         @csrf
 
-        @include('add-edit-socio')
+        @include('socios.add-edit-socio')
 
         <div class="form-group">
             <button type="submit" class="btn btn-success" name="ok">Adicionar</button>

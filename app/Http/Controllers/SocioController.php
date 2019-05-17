@@ -17,7 +17,7 @@ class SocioController extends Controller
         $users = User::All();
         $title = 'Lista de Socios';
 
-        return view('list-socios', compact('title', 'users'));
+        return view('socios.list-socios', compact('title', 'users'));
     }
     /**
      * Store a newly created resource in storage.
@@ -55,7 +55,7 @@ class SocioController extends Controller
         $title = 'Adicionar novo Sócio';
         $user= new User();
 
-        return view('add-socio',compact('title','user'));
+        return view('socios.add-socio',compact('title','user'));
     }
     /**
      * Display the specified resource.
@@ -78,7 +78,7 @@ class SocioController extends Controller
         $title = 'Editar Sócio';
         $user = User::findOrFail($id);
 
-        return view('edit-socio',compact('title','user'));
+        return view('socios.edit-socio',compact('title','user'));
     }
     //ELES LEVAM SOFT DELETE SE ESTIVEREM ASSOCIADOS A MOVIMENTOS
     public function destroy($id)
