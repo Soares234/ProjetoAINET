@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use app\User;
+use App\User;
+use App\Movimento;
 
 class SocioController extends Controller
 {
@@ -124,14 +125,10 @@ public function parseData($date, $modo){
     //ELES LEVAM SOFT DELETE SE ESTIVEREM ASSOCIADOS A MOVIMENTOS
     public function destroy($id)
     {
-
-
-
-        $numero_de_socios = Movimento::where('user', '=', $id)->count();
-
-
-
         $userModel = User::findOrFail($id);
+
+        $numero_de_socios = Movimento::where('piloto_id', '=', $userModel->id)->count();
+
 
         if($numero_de_socios == 0){
             $userModel->forceDelete();
