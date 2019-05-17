@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Aeronave;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Movimento;
+use Illuminate\Validation\Rule;
 
 class SocioController extends Controller
 {
@@ -57,12 +59,12 @@ public function parseData($date, $modo){
 
         $user = $request->validate(
             ['name'=>'required|regex:/^[\pL\s]+$/u',
-             'nome_informal'=>'required|regex:/^[\pL\s]+$/u',
+                'nome_informal'=>'required|regex:/^[\pL\s]+$/u',
              'email'=>'required|email',
              'sexo'=>'required',
              'data_nascimento'=>'required',
-             'nif'=>'required|numeric',
-             'telefone'=>'required|numeric',
+             'nif'=>'required|numeric|unique',
+             'telefone'=>'required|numeric|unique',
              'tipo_socio'=>'required',
              'quota_paga'=>'required',
              'direcao'=>'required',
@@ -120,7 +122,44 @@ public function parseData($date, $modo){
         $title = 'Editar Sócio';
         $user = User::findOrFail($id);
 
+
         return view('socios.edit-socio',compact('title','user'));
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $matricula
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $user= $request->validate(
+            [
+                'name'=>'required|regex:/^[\pL\s]+$/u',
+                'nome_informal'=>'required|regex:/^[\pL\s]+$/u',
+                'num_socio'=>['required','numeric',Rule::unique('users')->ignore($id)],
+                'email'=>['required','email',Rule::unique('users')->ignore($id)],
+                'sexo'=>'required',
+                'data_nascimento'=>'required',
+                'nif'=>['required','numeric',Rule::unique('users')->ignore($id)],
+                'telefone'=>['required',Rule::unique('users')->ignore($id)],
+                'tipo_socio'=>'required',
+                'direcao'=>'required',
+                'ativo'=>'required',
+                'quota_paga'=>'required'],
+                ['name.regex'=>'O nome não deverá conter caracteres especias nem números',
+                    'nome_informal.regex'=>'O nome não deverá conter caracteres especias nem números',
+                    'nif.numeric'=>'O nif deverá ser apenas numérico',
+                    'telefone.numeric'=>'O numero de telefone deverá ser um número!'
+                ]
+        );
+
+        $userModel = User::findOrFail($id);
+        $userModel->fill($user);
+        $userModel->save();
+
+        return redirect()->action('SocioController@index');
     }
     //ELES LEVAM SOFT DELETE SE ESTIVEREM ASSOCIADOS A MOVIMENTOS
     public function destroy($id)
@@ -141,4 +180,5 @@ public function parseData($date, $modo){
 
 
     }
+
 }

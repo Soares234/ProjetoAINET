@@ -36,8 +36,8 @@
         type="text" class="form-control"
         name="email" id="inputEmail"
         placeholder="xxxx@yy.zz" value="{{ old('email', $user->email) }}" />
-    @if ($errors->has('name'))
-        <em>{{ $errors->first('name') }}</em>
+    @if ($errors->has('email'))
+        <em>{{ $errors->first('email') }}</em>
     @endif
 </div>
 

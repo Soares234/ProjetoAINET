@@ -92,6 +92,7 @@ class AeronaveController extends Controller
         return view('aeronaves.edit-aeronave',compact('title','aeronave'));
     }
 
+
     /**
      * Update the specified resource in storage.
      *
