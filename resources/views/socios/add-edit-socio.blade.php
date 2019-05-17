@@ -14,7 +14,7 @@
     <input
         type="text" class="form-control"
         name="name" id="inputNome"
-        placeholder="Nome" value="{{ old('nome_completo', $user->name) }}" />
+        placeholder="Nome" value="{{ old('name', $user->name) }}" />
     @if ($errors->has('name'))
         <em>{{ $errors->first('name') }}</em>
     @endif
@@ -35,7 +35,7 @@
     <input
         type="text" class="form-control"
         name="email" id="inputEmail"
-        placeholder="xxxx@yy.zz" value="{{ old('nome_completo', $user->email) }}" />
+        placeholder="xxxx@yy.zz" value="{{ old('email', $user->email) }}" />
     @if ($errors->has('name'))
         <em>{{ $errors->first('name') }}</em>
     @endif
@@ -107,9 +107,9 @@
 
 
         <option disabled selected>Selecione um opção</option>
-        <option {{ $user->tipo_socio=='A' ? "selected" : '' }} value="A">Aeromodelista</option>
-        <option {{ $user->tipo_socio=='NP' ? "selected" : '' }} value="NP"> Não Piloto</option>
-        <option {{ $user->tipo_socio=='P' ? "selected" : '' }} value="P"> Piloto</option>
+        <option {{ old('tipo_socio', $user->tipo_socio)=='A' ? "selected" : ''}} value="A">Aeromodelista</option>
+        <option {{ old('tipo_socio', $user->tipo_socio)=='NP' ? "selected" : ''}} value="NP"> Não Piloto</option>
+        <option {{ old('tipo_socio', $user->tipo_socio)=='P' ? "selected" : ''}} value="P"> Piloto</option>
 
     </select>
     @if ($errors->has('tipo_socio'))
@@ -117,82 +117,8 @@
     @endif
 
 </div>
-{{-- Legacy radios, agora sao checkboxes
-<div class="form-group">
-    <div><label for="inputCotas">Cotas</label></div>
-    <div class="custom-control custom-radio">
-        <input
-            type="radio" class="custom-control-input"
-            name="cotas" id="inputCotasPago"
-            value="1" {{old('quota_paga')=='1' ?? selected}}>
-        <label class="custom-control-label" for="inputCotaPaga">Pagas</label>
-    </div>
-
-    <div class="custom-control custom-radio">
-        <input
-            type="radio" class="custom-control-input"
-            name="cotas" id="inputCotaPaga"
-            value="0" {{old('quotas_paga')=='0' ?? selected}}>
-        <label class="custom-control-label" for="inputCotaNaoPaga">Por Pagar</label>
-    </div>
-    @if ($errors->has('quota_paga'))
-        <em>{{ $errors->first('quota_paga') }}</em>
-    @endif
-
-</div>
-
-
-<div class="form-group">
-    <div><label for="inputAtividade">Ativo?</label></div>
-
-    <div class="custom-control custom-radio">
-        <input
-            type="radio" class="custom-control-input"
-            name="ativo" id="inputAtivo"
-            value="1" {{old('ativo')=='1' ?? selected}}>
-        <label class="custom-control-label" for="inputAtivo">Ativo</label>
-    </div>
-
-    <div class="custom-control custom-radio">
-        <input
-            type="radio" class="custom-control-input"
-            name="ativo" id="inputInativo"
-            value="0" {{old('ativo')=='0' ?? selected}}>
-        <label class="custom-control-label" for="inputInativo">Inativo</label>
-    </div>
-    @if ($errors->has('ativo'))
-        <em>{{ $errors->first('ativo') }}</em>
-    @endif
-
-</div>
-
-
-
-<div class="form-group">
-    <div><label for="inputDirecao">Direção?</label></div>
-
-    <div class="custom-control custom-radio">
-        <input
-            type="radio" class="custom-control-input"
-            name="cotas" id="inputDirecao"
-            value="1" {{old('direcao')=='1' ?? selected}}>
-        <label class="custom-control-label" for="inputDirecaoSim">Sim</label>
-    </div>
-
-    <div class="custom-control custom-radio">
-        <input
-            type="radio" class="custom-control-input"
-            name="direcao" id="inputCotaPaga"
-            value="0" {{old('direcao')=='0' ?? selected}}>
-        <label class="custom-control-label" for="inputNaoDirecao">Não</label>
-    </div>
-    @if ($errors->has('direcao'))
-        <em>{{ $errors->first('direcao') }}</em>
-    @endif
-
-</div>--}}
 <div class="custom-control custom-checkbox">
-    <input name="quota" type="checkbox" class="custom-control-input" id="CheckQuotas" value="1"  {{old('quotas_pagas',$user->quota_paga)=='1' ? 'checked':' '}}>
+    <input name="quota" type="checkbox" class="custom-control-input" id="CheckQuotas" value="1"  {{old('quota',$user->quota_paga)=='1' ? 'checked' : ''}}>
     <label class="custom-control-label" for="CheckQuotas" >Quotas Pagas</label>
 </div>
 <div class="custom-control custom-checkbox">

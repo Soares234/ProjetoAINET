@@ -52,8 +52,8 @@ public function parseData($date, $modo){
         //dd($request);
 
         $user = $request->validate(
-            ['name'=>'required|regex:/^[a-zA-Z]+$/u',
-             'nome_informal'=>'required|regex:/^[a-zA-Z]+$/u',
+            ['name'=>'required|regex:/^[\pL\s]+$/u',
+             'nome_informal'=>'required|regex:/^[\pL\s]+$/u',
              'email'=>'required|email',
              'sexo'=>'required',
              'data_nascimento'=>'required',
@@ -74,6 +74,8 @@ public function parseData($date, $modo){
 
         $user['password'] = Hash::make((string)$request->input('data_nascimento'));
         echo  $this->parseData($request->input('data_nascimento'),0);
+
+        dd($user);
         $user['num_socio']=(string)1;//+ User::orderBy('created_at','desc')->first()->value('num_socio');// latest da order by da tabela invertida, o ultimo valor passa a first e como tal o num socio mais alto esta no topo da tabela, ordena pelo criterio Created_AT;
 
 
