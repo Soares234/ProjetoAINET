@@ -18,7 +18,7 @@ class AeronaveController extends Controller
         $aeronaves = Aeronave::All();
         $title = 'Lista de Aeronaves';
 
-        return view('list-aeronaves', compact('title', 'aeronaves'));
+        return view('aeronaves.list-aeronaves', compact('title', 'aeronaves'));
     }
 
     /**
@@ -31,7 +31,7 @@ class AeronaveController extends Controller
         $title = 'Adicionar nova Aeronave';
         $aeronave= new Aeronave();
 
-        return view('add-aeronave',compact('title','aeronave'));
+        return view('aeronaves.add-aeronave',compact('title','aeronave'));
     }
 
     /**
@@ -89,7 +89,7 @@ class AeronaveController extends Controller
         $title = 'Editar Aeronave';
         $aeronave = Aeronave::findOrFail($matricula);
 
-        return view('edit-aeronave',compact('title','aeronave'));
+        return view('aeronaves.edit-aeronave',compact('title','aeronave'));
     }
 
     /**

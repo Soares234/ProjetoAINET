@@ -6,7 +6,7 @@
         @method('patch')
         @csrf
 
-        @include('add-edit-aeronave')
+        @include('aeronaves.add-edit-aeronave')
 
         <div class="form-group">
             <button type="submit" class="btn btn-success" name="ok">Editar</button>
