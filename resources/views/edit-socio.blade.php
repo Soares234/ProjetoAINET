@@ -7,7 +7,7 @@
             <input
                 type="number" class="form-control"
                 name="num_socio" id="inputNumSocio"
-                placeholder="0000" value="{{ old('num_socio', $socio->num_socio) }}" />
+                placeholder="0000" value="{{ old('num_socio', $user->num_socio) }}" />
             @if ($errors->has('num_socio'))
                 <em>{{ $errors->first('num_socio') }}</em>
             @endif

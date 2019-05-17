@@ -3,7 +3,7 @@
     <input
         type="number" class="form-control"
         name="num_socio" id="inputNumSocio"
-        placeholder="0000" value="{{ old('num_socio', $socio->num_socio) }}" />
+        placeholder="0000" value="{{ old('num_socio', $user->num_socio) }}" />
     @if ($errors->has('num_socio'))
         <em>{{ $errors->first('num_socio') }}</em>
     @endif
@@ -14,7 +14,7 @@
     <input
         type="text" class="form-control"
         name="name" id="inputNome"
-        placeholder="Nome" value="{{ old('name', $socio->name) }}" />
+        placeholder="Nome" value="{{ old('name', $user->name) }}" />
     @if ($errors->has('name'))
         <em>{{ $errors->first('name') }}</em>
     @endif
@@ -25,7 +25,7 @@
     <input
         type="text" class="form-control"
         name="nome_informal" id="inputNomeInformal"
-        placeholder="Nome Informal" value="{{ old('nome_informal', $socio->nome_informal) }}" />
+        placeholder="Nome Informal" value="{{ old('nome_informal', $user->nome_informal) }}" />
     @if ($errors->has('nome_informal'))
         <em>{{ $errors->first('nome') }}</em>
     @endif
@@ -39,7 +39,7 @@
         <input
             type="radio" class="custom-control-input"
             name="sexo" id="inputSexoM"
-            value="M" {{old('sexo',$socio->sexo)=='M' ? 'checked':''}}>
+            value="M" {{old('sexo',$user->sexo)=='M' ? 'checked':''}}>
         <label class="custom-control-label" for="inputSexoM">Masculino</label>
     </div>
 
@@ -47,7 +47,7 @@
         <input
             type="radio" class="custom-control-input"
             name="sexo" id="inputSexoF"
-            value="F" {{old('sexo',$socio->sexo)=='F' ? 'checked':'' }}>
+            value="F" {{old('sexo',$user->sexo)=='F' ? 'checked':'' }}>
         <label class="custom-control-label" for="inputSexoF">Feminino</label>
     </div>
     @if ($errors->has('sexo'))
@@ -61,7 +61,7 @@
     <input
         type="date" class="form-control"
         name="data_nascimento" id="inputDataNascimento"
-        placeholder="01/01/2019" value="{{ old('data_nascimento', $socio->data_nascimento) }}" />
+        placeholder="01/01/2019" value="{{ old('data_nascimento', $user->data_nascimento) }}" />
     @if ($errors->has('data_nascimento'))
         <em>{{ $errors->first('data_nascimento') }}</em>
     @endif
@@ -72,7 +72,7 @@
     <input
         type="number" class="form-control"
         name="nif" id="inputNIF"
-        placeholder="123456789" value="{{ old('nif', $socio->nif) }}" />
+        placeholder="123456789" value="{{ old('nif', $user->nif) }}" />
     @if ($errors->has('nif'))
         <em>{{ $errors->first('nif') }}</em>
     @endif
@@ -83,7 +83,7 @@
     <input
         type="number" class="form-control"
         name="telefone" id="inputTelefone"
-        placeholder="123456789" value="{{ old('telefone', $socio->telefone) }}" />
+        placeholder="123456789" value="{{ old('telefone', $user->telefone) }}" />
     @if ($errors->has('nif'))
         <em>{{ $errors->first('nif') }}</em>
     @endif
@@ -97,9 +97,9 @@
 
 
         <option disabled selected>Selecione um opção</option>
-        <option {{ $socio->tipo_socio=='A' ? "selected" : '' }} value="A">Aeromodelista</option>
-        <option {{ $socio->tipo_socio=='NP' ? "selected" : '' }} value="NP"> Não Piloto</option>
-        <option {{ $socio->tipo_socio=='P' ? "selected" : '' }} value="P"> Piloto</option>
+        <option {{ $user->tipo_socio=='A' ? "selected" : '' }} value="A">Aeromodelista</option>
+        <option {{ $user->tipo_socio=='NP' ? "selected" : '' }} value="NP"> Não Piloto</option>
+        <option {{ $user->tipo_socio=='P' ? "selected" : '' }} value="P"> Piloto</option>
 
     </select>
     @if ($errors->has('tipo_socio'))
@@ -182,15 +182,15 @@
 
 </div>--}}
 <div class="custom-control custom-checkbox">
-    <input type="checkbox" class="custom-control-input" id="CheckQuotas" {{old('quotas_pagas',$socio->quota_paga)=='1' ? 'checked':' '}}>
+    <input type="checkbox" class="custom-control-input" id="CheckQuotas" {{old('quotas_pagas',$user->quota_paga)=='1' ? 'checked':' '}}>
     <label class="custom-control-label" for="checkQuotas" >Quotas Pagas</label>
 </div>
 <div class="custom-control custom-checkbox">
-    <input type="checkbox" class="custom-control-input" id="checkDirecao" {{old('direcao',$socio->direcao)=='1' ? 'checked' : ''}}>
+    <input type="checkbox" class="custom-control-input" id="checkDirecao" {{old('direcao',$user->direcao)=='1' ? 'checked' : ''}}>
     <label class="custom-control-label" for="checkDirecao">É direção</label>
 </div>
 <div class="custom-control custom-checkbox">
-    <input type="checkbox" class="custom-control-input" id="checkAtivo" {{old('ativo',$socio->ativo)=='1' ? 'checked': ''}}>
+    <input type="checkbox" class="custom-control-input" id="checkAtivo" {{old('ativo',$user->ativo)=='1' ? 'checked': ''}}>
     <label class="custom-control-label" for="checkAtivo">Está Ativo</label>
 </div>
 

@@ -1,6 +1,6 @@
 <?php
 
-use App\Socio;
+use App\User;
 use Illuminate\Database\Seeder;
 
 class UsersSeeder extends Seeder
@@ -81,7 +81,7 @@ class UsersSeeder extends Seeder
         $num_socio = $this->first_socio;
         for ($i=1; $i<=$this->total_socios; $i++) {
             DB::table('users')->insert($this->newFakerSocio($faker, $num_socio));
-            $this->command->info("Criado Socio/Sócio - $i / " . $this->total_socios. " com o Nº de sócio $num_socio");
+            $this->command->info("Criado User/Sócio - $i / " . $this->total_socios. " com o Nº de sócio $num_socio");
             if ($num_socio < ($this->first_socio+10)) {
                 $num_socio++;
             } else {

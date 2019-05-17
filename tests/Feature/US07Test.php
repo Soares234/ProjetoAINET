@@ -140,7 +140,7 @@ class US07Test extends USTestBase
     {
         $newdata = [
             "id" => $this->normalUser->id,
-            "name" => "Novo Nome Para Normal Socio",
+            "name" => "Novo Nome Para Normal User",
             "nome_informal" => "Novo Informal 123",
             "email" => "xptop@naemail.pt",
             "nif" => "999999999",

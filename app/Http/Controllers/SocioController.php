@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use app\Socio;
+use app\User;
 
 class SocioController extends Controller
 {
@@ -14,10 +14,10 @@ class SocioController extends Controller
      */
     public function index()
     {
-        $socios = Socio::All();
+        $users = User::All();
         $title = 'Lista de Socios';
 
-        return view('list-socios', compact('title', 'socios'));
+        return view('list-socios', compact('title', 'users'));
     }
     /**
      * Store a newly created resource in storage.
@@ -32,18 +32,18 @@ class SocioController extends Controller
 
         //dd($request);
 
-        $socio = $request->validate(/**Sujeito a alterações, comentem se quiseres */
+        $user = $request->validate(/**Sujeito a alterações, comentem se quiseres */
 
         );
 
-        $socio->password = $request->data_nascimento;
-        $socio->num_socio = ($request->latest()->first())+1; // latest da order by da tabela invertida, o ultimo valor passa a first e como tal o num socio mais alto esta no topo da tabela, ordena pelo criterio Created_AT;
+        $user->password = $request->data_nascimento;
+        $user->num_socio = ($request->latest()->first())+1; // latest da order by da tabela invertida, o ultimo valor passa a first e como tal o num socio mais alto esta no topo da tabela, ordena pelo criterio Created_AT;
 
 
         //dd($request);
 
-        Socio::create($socio);
-        return redirect()->action('SocioController@index')->with('message','Socio criado com sucesso');
+        User::create($user);
+        return redirect()->action('SocioController@index')->with('message','Sócio criado com sucesso');
     }
     /**
      * Show the form for creating a new resource.
@@ -53,9 +53,9 @@ class SocioController extends Controller
     public function create()
     {
         $title = 'Adicionar novo Sócio';
-        $socio= new Socio();
+        $user= new User();
 
-        return view('add-socio',compact('title','socio'));
+        return view('add-socio',compact('title','user'));
     }
     /**
      * Display the specified resource.
@@ -76,9 +76,9 @@ class SocioController extends Controller
     public function edit($id)
     {
         $title = 'Editar Sócio';
-        $socio = Socio::findOrFail($id);
+        $user = User::findOrFail($id);
 
-        return view('edit-socio',compact('title','socio'));
+        return view('edit-socio',compact('title','user'));
     }
     //ELES LEVAM SOFT DELETE SE ESTIVEREM ASSOCIADOS A MOVIMENTOS
     public function destroy($id)
@@ -86,16 +86,16 @@ class SocioController extends Controller
 
 
 
-        $numero_de_socios = Movimento::where('socio', '=', $id)->count();
+        $numero_de_socios = Movimento::where('user', '=', $id)->count();
 
 
 
-        $socioModel = User::findOrFail($id);
+        $userModel = User::findOrFail($id);
 
         if($numero_de_socios == 0){
-            $socioModel->forceDelete();
+            $userModel->forceDelete();
         }else{
-            $socioModel->delete();
+            $userModel->delete();
         }
 
         return redirect()->action('SocioController@index');

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-@if (count($socios))
+@if (count($users))
 
     <div><a class="btn btn-primary" href="/socios/create">Novo Socio</a></div>
 
@@ -18,15 +18,15 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($socios as $socio)
-            @if ($socio->quota_paga == 1) {{-- so da para ver socios com a cota paga,sugeito a alterações mais tarde --}}
+        @foreach ($users as $user)
+            @if ($user->quota_paga == 1) {{-- so da para ver socios com a cota paga,sugeito a alterações mais tarde --}}
                 <tr>
-                    <td>{{$socio->id}}</td>
-                    <td>{{$socio->num_socio}}</td>
-                    <td>{{$socio->nome_informal}}</td>
-                    <td>{{$socio->email}}</td>
+                    <td>{{$user->id}}</td>
+                    <td>{{$user->num_socio}}</td>
+                    <td>{{$user->nome_informal}}</td>
+                    <td>{{$user->email}}</td>
                     <td>
-                        @switch($socio->tipo_socio)
+                        @switch($user->tipo_socio)
                             @case("P")
                             {{"Piloto"}}
                             @break
@@ -39,15 +39,15 @@
                             {{"Aeromodelista"}}
                         @endswitch
                     </td>
-                    <td>{{$socio->direcao ? "Sim" : "Não"}}</td>
+                    <td>{{$user->direcao ? "Sim" : "Não"}}</td>
                     <td>
-                        <a class="btn btn-xs btn-primary inline" href="/socios/{{$socio->id}}/edit">Edit</a>
+                        <a class="btn btn-xs btn-primary inline" href="/socios/{{$user->id}}/edit">Edit</a>
 
-                        <form action="{{ action('SocioController@destroy', $socio->id) }}" method="POST" role="form" class="inline">
+                        <form action="{{ action('SocioController@destroy', $user->id) }}" method="POST" role="form" class="inline">
                             @csrf
                             @method('delete')
 
-                            <input type="hidden" name="socio_id" value="{{$socio->id}}">
+                            <input type="hidden" name="socio_id" value="{{$user->id}}">
                             <button type="submit" class="btn btn-xs btn-danger">Delete</button>
 
                         </form>
