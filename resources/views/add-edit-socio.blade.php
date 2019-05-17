@@ -39,7 +39,7 @@
         <input
             type="radio" class="custom-control-input"
             name="sexo" id="inputSexoM"
-            value="M" {{old('name')=='M' ?? selected}}>
+            value="M" {{old('sexo',$socio->sexo)=='M' ? 'checked':''}}>
         <label class="custom-control-label" for="inputSexoM">Masculino</label>
     </div>
 
@@ -47,7 +47,7 @@
         <input
             type="radio" class="custom-control-input"
             name="sexo" id="inputSexoF"
-            value="F" {{old('name')=='F' ?? selected}}>
+            value="F" {{old('sexo',$socio->sexo)=='F' ? 'checked':'' }}>
         <label class="custom-control-label" for="inputSexoF">Feminino</label>
     </div>
     @if ($errors->has('sexo'))
@@ -181,17 +181,17 @@
     @endif
 
 </div>--}}
-<div class="form-group">
-    <input type="checkbox" class="form-check-input" id="CheckQuotas" value="1" {{old('quotas_pagas')=='1' ?? selected}}>
-    <label class="form-check-label" for="checkQuotas" >Quotas Pagas</label>
+<div class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input" id="CheckQuotas" {{old('quotas_pagas',$socio->quota_paga)=='1' ? 'checked':' '}}>
+    <label class="custom-control-label" for="checkQuotas" >Quotas Pagas</label>
 </div>
-<div class="form-group">
-    <input type="checkbox" class="form-check-input" id="checkDirecao" value="1" {{old('direcao')=='1' ?? selected}}>
-    <label class="form-check-label" for="checkDirecao">É direção</label>
+<div class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input" id="checkDirecao" {{old('direcao',$socio->direcao)=='1' ? 'checked' : ''}}>
+    <label class="custom-control-label" for="checkDirecao">É direção</label>
 </div>
-<div class="form-group">
-    <input type="checkbox" class="form-check-input" id="checkAtivo" value="1" {{old('ativo')=='1' ?? selected}}>
-    <label class="form-check-label" for="checkAtivo">Está Ativo</label>
+<div class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input" id="checkAtivo" {{old('ativo',$socio->ativo)=='1' ? 'checked': ''}}>
+    <label class="custom-control-label" for="checkAtivo">Está Ativo</label>
 </div>
 
 
