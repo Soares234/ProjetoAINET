@@ -107,9 +107,9 @@
     @endif
 
 </div>
+{{-- Legacy radios, agora sao checkboxes
 <div class="form-group">
     <div><label for="inputCotas">Cotas</label></div>
-
     <div class="custom-control custom-radio">
         <input
             type="radio" class="custom-control-input"
@@ -158,7 +158,6 @@
 
 
 
-
 <div class="form-group">
     <div><label for="inputDirecao">Direção?</label></div>
 
@@ -181,6 +180,19 @@
         <em>{{ $errors->first('direcao') }}</em>
     @endif
 
+</div>--}}
+<div class="form-group">
+    <input type="checkbox" class="form-check-input" id="CheckQuotas" value="1" {{old('quotas_pagas')=='1' ?? selected}}>
+    <label class="form-check-label" for="checkQuotas" >Quotas Pagas</label>
 </div>
+<div class="form-group">
+    <input type="checkbox" class="form-check-input" id="checkDirecao" value="1" {{old('direcao')=='1' ?? selected}}>
+    <label class="form-check-label" for="checkDirecao">É direção</label>
+</div>
+<div class="form-group">
+    <input type="checkbox" class="form-check-input" id="checkAtivo" value="1" {{old('ativo')=='1' ?? selected}}>
+    <label class="form-check-label" for="checkAtivo">Está Ativo</label>
+</div>
+
 
 
