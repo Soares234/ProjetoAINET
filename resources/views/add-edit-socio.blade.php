@@ -1,4 +1,4 @@
-<div class="form-group">
+{{--<div class="form-group">
     <label for="inputNumSocio">Número de Sócio</label>
     <input
         type="number" class="form-control"
@@ -8,7 +8,7 @@
         <em>{{ $errors->first('num_socio') }}</em>
     @endif
 </div>
-
+--}} {{--Discontinuado, o num de socio e criado automaticamente, no entanto, continua a estar presente em edit, porque enunciado--}}
 <div class="form-group">
     <label for="inputNome">Nome Completo</label>
     <input

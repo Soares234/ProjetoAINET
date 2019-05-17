@@ -32,11 +32,13 @@ class SocioController extends Controller
 
         //dd($request);
 
-        $socio = $request->validate(
-            /**TRABALHA FRED*/
+        $socio = $request->validate(/**Sujeito a alterações, comentem se quiseres */
+
         );
 
         $socio->password = $request->data_nascimento;
+        $socio->num_socio = ($request->latest()->first())+1; // latest da order by da tabela invertida, o ultimo valor passa a first e como tal o num socio mais alto esta no topo da tabela, ordena pelo criterio Created_AT;
+
 
         //dd($request);
 
