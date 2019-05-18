@@ -94,8 +94,8 @@
         type="number" class="form-control"
         name="telefone" id="inputTelefone"
         placeholder="123456789" value="{{ old('telefone', $user->telefone) }}" />
-    @if ($errors->has('nif'))
-        <em>{{ $errors->first('nif') }}</em>
+    @if ($errors->has('telefone'))
+        <em>{{ $errors->first('telefone') }}</em>
     @endif
 </div>
 
