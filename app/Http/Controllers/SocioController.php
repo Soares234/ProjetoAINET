@@ -77,12 +77,12 @@ public function parseData($date, $modo){
         );
 
         $user['password'] = Hash::make((string)$request->input('data_nascimento'));
-        echo  $this->parseData($request->input('data_nascimento'),0);
+        //echo  $this->parseData($request->input('data_nascimento'),0);
 
-        $last_user_numb = User::orderBy('id','desc')->take(1)->value('num_socio');
+        $last_user_numb = User::orderBy('num_socio','desc')->take(1)->value('num_socio');
         // latest da order by da tabela invertida, o ultimo valor passa a first e
         // como tal o num socio mais alto esta no topo da tabela, ordena pelo criterio Created_AT;
-         echo "<br> $last_user_numb";
+        //echo "<br> $last_user_numb";
 
         $user['num_socio']=$last_user_numb + 1;
 
@@ -138,16 +138,13 @@ public function parseData($date, $modo){
             [
                 'name'=>'required|regex:/^[\pL\s]+$/u',
                 'nome_informal'=>'required|regex:/^[\pL\s]+$/u',
-                'num_socio'=>['required','numeric',Rule::unique('users')->ignore($id)],
+                'num_socio'=>['required','integer',Rule::unique('users')->ignore($id)],
                 'email'=>['required','email',Rule::unique('users')->ignore($id)],
                 'sexo'=>'required',
                 'data_nascimento'=>'required',
                 'nif'=>['required','numeric',Rule::unique('users')->ignore($id)],
                 'telefone'=>['required',Rule::unique('users')->ignore($id)],
-                'tipo_socio'=>'required',
-                'direcao'=>'required',
-                'ativo'=>'required',
-                'quota_paga'=>'required'],
+                'tipo_socio'=>'required'],
                 ['name.regex'=>'O nome não deverá conter caracteres especias nem números',
                     'nome_informal.regex'=>'O nome não deverá conter caracteres especias nem números',
                     'nif.numeric'=>'O nif deverá ser apenas numérico',
