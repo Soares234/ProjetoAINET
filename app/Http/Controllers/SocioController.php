@@ -59,16 +59,16 @@ public function parseData($date, $modo){
 
         $user = $request->validate(
             ['name'=>'required|regex:/^[\pL\s]+$/u',
-                'nome_informal'=>'required|regex:/^[\pL\s]+$/u',
-             'email'=>'required|email',
+             'nome_informal'=>'required|regex:/^[\pL\s]+$/u',
+             'email'=>'required|email|unique:users',
              'sexo'=>'required',
              'data_nascimento'=>'required',
-             'nif'=>'required|numeric|unique',
-             'telefone'=>'required|numeric|unique',
+             'nif'=>'required|numeric|unique:users',
+             'telefone'=>'required|numeric|unique:users',
              'tipo_socio'=>'required',
-             'quota_paga'=>'required',
-             'direcao'=>'required',
-             'ativo'=>'required'],
+                'quota_paga'=>'min:0|max:1|between:0,1',
+                'direcao'=>'min:0|max:1|between:0,1',
+                'ativo'=>'min:0|max:1|between:0,1'],
             ['name.regex'=>'O nome não deverá conter caracteres especias nem números',
              'nome_informal.regex'=>'O nome não deverá conter caracteres especias nem números',
              'nif.numeric'=>'O nif deverá ser apenas numérico',
@@ -86,6 +86,15 @@ public function parseData($date, $modo){
 
         $user['num_socio']=$last_user_numb + 1;
 
+        if(!array_key_exists ( "quota_paga", $user )){
+            $user['quota_paga']=0;
+        }
+        if(!array_key_exists('direcao',$user)){
+            $user['direcao']=0;
+        }
+        if(!array_key_exists('ativo',$user)){
+            $user['ativo']=0;
+        }
         User::create($user);
         return redirect()->action('SocioController@index')->with('message','Sócio criado com sucesso');
     }
@@ -134,6 +143,8 @@ public function parseData($date, $modo){
      */
     public function update(Request $request, $id)
     {
+        //dd($request);
+
         $user= $request->validate(
             [
                 'name'=>'required|regex:/^[\pL\s]+$/u',
@@ -144,7 +155,10 @@ public function parseData($date, $modo){
                 'data_nascimento'=>'required',
                 'nif'=>['required','numeric',Rule::unique('users')->ignore($id)],
                 'telefone'=>['required',Rule::unique('users')->ignore($id)],
-                'tipo_socio'=>'required'],
+                'tipo_socio'=>'required',
+                'quota_paga'=>'min:0|max:1|between:0,1',
+                'direcao'=>'min:0|max:1|between:0,1',
+                'ativo'=>'min:0|max:1|between:0,1'],
                 ['name.regex'=>'O nome não deverá conter caracteres especias nem números',
                     'nome_informal.regex'=>'O nome não deverá conter caracteres especias nem números',
                     'nif.numeric'=>'O nif deverá ser apenas numérico',
@@ -152,7 +166,19 @@ public function parseData($date, $modo){
                 ]
         );
 
+        if(!array_key_exists ( "quota_paga", $user )){
+            $user['quota_paga']=0;
+        }
+        if(!array_key_exists('direcao',$user)){
+            $user['direcao']=0;
+        }
+        if(!array_key_exists('ativo',$user)){
+            $user['ativo']=0;
+        }
+
+        //dd($user,$request);
         $userModel = User::findOrFail($id);
+
         $userModel->fill($user);
         $userModel->save();
 

@@ -2,6 +2,10 @@
 @section('content')
 
     <form action="{{ action('SocioController@update', $user->id) }}" method="POST" class="form-group">
+
+        @method('patch')
+        @csrf
+
         <div class="form-group">
             <label for="inputNumSocio">Número de Sócio</label>
             <input
@@ -12,8 +16,6 @@
                 <em>{{ $errors->first('num_socio') }}</em>
             @endif
         </div>
-        @method('patch')
-        @csrf
 
         @include('socios.add-edit-socio')
 
