@@ -9,7 +9,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Id</th>
+            <th>Imagem</th>
             <th>Numero de sócio</th>
             <th>Nome Informal</th>
             <th>Email</th>
@@ -21,7 +21,7 @@
         @foreach ($users as $user)
             @if ($user->quota_paga == 1) {{-- so da para ver socios com a cota paga,sugeito a alterações mais tarde --}}
                 <tr>
-                    <td>{{$user->id}}</td>
+                    <td width=1% height=1%><img src={{asset('storage/fotos/'.$user->foto_url)}} class="img-thumbnail" alt="ImageNotFound"></td>
                     <td>{{$user->num_socio}}</td>
                     <td>{{$user->nome_informal}}</td>
                     <td>{{$user->email}}</td>

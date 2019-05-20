@@ -23,7 +23,9 @@ Route::resource('socios','SocioController')->middleware('auth');
 
 Route::resource('movimentos','MovimentoController')->middleware('auth');
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
 
