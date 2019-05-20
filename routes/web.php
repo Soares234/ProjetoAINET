@@ -21,6 +21,8 @@ Route::resource('aeronaves','AeronaveController')->middleware('auth');
 
 Route::resource('socios','SocioController')->middleware('auth');
 
+Route::resource('movimentos','MovimentoController')->middleware('auth');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
