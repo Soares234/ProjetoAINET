@@ -83,7 +83,7 @@ public function parseData($date, $modo){
 
         $last_user_numb = User::orderBy('num_socio','desc')->take(1)->value('num_socio');
         // latest da order by da tabela invertida, o ultimo valor passa a first e
-        // como tal o num socio mais alto esta no topo da tabela, ordena pelo criterio Created_AT;
+        // como tal o num socio mais alto esta no topo da tabela, ordena pelo criterio num socio;
         //echo "<br> $last_user_numb";
 
         $user['num_socio']=$last_user_numb + 1;

@@ -65,10 +65,79 @@
         </div>
         <div class="form-group">
             <label for="inputEndereco">Endereco</label>
-            <input type="text" class="form-control" name="endereco" id="inputEndereco" value="{{ old('endereco', $user->endereco) }}" readonly/>
+            <input type="text" class="form-control" name="endereco" id="inputEndereco" value="{{ $user->endereco }}" readonly/>
 
         </div>
+   @if($user->tipo_socio=='P')
+            <div class="form-group">
+                <label for="inputNLicenca">Número da Licença</label>
+                <input type="text" class="form-control" name="nlicensa" id="inputNLicenca" value="{{ $user->num_licenca }}" readonly />
+
+            </div>
+            <div class="form-group">
+                <label for="inputTLicensa">Tipo Licença</label>
+                <input type="text" class="form-control" name="tlicenca" id="inputTLiceca" value="{{ $user->tipo_licenca }}" readonly />
+
+            </div>
+            <div class="form-group">
+                <label for="inputVLicensa">Validade Licença</label>
+                <input type="text" class="form-control" name="vlicenca" id="inputVLicenca" value="{{ $user->validade_licenca }}" readonly />
+
+            </div>
+            <div class="form-group">
+                <label for="inputNumCert">Numero de certificado</label>
+                <input type="text" class="form-control" name="ncert" id="inputNumCert" value="{{ $user->num_certificado }}" readonly />
+            </div>
+            <div class="form-group">
+                <label for="inputClasseCert">Classe certificado</label>
+                <input type="text" class="form-control" name="Ccert" id="inputClasseCert" value="{{ $user->classe_certificado }}" readonly />
+            </div>
+            <div class="form-group">
+                <label for="inputValCert">Validade Certificado</label>
+                <input type="text" class="form-control" name="vCert" id="inputValCert" value="{{ $user->num_certificado }}" readonly />
+            </div>
+{{---------------------------------------------------------------------------------ZONA CHECKBOXES!!!!!!-------------------------------------------------------------------------------------------------------------------------}}
+          @if($user->instrutor==1)
+            <div class="custom-control custom-checkbox">
+                <input name="instrutor" type="checkbox" class="custom-control-input" id="checkInstrutor"  checked @endif disabled/>
+                <label class="custom-control-label" for="checkInstrutor">É Instrutor</label>
+            </div>
+            @else
+            <div class="custom-control custom-checkbox">
+                <input name="direcao" type="checkbox" class="custom-control-input" id="checkAluno" @if($user->aluno) {{'checked'}} @endif disabled/>
+                <label class="custom-control-label" for="checkDirecao">É Aluno</label>
+            </div>
+            @endif
+            <div class="custom-control custom-checkbox">
+                <input name="licencaConfirmada" type="checkbox" class="custom-control-input" id="licencaConfirmada" @if($user->licenca_confirmada) {{'checked'}} @endif disabled/>
+                <label class="custom-control-label" for="licencaConfirmada">Licença Confirmada</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input name="direcao" type="checkbox" class="custom-control-input" id="checkCConfirmado" @if($user->certificado_confirmado) {{'checked'}} @endif disabled/>
+                <label class="custom-control-label" for="checkCConfirmado">Certificado Confirmad</label>
+            </div>
 
 
+
+        <div class="custom-control custom-checkbox">
+            <input name="quota_paga" type="checkbox" class="custom-control-input" id="CheckQuotas" value="1"
+                   @if($user->quota_paga){{ "checked" }} @endif  disabled/>
+            <label class="custom-control-label" for="CheckQuotas" >Quotas Pagas</label>
+        </div>
+
+        <div class="custom-control custom-checkbox">
+            <input name="direcao" type="checkbox" class="custom-control-input" id="checkDirecao" @if($user->direcao) {{'checked'}} @endif disabled/>
+            <label class="custom-control-label" for="checkDirecao">É direção</label>
+        </div>
+
+        <div class="custom-control custom-checkbox">
+            <input name="ativo" type="checkbox" class="custom-control-input" id="checkAtivo" value="1"
+            @if($user->ativo) {{ "checked" }} @endif disabled />
+            <label class="custom-control-label" for="checkAtivo">Está Ativo</label>
+        </div>
+        <div class="float-right form-group ">
+            <button type="submit" class="btn btn-success" name="ok">Editar</button>
+            <a type="submit" class="btn btn-default" name="cancel" href="/socios">Cancelar</a>
+        </div>
     </form>
 @endsection
