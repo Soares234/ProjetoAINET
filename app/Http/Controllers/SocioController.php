@@ -118,7 +118,11 @@ public function parseData($date, $modo){
      */
     public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $title = $user->name;
+
+        return view('socios.show-socio', compact( 'title', 'user'));
     }
     /**
      * Show the form for editing the specified resource.
