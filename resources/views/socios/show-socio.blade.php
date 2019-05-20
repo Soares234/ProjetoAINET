@@ -12,20 +12,16 @@
             <input
                 type="text" class="form-control"
                 name="num_socio" id="inputNumSocio"
-                placeholder="0000" value="{{ old('num_socio', $user->num_socio) }}" readonly />
-            @if ($errors->has('num_socio'))
-                <em>{{ $errors->first('num_socio') }}</em>
-            @endif
+                placeholder="0000" value="{{ $user->num_socio }}" readonly />
+
 
             <div class="form-group">
                 <label for="inputNomeInformal">Nome Informal</label>
                 <input
                     type="text" class="form-control"
                     name="nome_informal" id="inputNomeInformal"
-                    placeholder="Nome Informal" value="{{ old('nome_informal', $user->nome_informal) }}" readonly/>
-                @if ($errors->has('nome_informal'))
-                    <em>{{ $errors->first('nome') }}</em>
-                @endif
+                    placeholder="Nome Informal" value="{{ $user->nome_informal }}" readonly/>
+
             </div>
          </div>
         </div>
@@ -35,17 +31,15 @@
 
     <div class="form-group">
         <label for="inputSexo">Sexo</label>
-        <input type="text" name="sexo" class="form-control" id="inputSexo" value="{{old('sexo',$user->sexo)}}" readonly/>
+        <input type="text" name="sexo" class="form-control" id="inputSexo" value="{{$user->sexo}}" readonly/>
     </div>
         <div class="form-group">
             <label for="inputDataNascimento">Data de Nascimento: </label>
             <input
                 type="text" class="form-control"
                 name="data_nascimento" id="inputDataNascimento"
-                placeholder="01/01/2019" value="{{ old('data_nascimento', $user->data_nascimento) }}" readonly/>
-            @if ($errors->has('data_nascimento'))
-                <em>{{ $errors->first('data_nascimento') }}</em>
-            @endif
+                placeholder="01/01/2019" value="{{ $user->data_nascimento }}" readonly/>
+
         </div>
 
         <div class="form-group">
@@ -54,9 +48,7 @@
                 type="text" class="form-control"
                 name="nif" id="inputNIF"
                 placeholder="123456789" value="{{ $user->nif }}" readonly />
-            @if ($errors->has('nif'))
-                <em>{{ $errors->first('nif') }}</em>
-            @endif
+
         </div>
         <div class="form-group">
             <label for="inputTelefone">Telefone</label>
@@ -64,9 +56,7 @@
                 type="text" class="form-control"
                 name="telefone" id="inputTelefone"
                 value="{{ old('telefone', $user->telefone) }}" readonly/>
-            @if ($errors->has('telefone'))
-                <em>{{ $errors->first('telefone') }}</em>
-            @endif
+
         </div>
         <div class="form-group">
             <label for="tipo_socio">Tipo Sócio</label>
@@ -79,9 +69,7 @@
                                 @case('A'){{'Aeromodelista'}} @break
                 @endswitch"
                 readonly />
-            @if ($errors->has('telefone'))
-                <em>{{ $errors->first('telefone') }}</em>
-            @endif
+
         </div>
 
 
