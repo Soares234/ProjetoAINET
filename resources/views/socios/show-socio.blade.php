@@ -63,6 +63,11 @@
                 @endswitch"
                 readonly />
         </div>
+        <div class="form-group">
+            <label for="inputEndereco">Endereco</label>
+            <input type="text" class="form-control" name="endereco" id="inputEndereco" value="{{ old('endereco', $user->endereco) }}" readonly/>
+
+        </div>
 
 
     </form>

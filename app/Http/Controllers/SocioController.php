@@ -68,11 +68,13 @@ public function parseData($date, $modo){
              'tipo_socio'=>'required',
                 'quota_paga'=>'min:0|max:1|between:0,1',
                 'direcao'=>'min:0|max:1|between:0,1',
-                'ativo'=>'min:0|max:1|between:0,1'],
+                'ativo'=>'min:0|max:1|between:0,1',
+                'endereco'=>'required'],
             ['name.regex'=>'O nome não deverá conter caracteres especias nem números',
              'nome_informal.regex'=>'O nome não deverá conter caracteres especias nem números',
              'nif.numeric'=>'O nif deverá ser apenas numérico',
-             'telefone.numeric'=>'O numero de telefone deverá ser um número!'
+             'telefone.numeric'=>'O numero de telefone deverá ser um número!',
+
             ]
         );
 

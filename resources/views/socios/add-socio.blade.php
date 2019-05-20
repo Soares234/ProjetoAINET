@@ -6,6 +6,11 @@
         @csrf
 
         @include('socios.add-edit-socio')
+        <div class="form-group">
+            <label for="inputEndereco">Endereço</label>
+            <input type="text" class="form-control" name="endereco" id="inputMorada" value="{{ old('endereco', $user->endereco) }}" />
+        </div>
+
 
         <div class="form-group">
             <button type="submit" class="btn btn-success" name="ok">Adicionar</button>

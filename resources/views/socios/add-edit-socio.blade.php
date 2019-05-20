@@ -143,5 +143,9 @@
     <em>{{ $errors->first('ativo') }}</em>
 @endif
 
+@if ($errors->has('endereco'))
+    <em>{{$errors->first('endereco')}}</em>
+@endif
+
 
 
