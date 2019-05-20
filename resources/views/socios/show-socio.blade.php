@@ -12,7 +12,7 @@
             <input
                 type="text" class="form-control"
                 name="num_socio" id="inputNumSocio"
-                placeholder="0000" value="{{ $user->num_socio }}" readonly />
+                 value="{{ $user->num_socio }}" readonly />
 
 
             <div class="form-group">
@@ -20,7 +20,7 @@
                 <input
                     type="text" class="form-control"
                     name="nome_informal" id="inputNomeInformal"
-                    placeholder="Nome Informal" value="{{ $user->nome_informal }}" readonly/>
+                   value="{{ $user->nome_informal }}" readonly/>
 
             </div>
          </div>
@@ -38,7 +38,7 @@
             <input
                 type="text" class="form-control"
                 name="data_nascimento" id="inputDataNascimento"
-                placeholder="01/01/2019" value="{{ $user->data_nascimento }}" readonly/>
+                value="{{ $user->data_nascimento }}" readonly/>
 
         </div>
 
@@ -69,7 +69,6 @@
                                 @case('A'){{'Aeromodelista'}} @break
                 @endswitch"
                 readonly />
-
         </div>
 
 
