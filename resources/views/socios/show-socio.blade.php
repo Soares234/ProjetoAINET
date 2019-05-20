@@ -34,36 +34,29 @@
         <input type="text" name="sexo" class="form-control" id="inputSexo" value="{{$user->sexo}}" readonly/>
     </div>
         <div class="form-group">
-            <label for="inputDataNascimento">Data de Nascimento: </label>
-            <input
-                type="text" class="form-control"
-                name="data_nascimento" id="inputDataNascimento"
-                value="{{ $user->data_nascimento }}" readonly/>
+            <label for="inputEmail">Email</label>
+            <input type="text" name="email" class="form-control" id="inputEmail" value="{{$user->email}}" readonly/>
+        </div>
+        <div class="form-group">
+            <label for="inputDataNascimento">Data de Nascimento </label>
+            <input type="text" class="form-control" name="data_nascimento" id="inputDataNascimento" value="{{ $user->data_nascimento }}" readonly/>
 
         </div>
 
         <div class="form-group">
-            <label for="inputNIF">NIF:<br></label>
-            <input
-                type="text" class="form-control"
-                name="nif" id="inputNIF"
-                placeholder="123456789" value="{{ $user->nif }}" readonly />
+            <label for="inputNIF">NIF</label>
+            <input type="text" class="form-control" name="nif" id="inputNIF" value="{{ $user->nif }}" readonly />
 
         </div>
         <div class="form-group">
             <label for="inputTelefone">Telefone</label>
-            <input
-                type="text" class="form-control"
-                name="telefone" id="inputTelefone"
-                value="{{ old('telefone', $user->telefone) }}" readonly/>
+            <input type="text" class="form-control" name="telefone" id="inputTelefone" value="{{ old('telefone', $user->telefone) }}" readonly/>
 
         </div>
         <div class="form-group">
             <label for="tipo_socio">Tipo Sócio</label>
-            <input
-                type="text" class="form-control"
-                name="caixaTipoSocio" id="tipo_socio"
-                 value="@switch ($user->tipo_socio)
+            <input type="text" class="form-control" name="caixaTipoSocio" id="tipo_socio"
+                   value="@switch ($user->tipo_socio)
                                 @case('P'){{'Piloto'}}   @break
                                 @case('NP'){{'Não Piloto'}} @break
                                 @case('A'){{'Aeromodelista'}} @break
