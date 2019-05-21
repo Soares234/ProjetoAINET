@@ -16,7 +16,7 @@ class MovimentoController extends Controller
     {
         $title = 'Lista de Movimentos';
 
-        $movimentos = DB::table('movimentos')->paginate(20);
+        $movimentos = DB::table('movimentos')->paginate(14);
 
         return view('movimentos.list-movimentos', compact('title', 'movimentos'));
     }
