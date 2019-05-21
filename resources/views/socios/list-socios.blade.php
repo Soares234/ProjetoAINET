@@ -9,7 +9,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Imagem</th>
+            <th>Fotografia</th>
             <th>Numero de sócio</th>
             <th>Nome Informal</th>
             <th>Email</th>

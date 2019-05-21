@@ -50,7 +50,7 @@
         </div>
         <div class="form-group">
             <label for="inputTelefone">Telefone</label>
-            <input type="text" class="form-control" name="telefone" id="inputTelefone" value="{{ old('telefone', $user->telefone) }}" readonly/>
+            <input type="text" class="form-control" name="telefone" id="inputTelefone" value="{{ $user->telefone}}" readonly/>
 
         </div>
         <div class="form-group">
@@ -97,9 +97,9 @@
                 <input type="text" class="form-control" name="vCert" id="inputValCert" value="{{ $user->num_certificado }}" readonly />
             </div>
 {{---------------------------------------------------------------------------------ZONA CHECKBOXES!!!!!!-------------------------------------------------------------------------------------------------------------------------}}
-          @if($user->instrutor==1)
+          @if($user->instrutor)
             <div class="custom-control custom-checkbox">
-                <input name="instrutor" type="checkbox" class="custom-control-input" id="checkInstrutor"  checked @endif disabled/>
+                <input name="instrutor" type="checkbox" class="custom-control-input" id="checkInstrutor"  checked  disabled/>
                 <label class="custom-control-label" for="checkInstrutor">É Instrutor</label>
             </div>
             @else
@@ -116,6 +116,7 @@
                 <input name="direcao" type="checkbox" class="custom-control-input" id="checkCConfirmado" @if($user->certificado_confirmado) {{'checked'}} @endif disabled/>
                 <label class="custom-control-label" for="checkCConfirmado">Certificado Confirmad</label>
             </div>
+        @endif
 
 
 
