@@ -9,9 +9,63 @@ use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Movimento;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class SocioController extends Controller
 {
+    /**
+     * @param Request $request
+     */
+    public function passwordUpdate(Request $request)
+    {
+        $user = Auth::user();
+        $title = 'Mudar a password';
+        //if (Hash::check($request->input('old_password'), $user->password)) {//Verifica se e igual ao erro da bd
+
+
+        // $request['old_password']=Hash::make($request['old_password']);
+        if($request['old_password'] = Hash::check($request['old_password'], $user->password)) {
+
+            $user = $request->validate(
+                [
+                    'old_password' => 'required',  //Tem de ser igual a has na DB
+                    'password' => 'required|regex:/.{8,}/',
+                    'password_confirmation' => 'same:password'
+                ], [
+                    'old_password.required' => 'Campo Obrigatório',
+                    'password.required' => 'Campo obrigatório',
+                    'password.regex' => 'A password tem de ter no minimo 8 caracteres',
+                    'password_confirmation.same' => 'As password não são iguais!'
+                ]
+            );
+
+            $user['password']=Hash::make($request->input('password'));
+            $user['password_inicial']=0;
+            $userModel=Auth::user();
+            $userModel->fill($user);
+            $userModel->save();
+            return redirect()->action('SocioController@index')->with('message','Password alterada com sucesso');
+        }
+    else
+        {
+            $title = "Mudar a password";
+            $errorDiferenca=1;
+
+            return view('auth.passwords.change', compact('title','errorDiferenca'));
+        }
+    }
+
+
+
+
+
+
+public function password(){
+    $title='Mudar a password';
+    $user=Auth::user();
+    $errorDiferenca=0;
+    return view('auth.passwords.change',compact('title','errorDiferenca'));
+}
     /**
      * @param $date  String de entrada, por questão de simplicidade o proximo param foi adicionado para gerir melhor o comportamento da função
      * @param $modo  Int decide como estamos a tranformar a data, 0 faz a transformação data xx/xx/xxxx para xx-xx-xxxx
