@@ -140,6 +140,11 @@
             <a class="btn btn-success" href="/socios/{{$user->id}}/edit" name="ok">Editar</a>
             <a type="submit" class="btn btn-default" name="cancel" href="/socios">Cancelar</a>
         </div>
+        <div class="float-md-left form-group">
+            <span>
+                <a class="btn btn-outline-secondary " href="/password">Mudar Password</a>
+            </span>
+        </div>
     </form>
     @endcan
 @endsection
