@@ -43,6 +43,8 @@
                     <td>{{$user->direcao ? "Sim" : "Não"}}</td>
                     @can('administrate',\Illuminate\Support\Facades\Auth::user())
                     <td>
+                        <a class="btn btn-xs btn-secondary inline" href="/socios/{{$user->id}}">Perfil</a>
+
                         <a class="btn btn-xs btn-primary inline" href="/socios/{{$user->id}}/edit">Edit</a>
 
                         <form action="{{ action('SocioController@destroy', $user->id) }}" method="POST" role="form" class="inline">
