@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
 
+    @can('view',$user)
     <form action="{{action('SocioController@show',$user->id)}}" method="get" class="form-group">
-
         <div class="float-left">
             <img src={{asset('storage/fotos/'.$user->foto_url)}} class="img-thumbnail" alt="Ups, não encontramos a imagem que estava à procura!">
         </div>
@@ -141,4 +141,5 @@
             <a type="submit" class="btn btn-default" name="cancel" href="/socios">Cancelar</a>
         </div>
     </form>
+    @endcan
 @endsection
