@@ -92,7 +92,7 @@ public function parseData($date, $modo){
     public function index()
     {
         $users = DB::table('users')->paginate(14);
-        //paginar 20 sócios por página
+        //paginar 14 sócios por página
         //laravel 4. pages 21 & 33
         $title = 'Lista de Socios';
 
@@ -106,6 +106,8 @@ public function parseData($date, $modo){
      */
     public function store(Request $request)
     {
+        $this->authorize('administrate',Auth::user());
+
         $id = $request->id;
 
 
@@ -161,6 +163,8 @@ public function parseData($date, $modo){
      */
     public function create()
     {
+        $this->authorize('administrate',Auth::user());
+
         $title = 'Adicionar novo Sócio';
         $user= new User();
 
@@ -192,9 +196,10 @@ public function parseData($date, $modo){
      */
     public function edit($id)
     {
-        $title = 'Editar Sócio';
         $user = User::findOrFail($id);
+        $this->authorize('edit',$user);
 
+        $title = 'Editar Sócio';
 
         return view('socios.edit-socio',compact('title','user'));
     }
@@ -207,7 +212,7 @@ public function parseData($date, $modo){
      */
     public function update(Request $request, $id)
     {
-        //dd($request);
+        $this->authorize('administrate',Auth::user());
 
         $user= $request->validate(
             [
@@ -252,6 +257,7 @@ public function parseData($date, $modo){
     public function destroy($id)
     {
         $userModel = User::findOrFail($id);
+        $this->authorize('administrate',Auth::user());
 
         $numero_de_socios = Movimento::where('piloto_id', '=', $userModel->id)->count();
 

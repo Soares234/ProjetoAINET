@@ -3,8 +3,9 @@
 
 @if (count($users))
 
-    <div><a class="btn btn-primary" href="/socios/create">Novo Socio</a></div>
-
+    @can('administrate',\Illuminate\Support\Facades\Auth::user())
+        <div><a class="btn btn-primary" href="/socios/create">Novo Socio</a></div>
+    @endcan
 
 <table class="table table-striped">
     <thead>
@@ -40,6 +41,7 @@
                         @endswitch
                     </td>
                     <td>{{$user->direcao ? "Sim" : "Não"}}</td>
+                    @can('administrate',\Illuminate\Support\Facades\Auth::user())
                     <td>
                         <a class="btn btn-xs btn-primary inline" href="/socios/{{$user->id}}/edit">Edit</a>
 
@@ -52,6 +54,7 @@
 
                         </form>
                     </td>
+                    @endcan
                 </tr>
             @endif
         @endforeach

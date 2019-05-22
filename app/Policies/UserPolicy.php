@@ -23,6 +23,10 @@ class UserPolicy
         return ($loggedUser->id == $user->id) || ($loggedUser->direcao == 1);
     }
 
+    public function edit (User $loggedUser, User $user){
+        return ($loggedUser->id == $user->id) || ($loggedUser->direcao == 1);
+    }
+
     public function administrate(User $loggedUser){
         return $loggedUser->direcao == 1;
     }
