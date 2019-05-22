@@ -118,30 +118,32 @@
 
 </div>
 
-<div class="custom-control custom-checkbox">
-    <input name="quota_paga" type="checkbox" class="custom-control-input" id="CheckQuotas" value="1"
-    @if(old('quota_paga', $user->quota_paga) == 1 ){{ "checked" }}@endif>
-    <label class="custom-control-label" for="CheckQuotas" >Quotas Pagas</label>
-</div>
-@if ($errors->has('quota_paga'))
-    <em>{{ $errors->first('quota_paga') }}</em>
-@endif
-<div class="custom-control custom-checkbox">
-    <input name="direcao" type="checkbox" class="custom-control-input" id="checkDirecao" value="1"
-    @if(old('direcao', $user->direcao) == 1 ){{ "checked" }}@endif>
-    <label class="custom-control-label" for="checkDirecao">É direção</label>
-</div>
-@if ($errors->has('direcao'))
-    <em>{{ $errors->first('direcao') }}</em>
-@endif
-<div class="custom-control custom-checkbox">
-    <input name="ativo" type="checkbox" class="custom-control-input" id="checkAtivo" value="1"
-    @if(old('ativo', $user->ativo) == 1 ){{ "checked" }}@endif>
-    <label class="custom-control-label" for="checkAtivo">Está Ativo</label>
-</div>
-@if ($errors->has('ativo'))
-    <em>{{ $errors->first('ativo') }}</em>
-@endif
+@can('administrate',$user)
+    <div class="custom-control custom-checkbox">
+        <input name="quota_paga" type="checkbox" class="custom-control-input" id="CheckQuotas" value="1"
+        @if(old('quota_paga', $user->quota_paga) == 1 ){{ "checked" }}@endif>
+        <label class="custom-control-label" for="CheckQuotas" >Quotas Pagas</label>
+    </div>
+    @if ($errors->has('quota_paga'))
+        <em>{{ $errors->first('quota_paga') }}</em>
+    @endif
+    <div class="custom-control custom-checkbox">
+        <input name="direcao" type="checkbox" class="custom-control-input" id="checkDirecao" value="1"
+        @if(old('direcao', $user->direcao) == 1 ){{ "checked" }}@endif>
+        <label class="custom-control-label" for="checkDirecao">É direção</label>
+    </div>
+    @if ($errors->has('direcao'))
+        <em>{{ $errors->first('direcao') }}</em>
+    @endif
+    <div class="custom-control custom-checkbox">
+        <input name="ativo" type="checkbox" class="custom-control-input" id="checkAtivo" value="1"
+        @if(old('ativo', $user->ativo) == 1 ){{ "checked" }}@endif>
+        <label class="custom-control-label" for="checkAtivo">Está Ativo</label>
+    </div>
+    @if ($errors->has('ativo'))
+        <em>{{ $errors->first('ativo') }}</em>
+    @endif
+@endcan
 
 @if ($errors->has('endereco'))
     <em>{{$errors->first('endereco')}}</em>
