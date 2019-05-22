@@ -137,7 +137,7 @@
             <label class="custom-control-label" for="checkAtivo">Está Ativo</label>
         </div>
         <div class="float-right form-group ">
-            <button type="submit" class="btn btn-success" name="ok">Editar</button>
+            <a class="btn btn-success" href="/socios/{{$user->id}}/edit" name="ok">Editar</a>
             <a type="submit" class="btn btn-default" name="cancel" href="/socios">Cancelar</a>
         </div>
     </form>
