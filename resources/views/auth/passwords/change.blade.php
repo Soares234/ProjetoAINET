@@ -8,8 +8,8 @@
         <label for="old_password">Password Antiga</label>
         <input
             type="password" class="form-control" name="old_password" id="old_password"/>
-        @if($errorDiferenca==1)
-           <em>{{'Password inválida!'}}</em>
+        @if($errors->has('old_password'))
+           <em>{{$errors->first('old_password')}}</em>
         @endif
 
     </div>
@@ -20,14 +20,15 @@
         @if ($errors->has('password'))
             <em>{{ $errors->first('password') }}</em>
         @endif
-        @if ($errors->has('password.rule'))
-            <em>{{ $errors->first('password.rule') }}</em>
-        @endif
+
     </div>
 
     <div class="form-group">
         <label for="password_confirmation">Confirme a Nova Password</label>
         <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" />
+        @if ($errors->has('password_confirmation'))
+            <em>{{ $errors->first('password_confirmation') }}</em>
+        @endif
     </div>
 
 

@@ -24,13 +24,21 @@ class SocioController extends Controller
 
 
         // $request['old_password']=Hash::make($request['old_password']);
-        if($request['old_password'] = Hash::check($request['old_password'], $user->password)) {
+
+        $value=Auth::user()->password;
+
 
             $user = $request->validate(
                 [
-                    'old_password' => 'required',  //Tem de ser igual a has na DB
-                    'password' => 'required|regex:/.{8,}/',
-                    'password_confirmation' => 'same:password'
+                    'old_password' =>[ 'required',
+                        function($attribute,$value,$fail){
+                            if(!Hash::check( $value,Auth::user()->password)) {
+
+                                $fail('Password não é igual há da base de dados!');
+                            }
+                            }],  //Tem de ser igual a has na DB
+                    'password' => ['required','min:10'],
+                    'password_confirmation' => ['same:password','min:10'],
                 ], [
                     'old_password.required' => 'Campo Obrigatório',
                     'password.required' => 'Campo obrigatório',
@@ -45,14 +53,7 @@ class SocioController extends Controller
             $userModel->fill($user);
             $userModel->save();
             return redirect()->action('SocioController@index')->with('message','Password alterada com sucesso');
-        }
-    else
-        {
-            $title = "Mudar a password";
-            $errorDiferenca=1;
 
-            return view('auth.passwords.change', compact('title','errorDiferenca'));
-        }
     }
 
 
