@@ -26,6 +26,9 @@ Route::resource('socios','SocioController')->middleware('auth');
 
 Route::resource('movimentos','MovimentoController')->middleware('auth');
 
+Route::get('/pilotos/{id}/licenca','PilotoController@getLicenca');
+Route::get('/pilotos/{id}/certificado','PilotoController@getCertificado');
+
 Auth::routes(['verify' => true]);
 
 
