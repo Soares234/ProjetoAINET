@@ -18,7 +18,7 @@ Route::get('/', function () {
 //Route::middleware('auth')->group(function () {});
 
 Route::resource('aeronaves','AeronaveController')->middleware('auth');
-
+Route::get('/email/verify/{id}','VerificationController@verify');
 Route::get('/password','SocioController@password')->middleware('auth');
 Route::post('/password','SocioController@passwordUpdate')->middleware('auth');
 

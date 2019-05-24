@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use Mail;
 use App\Movimento;
+use App\Mail\VerifyMail;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,17 +51,13 @@ class SocioController extends Controller
 
             $user['password']=Hash::make($request->input('password'));
             $user['password_inicial']=0;
+            $user['remember_token']=str_random(40);
             $userModel=Auth::user();
             $userModel->fill($user);
             $userModel->save();
             return redirect()->action('SocioController@index')->with('message','Password alterada com sucesso');
 
     }
-
-
-
-
-
 
 public function password(){
     $title='Mudar a password';
@@ -105,6 +103,9 @@ public function parseData($date, $modo){
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+
+
     public function store(Request $request)
     {
         $this->authorize('administrate',Auth::user());
@@ -154,9 +155,33 @@ public function parseData($date, $modo){
         if(!array_key_exists('ativo',$user)){
             $user['ativo']=0;
         }
-        User::create($user);
+
+        $user=User::create($user);
+        Mail::to($user->email)->send(new VerifyMail($user));
         return redirect()->action('SocioController@index')->with('message','Sócio criado com sucesso');
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Show the form for creating a new resource.
      *
