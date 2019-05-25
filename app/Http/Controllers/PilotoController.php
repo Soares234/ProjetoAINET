@@ -19,6 +19,7 @@ class PilotoController extends Controller
         }
 
         $errors['licenca_pdf'] = 'não existe a sua licenca';
+        return view('socios.show-socio',compact('user','errors'));
 
     }
 
@@ -35,6 +36,7 @@ class PilotoController extends Controller
         }
 
         $errors['certificado_pdf'] = 'não existe a sua licenca';
+        return view('socios.show-socio',compact('user','errors'));
 
     }
 }

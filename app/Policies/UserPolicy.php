@@ -31,4 +31,8 @@ class UserPolicy
         return $loggedUser->direcao == 1;
     }
 
+    public function isPiloto(User $user){
+        return $user->piloto == 1;
+    }
+
 }

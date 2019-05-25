@@ -79,10 +79,13 @@
                 <input type="text" class="form-control" name="tlicenca" id="inputTLiceca" value="{{ $user->tipo_licenca }}" readonly />
 
             </div>
-            <div class="form-group">
-                <label for="inputVLicensa">Validade Licença</label>
+            <div class="form-group custom-control-inline">
+                <label for="inputVLicensa" class="custom-control-inline">Validade Licença</label>
                 <input type="text" class="form-control" name="vlicenca" id="inputVLicenca" value="{{ $user->validade_licenca }}" readonly />
-
+                @if (file_exists(storage_path('app/docs_piloto/' . 'licenca_'.$user->id.'.pdf')))
+                    <a class="form-control custom-control-inline btn btn-outline-primary text-center"
+                       name="licenca_pdf" href="{{action('PilotoController@getLicenca',$user->id)}}">Download Licença</a>
+                @endif
             </div>
             <div class="form-group">
                 <label for="inputNumCert">Numero de certificado</label>
@@ -92,9 +95,13 @@
                 <label for="inputClasseCert">Classe certificado</label>
                 <input type="text" class="form-control" name="Ccert" id="inputClasseCert" value="{{ $user->classe_certificado }}" readonly />
             </div>
-            <div class="form-group">
-                <label for="inputValCert">Validade Certificado</label>
-                <input type="text" class="form-control" name="vCert" id="inputValCert" value="{{ $user->num_certificado }}" readonly />
+            <div class="form-group custom-control-inline">
+                <label for="inputValCert" class="custom-control-inline">Validade Certificado</label>
+                <input type="text" class="form-control" name="vCert" id="inputValCert" value="{{ $user->validade_certificado }}" readonly />
+                @if (file_exists (storage_path('app/docs_piloto/' . 'certificado_'.$user->id.'.pdf')))
+                    <a class="form-control custom-control-inline btn btn-outline-primary text-center"
+                    name="certificado_pdf" href="{{action('PilotoController@getCertificado',$user->id)}}">Download Certificado</a>
+                @endif
             </div>
 {{---------------------------------------------------------------------------------ZONA CHECKBOXES!!!!!!-------------------------------------------------------------------------------------------------------------------------}}
           @if($user->instrutor)
