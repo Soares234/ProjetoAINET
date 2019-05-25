@@ -59,23 +59,11 @@
         </div>
 
         <div class="form-group">
-            <label for="inputNumServico">Numero do Serviço</label>
-            <input
-                type="number" class="form-control"
-                name="numServico" id="inputNumServico"
-                placeholder="00001" value="{{ old('numServico', $movimento->num_servico) }}"
-            />
-            @if ($errors->has('numServico'))
-                <em>{{ $errors->first('numServico') }}</em>
-            @endif
-        </div>
-
-        <div class="form-group">
             <label for="inputPiloto">Piloto</label>
             <input
                 type="number" class="form-control"
                 name="piloto" id="inputPiloto"
-                placeholder="100001" value="{{ old('piloto', $movimento->piloto_id) }}"
+                placeholder="00000" value="{{ old('piloto', $movimento->piloto_id) }}"
             />
             @if ($errors->has('piloto'))
                 <em>{{ $errors->first('piloto') }}</em>
@@ -102,11 +90,18 @@
 
         <div class="form-group">
             <label for="inputAerodromoPartida">Código do Aerodromo de Partida</label>
-            <input
-                type="text" class="form-control"
-                name="aerodromoPartida" id="inputAerodromoPartida"
-                placeholder="XXXXXX" value="{{ old('aerodromoPartida', $movimento->aerodromo_partida) }}"
-            />
+
+            <select class="form-control" name="aerodromoPartida" id="inputAerodromoPartida">
+
+                <option disabled selected>Selecione um Aerodromo</option>
+
+                @foreach($aerodromos as $aerodromo)
+                    <option {{ old('aerodromo', $movimento->aerodromo_partida)==$aerodromo->code ? "selected" : ''}}
+                            value={{$aerodromo->code}} >{{$aerodromo->code}} - {{$aerodromo->nome}} </option>
+                @endforeach
+
+            </select>
+
             @if ($errors->has('aerodromoPartida'))
                 <em>{{ $errors->first('aerodromoPartida') }}</em>
             @endif
@@ -114,11 +109,18 @@
 
         <div class="form-group">
             <label for="inputAerodromoChegada">Código do Aerodromo de Chegada</label>
-            <input
-                type="text" class="form-control"
-                name="aerodromoChegada" id="inputAerodromoChegadaa"
-                placeholder="XXXXXX" value="{{ old('aerodromoChegada', $movimento->aerodromo_chegada) }}"
-            />
+
+            <select class="form-control" name="aerodromoChegada" id="inputAerodromoChegada">
+
+                <option disabled selected>Selecione um Aerodromo</option>
+
+                @foreach($aerodromos as $aerodromo)
+                    <option {{ old('aerodromo', $movimento->aerodromo_chegada)==$aerodromo->code ? "selected" : ''}}
+                            value={{$aerodromo->code}} >{{$aerodromo->code}} - {{$aerodromo->nome}} </option>
+                @endforeach
+
+            </select>
+
             @if ($errors->has('aerodromoChegada'))
                 <em>{{ $errors->first('aerodromoChegada') }}</em>
             @endif
@@ -191,15 +193,15 @@
                 name="modoPagamento" id="inputModoPagamento">
 
                 <option disabled selected>Selecione um opção</option>
-                <option {{ old('naturezaVoo', $movimento->modo_pagamento)=='N' ? "selected" : ''}} value="N">Numerário
+                <option {{ old('modoPagamento', $movimento->modo_pagamento)=='N' ? "selected" : ''}} value="N">Numerário
                 </option>
-                <option {{ old('naturezaVoo', $movimento->modo_pagamento)=='M' ? "selected" : ''}} value="M">
+                <option {{ old('modoPagamento', $movimento->modo_pagamento)=='M' ? "selected" : ''}} value="M">
                     Multibanco
                 </option>
-                <option {{ old('naturezaVoo', $movimento->modo_pagamento)=='T' ? "selected" : ''}} value="T">
+                <option {{ old('modoPagamento', $movimento->modo_pagamento)=='T' ? "selected" : ''}} value="T">
                     Transferência
                 </option>
-                <option {{ old('naturezaVoo', $movimento->modo_pagamento)=='P' ? "selected" : ''}} value="P">Pacote de
+                <option {{ old('modoPagamento', $movimento->modo_pagamento)=='P' ? "selected" : ''}} value="P">Pacote de
                     Horas
                 </option>
 

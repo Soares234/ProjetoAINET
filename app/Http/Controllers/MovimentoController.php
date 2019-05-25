@@ -34,8 +34,9 @@ class MovimentoController extends Controller {
         $movimento= new Movimento();
 
         $aeronaves = DB::table('aeronaves')->where('deleted_at','=',NULL)->get();
+        $aerodromos = DB::table('aerodromos')->where('deleted_at','=',NULL)->get();
 
-        return view('movimentos.add-edit-movimento',compact('title','movimento','aeronaves'));
+        return view('movimentos.add-edit-movimento',compact('title','movimento','aeronaves','aerodromos'));
     }
 
     /**
