@@ -94,9 +94,11 @@
         	name="tipoLicencaPiloto" id="inputTipoLicencaPiloto">
 
         	<option disabled selected>Selecione um opção</option>
-        	<option {{ old('tipoLicencaPiloto', $movimento->tipo_licenca_piloto)=='SEP' ? "selected" : ''}} value="SEP">Single Engine Piston</option>
-        	<option {{ old('tipoLicencaPiloto', $movimento->tipo_licenca_piloto)=='MEP' ? "selected" : ''}} value="MEP">Multiple Engine Piston</option>
-        	<option {{ old('tipoLicencaPiloto', $movimento->tipo_licenca_piloto)=='FI' ? "selected" : ''}} value="FI">Flight Instrutor</option>
+
+            @foreach($licencas as $licenca)
+                <option {{ old('tipoLicencaPiloto', $movimento->tipo_licenca_piloto)==$licenca->code ? "selected" : ''}}
+                        value={{$licenca->code}} >{{$licenca->nome}}</option>
+            @endforeach
 
         	</select>
     		@if ($errors->has('tipoLicencaPiloto'))

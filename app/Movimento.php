@@ -14,10 +14,6 @@ class Movimento extends Model {
     // Enables auto timestamps
     public $timestamps = true;
 
-<<<<<<< Updated upstream
-=======
-    //use SoftDeletes;
->>>>>>> Stashed changes
     protected $dates = ['deleted_at'];
 
 	//Lista de mass fillables
