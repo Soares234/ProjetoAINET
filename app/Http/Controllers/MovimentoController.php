@@ -33,9 +33,9 @@ class MovimentoController extends Controller {
         $title = 'Adicionar Novo Movimento';
         $movimento= new Movimento();
 
-        $licencas = DB::table('tipos_licencas')->get();
+        $aeronaves = DB::table('aeronaves')->where('deleted_at','=',NULL)->get();
 
-        return view('movimentos.add-edit-movimento',compact('title','movimento','licencas'));
+        return view('movimentos.add-edit-movimento',compact('title','movimento','aeronaves'));
     }
 
     /**
