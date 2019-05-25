@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class SocioController extends Controller
 {
+
     /**
      * @param Request $request
      */
@@ -28,8 +29,6 @@ class SocioController extends Controller
         // $request['old_password']=Hash::make($request['old_password']);
 
         $value=Auth::user()->password;
-
-
             $user = $request->validate(
                 [
                     'old_password' =>[ 'required',
@@ -53,8 +52,8 @@ class SocioController extends Controller
             $user['password_inicial']=0;
             $user['remember_token']=str_random(40);
             $userModel=Auth::user();
-            $userModel->fill($user);
-            $userModel->save();
+        $userModel->fill($user);
+        $userModel->save();
             return redirect()->action('SocioController@index')->with('message','Password alterada com sucesso');
 
     }
@@ -160,26 +159,6 @@ public function parseData($date, $modo){
         Mail::to($user->email)->send(new VerifyMail($user));
         return redirect()->action('SocioController@index')->with('message','Sócio criado com sucesso');
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     /**

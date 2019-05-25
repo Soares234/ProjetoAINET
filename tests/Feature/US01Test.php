@@ -48,4 +48,5 @@ class US01Test extends USTestBase
             ->assertSuccessfulOrRedirect();
         $this->assertAuthenticatedAs($this->normalUser);
     }
+
 }

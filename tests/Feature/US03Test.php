@@ -41,13 +41,6 @@ class US03Test extends USTestBase
     {
         $this->post('/password/email', ['email' => 'naoexiste.dsfdfssdfweds@mail.as'])
              ->assertSessionHasErrors('email');
-
-        // NOT WORKING
-        // VER SE O ERRO APARECE NA PÁGINA (Após Redirect)
-        // $errorMessage= app('session.store')->get('errors')->get('email')[0];
-        // $this->followingRedirects()
-        //      ->post('/password/email', ['email' => 'naoexiste.dsfdfssdfweds@mail.as'])
-        //      ->assertSee($errorMessage);
     }
 
     public function testSucessoEmailValidoEnviado()

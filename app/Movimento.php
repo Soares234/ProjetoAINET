@@ -4,7 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Movimento extends Model {
+
     // Overrides primary key
     protected $primaryKey = 'id';
 
@@ -13,12 +15,6 @@ class Movimento extends Model {
 
     // Enables auto timestamps
     public $timestamps = true;
-
-<<<<<<< Updated upstream
-=======
-    //use SoftDeletes;
->>>>>>> Stashed changes
-    protected $dates = ['deleted_at'];
 
 	//Lista de mass fillables
     protected $fillable = [

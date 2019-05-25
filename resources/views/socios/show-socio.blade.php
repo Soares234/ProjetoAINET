@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-
+@if($user->ativo)
     @can('view',$user)
     <form action="{{action('SocioController@show',$user->id)}}" method="get" class="form-group">
         <div class="float-left">
@@ -154,4 +154,5 @@
         </div>
     </form>
     @endcan
+    @endif
 @endsection
