@@ -1,23 +1,23 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Movimento;
+use App\Aeronave;
+use App\User;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
-class MovimentoController extends Controller
-{
+class MovimentoController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $title = 'Lista de Movimentos';
-
         $movimentos = DB::table('movimentos')->paginate(14);
-
         return view('movimentos.list-movimentos', compact('title', 'movimentos'));
     }
 
@@ -26,9 +26,13 @@ class MovimentoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create() {
+        $this->authorize('administrate',Auth::user());
+
+        $title = 'Adicionar Novo Movimento';
+        $movimento= new Movimento();
+
+        return view('movimentos.add-edit-movimento',compact('title','movimento'));
     }
 
     /**
@@ -37,9 +41,20 @@ class MovimentoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        $this->authorize('administrate',Auth::user());
+
+        $id = $request->id;
+        //dd($request);
+
+        $movimento = $request->validate(
+            ['data'=>'required',
+             'horaDescolagem'=>'required',
+             'horaAterragem'=>'required']
+        );
+
+        //Movimento::create($movimento);
+        //return redirect()->action('MovimentoController@index')->with('message','Movimento criado com sucesso');
     }
 
     /**

@@ -42,7 +42,8 @@
                     </td>
                     <td>{{$movimento->confirmado ? "Sim" : "Não"}}</td>
                     <td>{{$movimento->piloto_id}}</td>
-
+                    <td>{{$movimento->instrutor_id}}</td>
+                    {{-- Botoes de Editar/Eliminar --}}
                     <td>
                         <a class="btn btn-xs btn-primary inline" href="/movimentos/{{$movimento->id}}/edit">Edit</a>
 
