@@ -1,10 +1,17 @@
 @extends('layouts.app')
 @section('content')
 
-    <form action="{{ action('SocioController@update', $user->id) }}" method="POST" class="form-group">
+    <form action="{{ action('SocioController@update', $user->id) }}" method="POST" class="form-group" enctype="multipart/form-data">
 
         @method('patch')
         @csrf
+
+
+            <div class="form-group">
+                <label for="image">Imagem perfil</label>
+                <input type="file" class="form-control" name="image" id="image"/>
+            </div>
+
         <div class="form-group">
             <label for="inputNumSocio">Número de Sócio</label>
             <input

@@ -14,6 +14,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class SocioController extends Controller
 {
@@ -257,9 +258,11 @@ public function parseData($date, $modo){
 
         //dd($user,$request);
         $userModel = User::findOrFail($id);
-        if ($request['image'!=null]){
-            $request->file('image')->store($userModel->foto_url);
-    }
+
+        $ficheiro = $request->file('image');
+        if ($ficheiro!=null) {
+            Storage::disk('public')->put('fotos/' . $userModel->foto_url , File::get($ficheiro));
+        }
         $userModel->fill($user);
         $userModel->save();
 
