@@ -63,7 +63,7 @@
             <input
                 type="number" class="form-control"
                 name="piloto_id" id="inputPiloto"
-                placeholder="00000" value="{{ old('piloto', $movimento->piloto_id) }}"
+                placeholder="00000" value="{{ old('piloto_id', $movimento->piloto_id) }}"
             />
             @if ($errors->has('piloto_id'))
                 <em>{{ $errors->first('piloto_id') }}</em>
