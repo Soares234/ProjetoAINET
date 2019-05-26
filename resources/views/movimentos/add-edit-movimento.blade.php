@@ -19,11 +19,11 @@
             <label for="inputHoraDescolagem">Hora de Descolagem</label>
             <input
                 type="time" class="form-control"
-                name="horaDescolagem" id="inputHoraDescolagem"
-                placeholder="00:00" value="{{ old('horaDescolagem', $movimento->hora_descolagem) }}"
+                name="hora_descolagem" id="inputHoraDescolagem"
+                placeholder="00:00" value="{{ old('hora_descolagem', $movimento->hora_descolagem) }}"
             />
-            @if ($errors->has('horaDescolagem'))
-                <em>{{ $errors->first('horaDescolagem') }}</em>
+            @if ($errors->has('hora_descolagem'))
+                <em>{{ $errors->first('hora_descolagem') }}</em>
             @endif
         </div>
 
@@ -31,11 +31,11 @@
             <label for="inputHoraAterragem">Hora de Aterragem</label>
             <input
                 type="time" class="form-control"
-                name="horaAterragem" id="inputHoraAterragem"
-                placeholder="00:00" value="{{ old('horaAterragem', $movimento->hora_aterragem) }}"
+                name="hora_aterragem" id="inputHoraAterragem"
+                placeholder="00:00" value="{{ old('hora_aterragem', $movimento->hora_aterragem) }}"
             />
-            @if ($errors->has('horaAterragem'))
-                <em>{{ $errors->first('horaAterragem') }}</em>
+            @if ($errors->has('hora_aterragem'))
+                <em>{{ $errors->first('hora_aterragem') }}</em>
             @endif
         </div>
 
@@ -62,11 +62,11 @@
             <label for="inputPiloto">Piloto</label>
             <input
                 type="number" class="form-control"
-                name="piloto" id="inputPiloto"
+                name="piloto_id" id="inputPiloto"
                 placeholder="00000" value="{{ old('piloto', $movimento->piloto_id) }}"
             />
-            @if ($errors->has('piloto'))
-                <em>{{ $errors->first('piloto') }}</em>
+            @if ($errors->has('piloto_id'))
+                <em>{{ $errors->first('piloto_id') }}</em>
             @endif
         </div>
 
@@ -74,55 +74,54 @@
             <label for="inputNaturezaVoo">Natureza do Voo</label>
             <select
                 class="form-control"
-                name="naturezaVoo" id="inputNaturezaVoo">
+                name="natureza" id="inputNaturezaVoo">
 
                 <option disabled selected>Selecione um opção</option>
-                <option {{ old('naturezaVoo', $movimento->natureza)=='T' ? "selected" : ''}} value="T">Treino</option>
-                <option {{ old('naturezaVoo', $movimento->natureza)=='I' ? "selected" : ''}} value="I">Instrução
-                </option>
-                <option {{ old('naturezaVoo', $movimento->natureza)=='E' ? "selected" : ''}} value="E">Especial</option>
+                <option {{ old('natureza', $movimento->natureza)=='T' ? "selected" : ''}} value="T">Treino</option>
+                <option {{ old('natureza', $movimento->natureza)=='I' ? "selected" : ''}} value="I">Instrução</option>
+                <option {{ old('natureza', $movimento->natureza)=='E' ? "selected" : ''}} value="E">Especial</option>
 
             </select>
-            @if ($errors->has('naturezaVoo'))
-                <em>{{ $errors->first('naturezaVoo') }}</em>
+            @if ($errors->has('natureza'))
+                <em>{{ $errors->first('natureza') }}</em>
             @endif
         </div>
 
         <div class="form-group">
             <label for="inputAerodromoPartida">Código do Aerodromo de Partida</label>
 
-            <select class="form-control" name="aerodromoPartida" id="inputAerodromoPartida">
+            <select class="form-control" name="aerodromo_partida" id="inputAerodromoPartida">
 
                 <option disabled selected>Selecione um Aerodromo</option>
 
                 @foreach($aerodromos as $aerodromo)
-                    <option {{ old('aerodromo', $movimento->aerodromo_partida)==$aerodromo->code ? "selected" : ''}}
+                    <option {{ old('aerodromo_partida', $movimento->aerodromo_partida)==$aerodromo->code ? "selected" : ''}}
                             value={{$aerodromo->code}} >{{$aerodromo->code}} - {{$aerodromo->nome}} </option>
                 @endforeach
 
             </select>
 
-            @if ($errors->has('aerodromoPartida'))
-                <em>{{ $errors->first('aerodromoPartida') }}</em>
+            @if ($errors->has('aerodromo_partida'))
+                <em>{{ $errors->first('aerodromo_partida') }}</em>
             @endif
         </div>
 
         <div class="form-group">
             <label for="inputAerodromoChegada">Código do Aerodromo de Chegada</label>
 
-            <select class="form-control" name="aerodromoChegada" id="inputAerodromoChegada">
+            <select class="form-control" name="aerodromo_chegada" id="inputAerodromoChegada">
 
                 <option disabled selected>Selecione um Aerodromo</option>
 
                 @foreach($aerodromos as $aerodromo)
-                    <option {{ old('aerodromo', $movimento->aerodromo_chegada)==$aerodromo->code ? "selected" : ''}}
+                    <option {{ old('aerodromo_chegada', $movimento->aerodromo_chegada)==$aerodromo->code ? "selected" : ''}}
                             value={{$aerodromo->code}} >{{$aerodromo->code}} - {{$aerodromo->nome}} </option>
                 @endforeach
 
             </select>
 
-            @if ($errors->has('aerodromoChegada'))
-                <em>{{ $errors->first('aerodromoChegada') }}</em>
+            @if ($errors->has('aerodromo_chegada'))
+                <em>{{ $errors->first('aerodromo_chegada') }}</em>
             @endif
         </div>
 
@@ -130,11 +129,11 @@
             <label for="inputNumDescolagens">Número de Descolagens</label>
             <input
                 type="number" class="form-control"
-                name="numDescolagens" id="inputNumDescolagens"
-                placeholder="1" value="{{ old('numDescolagens', $movimento->num_descolagens) }}"
+                name="num_descolagens" id="inputNumDescolagens"
+                placeholder="1" value="{{ old('num_descolagens', $movimento->num_descolagens) }}"
             />
-            @if ($errors->has('numDescolagens'))
-                <em>{{ $errors->first('numDescolagens') }}</em>
+            @if ($errors->has('num_descolagens'))
+                <em>{{ $errors->first('num_descolagens') }}</em>
             @endif
         </div>
 
@@ -154,11 +153,11 @@
             <label for="inputNumPessoas">Número de Passageiros</label>
             <input
                 type="number" class="form-control"
-                name="numPessoas" id="inputNumPessoas"
-                placeholder="1" value="{{ old('numPessoas', $movimento->num_pessoas) }}"
+                name="num_pessoas" id="inputNumPessoas"
+                placeholder="1" value="{{ old('num_pessoas', $movimento->num_pessoas) }}"
             />
-            @if ($errors->has('numPessoas'))
-                <em>{{ $errors->first('numPessoas') }}</em>
+            @if ($errors->has('num_pessoas'))
+                <em>{{ $errors->first('num_pessoas') }}</em>
             @endif
         </div>
 
@@ -166,11 +165,11 @@
             <label for="inputContaHorasInicio">Conta-Horas Inicial</label>
             <input
                 type="number" class="form-control"
-                name="contaHorasInicio" id="inputContaHorasInicio"
-                placeholder="99999" value="{{ old('contaHorasInicio', $movimento->conta_horas_inicio) }}"
+                name="conta_horas_inicio" id="inputContaHorasInicio"
+                placeholder="99999" value="{{ old('conta_horas_inicio', $movimento->conta_horas_inicio) }}"
             />
-            @if ($errors->has('contaHorasInicio'))
-                <em>{{ $errors->first('contaHorasInicio') }}</em>
+            @if ($errors->has('conta_horas_inicio'))
+                <em>{{ $errors->first('conta_horas_inicio') }}</em>
             @endif
         </div>
 
@@ -178,11 +177,11 @@
             <label for="inputContaHorasFim">Conta-Horas Final</label>
             <input
                 type="number" class="form-control"
-                name="contaHorasFim" id="inputContaHorasFim"
-                placeholder="99999" value="{{ old('contaHorasFim', $movimento->conta_horas_fim) }}"
+                name="conta_horas_fim" id="inputContaHorasFim"
+                placeholder="99999" value="{{ old('conta_horas_fim', $movimento->conta_horas_fim) }}"
             />
-            @if ($errors->has('contaHorasFim'))
-                <em>{{ $errors->first('contaHorasFim') }}</em>
+            @if ($errors->has('conta_horas_fim'))
+                <em>{{ $errors->first('conta_horas_fim') }}</em>
             @endif
         </div>
 
@@ -190,24 +189,24 @@
             <label for="inputModoPagamento">Modo de Pagamento</label>
             <select
                 class="form-control"
-                name="modoPagamento" id="inputModoPagamento">
+                name="modo_pagamento" id="inputModoPagamento">
 
                 <option disabled selected>Selecione um opção</option>
-                <option {{ old('modoPagamento', $movimento->modo_pagamento)=='N' ? "selected" : ''}} value="N">Numerário
+                <option {{ old('modo_pagamento', $movimento->modo_pagamento)=='N' ? "selected" : ''}} value="N">Numerário
                 </option>
-                <option {{ old('modoPagamento', $movimento->modo_pagamento)=='M' ? "selected" : ''}} value="M">
+                <option {{ old('modo_pagamento', $movimento->modo_pagamento)=='M' ? "selected" : ''}} value="M">
                     Multibanco
                 </option>
-                <option {{ old('modoPagamento', $movimento->modo_pagamento)=='T' ? "selected" : ''}} value="T">
+                <option {{ old('modo_pagamento', $movimento->modo_pagamento)=='T' ? "selected" : ''}} value="T">
                     Transferência
                 </option>
-                <option {{ old('modoPagamento', $movimento->modo_pagamento)=='P' ? "selected" : ''}} value="P">Pacote de
+                <option {{ old('modo_pagamento', $movimento->modo_pagamento)=='P' ? "selected" : ''}} value="P">Pacote de
                     Horas
                 </option>
 
             </select>
-            @if ($errors->has('modoPagamento'))
-                <em>{{ $errors->first('modoPagamento') }}</em>
+            @if ($errors->has('modo_pagamento'))
+                <em>{{ $errors->first('modo_pagamento') }}</em>
             @endif
         </div>
 
@@ -215,11 +214,11 @@
             <label for="inputNumRecibo">Numero do Recibo</label>
             <input
                 type="number" class="form-control"
-                name="numRecibo" id="inputNumRecibo"
-                placeholder="99999" value="{{ old('numRecibo', $movimento->num_recibo) }}"
+                name="num_recibo" id="inputNumRecibo"
+                placeholder="99999" value="{{ old('num_recibo', $movimento->num_recibo) }}"
             />
-            @if ($errors->has('numRecibo'))
-                <em>{{ $errors->first('numRecibo') }}</em>
+            @if ($errors->has('num_recibo'))
+                <em>{{ $errors->first('num_recibo') }}</em>
             @endif
         </div>
         {{-- Checkbox para marcar, caso o ja tenha sido confirmado (Em implementacao)
