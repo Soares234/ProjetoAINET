@@ -141,11 +141,11 @@
             <label for="inputNumAterragens">Número de Aterragens</label>
             <input
                 type="number" class="form-control"
-                name="numAterragens" id="inputNumAterragens"
-                placeholder="1" value="{{ old('numAterragens', $movimento->num_aterragens) }}"
+                name="num_aterragens" id="inputNumAterragens"
+                placeholder="1" value="{{ old('num_aterragens', $movimento->num_aterragens) }}"
             />
-            @if ($errors->has('numAterragens'))
-                <em>{{ $errors->first('numAterragenss') }}</em>
+            @if ($errors->has('num_aterragens'))
+                <em>{{ $errors->first('num_aterragens') }}</em>
             @endif
         </div>
 
