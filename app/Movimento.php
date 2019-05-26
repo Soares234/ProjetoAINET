@@ -16,6 +16,8 @@ class Movimento extends Model {
     // Enables auto timestamps
     public $timestamps = true;
 
+    protected $dates = ['deleted_at'];
+
 	//Lista de mass fillables
     protected $fillable = [
         'conta_horas_inicial', 'conta_horas_final', 'data','hora_descolagem', 'hora_aterragem',

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Licenca;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Movimento;
@@ -27,12 +28,15 @@ class MovimentoController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $this->authorize('administrate',Auth::user());
+        //$this->authorize('administrate',Auth::user());
 
         $title = 'Adicionar Novo Movimento';
         $movimento= new Movimento();
 
-        return view('movimentos.add-edit-movimento',compact('title','movimento'));
+        $aeronaves = DB::table('aeronaves')->where('deleted_at','=',NULL)->get();
+        $aerodromos = DB::table('aerodromos')->where('deleted_at','=',NULL)->get();
+
+        return view('movimentos.add-edit-movimento',compact('title','movimento','aeronaves','aerodromos'));
     }
 
     /**
