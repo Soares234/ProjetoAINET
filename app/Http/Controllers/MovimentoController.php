@@ -46,17 +46,50 @@ class MovimentoController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        $this->authorize('administrate',Auth::user());
+        //$this->authorize('administrate',Auth::user());
 
-        $id = $request->id;
-        //dd($request);
-
-        $movimento = $request->validate(
-            ['data'=>'required',
-             'horaDescolagem'=>'required',
-             'horaAterragem'=>'required']
+        //dd($request->data,$request->hora_descolagem,$request);
+        $movimento = $request->validate([
+            'data'=>'required',
+                'hora_descolagem'=>'required',
+                'hora_aterragem'=>'required',
+                'conta_horas_inicio'=>'required',
+                'conta_horas_fim'=>'required',
+                'aeronave'=>'required',
+                'num_diario'=>'required|integer',
+                'num_servico'=>'required|integer',
+                'piloto_id'=>['required','integer',
+                    function($attribute,$value,$fail){
+                        $aux = DB::table('users')->where('id','=',$value)->get();
+                        if($aux->count() == 0) {
+                            $fail("Este Sócio não existe");
+                        }
+                        if($aux->first()->tipo_socio){
+                            $fail("Este Sócio não é piloto");
+                        }
+                }],
+                'natureza'=>'required',
+                'aerodromo_partida'=>'required',
+                'aerodromo_chegada'=>'required',
+                'num_aterragens'=>'required|integer|min:1',
+                'num_descolagens'=>'required|integer|min:1',
+                'num_pessoas'=>'required|integer|min:1',
+                'tempo_voo'=>'required|integer|min:1',
+                'preco_voo'=>'required|numeric|min:1',
+                'modo_pagamento'=>'required',
+                'num_recibo'=>'required',
+                'tipo_instrucao'=>'required',
+                'instrutor_id',
+                'num_licenca_instrutor',
+                'validade_licenca_instrutor',
+                'tipo_licenca_instrutor',
+                'num_certificado_instrutor',
+                'validade_certificado_instrutor',
+                'classe_certificado_instrutor',
+                'tipo_conflito',
+                'justificacao_conflito'
+                ]
         );
-
         //Movimento::create($movimento);
         //return redirect()->action('MovimentoController@index')->with('message','Movimento criado com sucesso');
     }
