@@ -12,6 +12,8 @@ use App\Movimento;
 use App\Mail\VerifyMail;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class SocioController extends Controller
 {
@@ -186,6 +188,7 @@ public function parseData($date, $modo){
 
         $user = User::findOrFail($id);
         $this->authorize('view',$user);
+        $this->authorize('isAtivo',$user);
 
         $title = $user->name;
 
@@ -203,6 +206,8 @@ public function parseData($date, $modo){
     {
         $user = User::findOrFail($id);
         $this->authorize('edit',$user);
+        $this->authorize('isAtivo',$user);
+
 
         $title = 'Editar Sócio';
 
@@ -252,7 +257,9 @@ public function parseData($date, $modo){
 
         //dd($user,$request);
         $userModel = User::findOrFail($id);
-
+        if ($request['image'!=null]){
+            $request->file('image')->store($userModel->foto_url);
+    }
         $userModel->fill($user);
         $userModel->save();
 
