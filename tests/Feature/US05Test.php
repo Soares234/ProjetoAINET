@@ -87,22 +87,10 @@ class US05Test extends USTestBase
         $this->assertAuthenticatedAs($this->normalUser);
     }
 
-    // // Protecção de recursos será testada posterioremente
-    // public function testProtecaoGetPasswordParaAnonimo()
-    // {
-    //     $this->get('/password')
-    //             ->assertUnauthorized('GET', '/password');
-    // }
+    public function testProtecaoGetPasswordParaAnonimo()
+    {
+        $this->get('/password')
+                ->assertUnauthorized('GET', '/password');
+    }
 
-    // public function testProtecaoGetPasswordParaUserComEmailNaoVerificado()
-    // {
-    //     $this->actingAs($this->emailNaoVerificadoUser)->get('/password')
-    //             ->assertUnauthorized('GET', '/password');
-    // }
-
-    // public function testProtecaoGetPasswordParaSocioDesativado()
-    // {
-    //     $this->actingAs($this->desativadoUser)->get('/password')
-    //             ->assertUnauthorized('GET', '/password');
-    // }
 }

@@ -12,9 +12,13 @@ use App\Movimento;
 use App\Mail\VerifyMail;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class SocioController extends Controller
 {
+
     /**
      * @param Request $request
      */
@@ -28,8 +32,6 @@ class SocioController extends Controller
         // $request['old_password']=Hash::make($request['old_password']);
 
         $value=Auth::user()->password;
-
-
             $user = $request->validate(
                 [
                     'old_password' =>[ 'required',
@@ -53,8 +55,8 @@ class SocioController extends Controller
             $user['password_inicial']=0;
             $user['remember_token']=str_random(40);
             $userModel=Auth::user();
-            $userModel->fill($user);
-            $userModel->save();
+        $userModel->fill($user);
+        $userModel->save();
             return redirect()->action('SocioController@index')->with('message','Password alterada com sucesso');
 
     }
@@ -162,26 +164,6 @@ public function parseData($date, $modo){
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Show the form for creating a new resource.
      *
@@ -207,6 +189,7 @@ public function parseData($date, $modo){
 
         $user = User::findOrFail($id);
         $this->authorize('view',$user);
+        $this->authorize('isAtivo',$user);
 
         $title = $user->name;
 
@@ -224,6 +207,8 @@ public function parseData($date, $modo){
     {
         $user = User::findOrFail($id);
         $this->authorize('edit',$user);
+        $this->authorize('isAtivo',$user);
+
 
         $title = 'Editar Sócio';
 
@@ -274,6 +259,10 @@ public function parseData($date, $modo){
         //dd($user,$request);
         $userModel = User::findOrFail($id);
 
+        $ficheiro = $request->file('image');
+        if ($ficheiro!=null) {
+            Storage::disk('public')->put('fotos/' . $userModel->foto_url , File::get($ficheiro));
+        }
         $userModel->fill($user);
         $userModel->save();
 

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Aeronave extends Model
 {
-
+    use SoftDeletes;
     // Overrides primary key
     protected $primaryKey = 'matricula';
 
@@ -17,7 +17,7 @@ class Aeronave extends Model
     // Enables auto timestamps
     public $timestamps = true;
 
-    use SoftDeletes;
+
     protected $dates = ['deleted_at'];
 
     protected $fillable = [

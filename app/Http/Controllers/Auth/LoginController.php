@@ -45,4 +45,30 @@ class LoginController extends Controller
 
         return $credentials;
     }
+    public function login(Request $request) {
+        $this->validateLogin($request);
+
+        if ($this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+            return $this->sendLockoutResponse($request);
+        }
+        if ($this->guard()->validate($this->credentials($request))) {
+            $user = $this->guard()->getLastAttempted();
+
+            // Make sure the user is active
+            if ($user->ativo && $this->attemptLogin($request)) {
+
+                return $this->sendLoginResponse($request);
+            } else {
+                $this->incrementLoginAttempts($request);
+                return redirect()
+                    ->back()
+                    ->withInput($request->only($this->username(), 'remember'))
+                    ->withErrors(['ativo' => 'Tens de te validar para poder dar login!']);
+            }
+        }
+        $this->incrementLoginAttempts($request);
+
+        return $this->sendFailedLoginResponse($request);
+    }
 }

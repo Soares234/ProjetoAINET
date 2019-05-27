@@ -135,11 +135,7 @@
     @if ($errors->has('direcao'))
         <em>{{ $errors->first('direcao') }}</em>
     @endif
-    <div class="custom-control custom-checkbox">
-        <input name="ativo" type="checkbox" class="custom-control-input" id="checkAtivo" value="1"
-        @if(old('ativo', $user->ativo) == 1 ){{ "checked" }}@endif>
-        <label class="custom-control-label" for="checkAtivo">Está Ativo</label>
-    </div>
+
     @if ($errors->has('ativo'))
         <em>{{ $errors->first('ativo') }}</em>
     @endif

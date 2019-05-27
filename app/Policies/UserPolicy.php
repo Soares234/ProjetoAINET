@@ -19,6 +19,9 @@ class UserPolicy
         //
     }
 
+    public function isAtivo(User $user) {
+        return $user->ativo ==1 && $user->hasVerifiedEmail();
+    }
     public function view (User $loggedUser, User $user){
         return ($loggedUser->id == $user->id) || ($loggedUser->direcao == 1);
     }
