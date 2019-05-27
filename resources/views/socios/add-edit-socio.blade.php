@@ -14,7 +14,7 @@
     <input
         type="text" class="form-control"
         name="name" id="inputNome"
-        placeholder="Nome" value="{{ old('name', $user->name) }}" />
+        placeholder="Nome" value="{{ old('name', $user->name) }}"/>
     @if ($errors->has('name'))
         <em>{{ $errors->first('name') }}</em>
     @endif
@@ -25,7 +25,7 @@
     <input
         type="text" class="form-control"
         name="nome_informal" id="inputNomeInformal"
-        placeholder="Nome Informal" value="{{ old('nome_informal', $user->nome_informal) }}" />
+        placeholder="Nome Informal" value="{{ old('nome_informal', $user->nome_informal) }}"/>
     @if ($errors->has('nome_informal'))
         <em>{{ $errors->first('nome') }}</em>
     @endif
@@ -35,7 +35,7 @@
     <input
         type="text" class="form-control"
         name="email" id="inputEmail"
-        placeholder="xxxx@yy.zz" value="{{ old('email', $user->email) }}" />
+        placeholder="xxxx@yy.zz" value="{{ old('email', $user->email) }}"/>
     @if ($errors->has('email'))
         <em>{{ $errors->first('email') }}</em>
     @endif
@@ -71,7 +71,7 @@
     <input
         type="date" class="form-control"
         name="data_nascimento" id="inputDataNascimento"
-        placeholder="01/01/2019" value="{{ old('data_nascimento', $user->data_nascimento) }}" />
+        value="{{ old('data_nascimento', $user->data_nascimento) }}"/>
     @if ($errors->has('data_nascimento'))
         <em>{{ $errors->first('data_nascimento') }}</em>
     @endif
@@ -82,7 +82,7 @@
     <input
         type="number" class="form-control"
         name="nif" id="inputNIF"
-        placeholder="123456789" value="{{ old('nif', $user->nif) }}" />
+        placeholder="123456789" value="{{ old('nif', $user->nif) }}"/>
     @if ($errors->has('nif'))
         <em>{{ $errors->first('nif') }}</em>
     @endif
@@ -93,7 +93,7 @@
     <input
         type="number" class="form-control"
         name="telefone" id="inputTelefone"
-        placeholder="123456789" value="{{ old('telefone', $user->telefone) }}" />
+        placeholder="123456789" value="{{ old('telefone', $user->telefone) }}"/>
     @if ($errors->has('telefone'))
         <em>{{ $errors->first('telefone') }}</em>
     @endif
@@ -122,7 +122,7 @@
     <div class="custom-control custom-checkbox">
         <input name="quota_paga" type="checkbox" class="custom-control-input" id="CheckQuotas" value="1"
         @if(old('quota_paga', $user->quota_paga) == 1 ){{ "checked" }}@endif>
-        <label class="custom-control-label" for="CheckQuotas" >Quotas Pagas</label>
+        <label class="custom-control-label" for="CheckQuotas">Quotas Pagas</label>
     </div>
     @if ($errors->has('quota_paga'))
         <em>{{ $errors->first('quota_paga') }}</em>
@@ -140,10 +140,13 @@
         <em>{{ $errors->first('ativo') }}</em>
     @endif
 @endcan
-
+<div class="form-group">
+    <label for="endereco">Endereço</label>
+    <textarea name="endereco" id="endereco"
+           class="form-control">{{ old('endereco', $user->endereco) }}</textarea>
+</div>
 @if ($errors->has('endereco'))
     <em>{{$errors->first('endereco')}}</em>
 @endif
-
 
 

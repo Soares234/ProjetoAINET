@@ -3,13 +3,13 @@
 
     <form action="{{ action('SocioController@update', $user->id) }}" method="POST" class="form-group" enctype="multipart/form-data">
 
-        @method('patch')
+        @method("PUT")
         @csrf
 
 
             <div class="form-group">
                 <label for="image">Imagem perfil</label>
-                <input type="file" class="form-control" name="image" id="image"/>
+                <input type="file" class="form-control" name="file_foto" id="image"/>
             </div>
 
         <div class="form-group">
