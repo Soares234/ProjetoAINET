@@ -1,9 +1,9 @@
 
 <div class="form-group">
-    <label for="inputNome">Nome Completo</label>
+    <label for="name">Nome Completo</label>
     <input
         type="text" class="form-control"
-        name="name" id="inputNome"
+        name="name" id="name"
         placeholder="Nome" value="{{ old('name', $user->name) }}"/>
     @if ($errors->has('name'))
         <em>{{ $errors->first('name') }}</em>

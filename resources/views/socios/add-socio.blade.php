@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
 
-    <form action="/socios" method="POST" class="form-group">
-        @method("PUT")
+    <form action="/socios/" method="POST" class="form-group">
+        @method("POST")
         @csrf
 
         @include('socios.add-edit-socio')

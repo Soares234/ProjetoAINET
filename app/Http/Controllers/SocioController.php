@@ -223,24 +223,24 @@ public function parseData($date, $modo){
     public function update(Request $request, $id)
     {
 
-        $this->authorize('administrate',Auth::user());
+        $this->authorize('edit',Auth::user());
 
         $user= $request->validate(
             [
                 'name'=>'required|regex:/^[\pL\s]+$/u',
-                'nome_informal'=>'required|regex:/^[\pL\s]+$/u',
+                'nome_informal'=>'required|max:40',//|regex:/^[\pL\s]+$/u',
                 'num_socio'=>['required','integer',Rule::unique('users')->ignore($id)],
                 'email'=>['required','email',Rule::unique('users')->ignore($id)],
                 'sexo'=>'required',
                 'data_nascimento'=>'required',
-                'nif'=>['required','numeric',Rule::unique('users')->ignore($id)],
-                'telefone'=>['required',Rule::unique('users')->ignore($id)],
+                'nif'=>['numeric','digits:9',Rule::unique('users')->ignore($id)],
+                'telefone'=>['digits:20',Rule::unique('users')->ignore($id)],
                 'tipo_socio'=>'required',
                 'quota_paga'=>'min:0|max:1|between:0,1',
                 'direcao'=>'min:0|max:1|between:0,1',
                 'ativo'=>'min:0|max:1|between:0,1'],
                 ['name.regex'=>'O nome não deverá conter caracteres especias nem números',
-                    'nome_informal.regex'=>'O nome não deverá conter caracteres especias nem números',
+                    //'nome_informal.regex'=>'O nome não deverá conter caracteres especias nem números',
                     'nif.numeric'=>'O nif deverá ser apenas numérico',
                     'telefone.numeric'=>'O numero de telefone deverá ser um número!'
                 ]

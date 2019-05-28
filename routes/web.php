@@ -18,8 +18,15 @@ Route::get('/', function () {
 //Route::middleware('auth')->group(function () {});
 
 Route::resource('aeronaves','AeronaveController')->middleware('auth');
+
 Route::get('/email/verify/{id}','VerificationController@verify');
+
 Route::get('/password','SocioController@password')->middleware('auth');
+
+Route::post('/socios','SocioController@store')->middleware('auth');
+
+Route::put('/socios/{id}','SocioController@update')->middleware('auth');
+
 Route::patch('/password','SocioController@passwordUpdate')->middleware('auth');
 
 Route::resource('socios','SocioController')->middleware('auth');
@@ -27,11 +34,10 @@ Route::resource('socios','SocioController')->middleware('auth');
 Route::resource('movimentos','MovimentoController')->middleware('auth');
 
 Route::get('/pilotos/{id}/licenca','PilotoController@getLicenca');
+
 Route::get('/pilotos/{id}/certificado','PilotoController@getCertificado');
 
 Auth::routes(['verify' => true]);
-
-
 
 Route::get('/home', 'HomeController@index')->name('home');
 
