@@ -3,7 +3,7 @@
 
     <form  method="POST" class="form-group" action="/password">
         @csrf
-
+        @method("PATCH")
     <div class="form-group">
         <label for="old_password">Password Antiga</label>
         <input

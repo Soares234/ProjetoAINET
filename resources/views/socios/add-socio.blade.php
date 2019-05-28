@@ -2,7 +2,7 @@
 @section('content')
 
     <form action="/socios" method="POST" class="form-group">
-
+        @method("PUT")
         @csrf
 
         @include('socios.add-edit-socio')

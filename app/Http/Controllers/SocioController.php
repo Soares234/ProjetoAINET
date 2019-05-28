@@ -41,7 +41,7 @@ class SocioController extends Controller
                                 $fail('Password não é igual há da base de dados!');
                             }
                             }],  //Tem de ser igual a has na DB
-                    'password' => ['required','min:8'],
+                    'password' => ['required','min:8','same:password_confirmation'],
                     'password_confirmation' => ['same:password','min:8'],
                 ], [
                     'old_password.required' => 'Campo Obrigatório',

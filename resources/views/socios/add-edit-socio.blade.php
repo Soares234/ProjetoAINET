@@ -1,14 +1,4 @@
-{{--<div class="form-group">
-    <label for="inputNumSocio">Número de Sócio</label>
-    <input
-        type="number" class="form-control"
-        name="num_socio" id="inputNumSocio"
-        placeholder="0000" value="{{ old('num_socio', $user->num_socio) }}" />
-    @if ($errors->has('num_socio'))
-        <em>{{ $errors->first('num_socio') }}</em>
-    @endif
-</div>
---}} {{--Discontinuado, o num de socio e criado automaticamente, no entanto, continua a estar presente em edit, porque enunciado--}}
+
 <div class="form-group">
     <label for="inputNome">Nome Completo</label>
     <input
