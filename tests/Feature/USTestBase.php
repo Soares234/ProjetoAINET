@@ -40,6 +40,9 @@ class USTestBase extends TestCase
     protected $aeronave;
     protected $aeronaveDeleted;
     protected $aeronave_valores;
+    protected $normalMovimento;
+    protected $normalMovimento2;
+    protected $instrucaoMovimento;
 
     // USED TO RESET DATA ()
     protected static $latestUserID;
@@ -62,7 +65,6 @@ class USTestBase extends TestCase
 
     protected function setUp(): void
     {
-
         parent::setUp();
 
         USTestBase::$date_format_input = env('INPUT_FORMAT_DATE', 'Y-m-d H:i:s');
@@ -100,6 +102,9 @@ class USTestBase extends TestCase
                         $this->seed(\AeronavesPilotosSeeder::class);
                         $this->seed(\MovimentosSeeder::class);
 
+                        // Remove excessive movimentos (devido a paginação)
+                        $this->cutMovimentos(12);
+
                         DB::statement("SET foreign_key_checks=1");
                     }
 
@@ -127,6 +132,46 @@ class USTestBase extends TestCase
             }
         }
         $this->resetData();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    protected function tearDown(): void
+    {
+        $this->resetData();
+        parent::tearDown();
+    }
+
+    protected function resetData()
+    {
+        if ($this->normalUserComFoto) {
+            $this->deletePhotoByName($this->normalUserComFoto->foto_url);
+        }
+
+        DB::table('movimentos')->where('id', '>', USTestBase::$latestMovimentoID)->delete();
+        DB::table('aeronaves_pilotos')->where('piloto_id', '>', USTestBase::$latestUserID)->delete();
+        DB::table('users')->where('id', '>', USTestBase::$latestUserID)->delete();
+        DB::table('aeronaves')->whereNotIn('matricula', ['CS-AQN', 'CS-AYV', 'CS-DCX', 'D-EAYV', 'G-CKIP'])->delete();
+        DB::table('aeronaves')->whereIn('matricula', ['CS-AQN', 'D-EAYV', 'G-CKIP'])->update(['deleted_at' => null]);
+//      DB::table('aeronaves')->where('matricula', 'CS-XXX')->orWhere('matricula', 'CS-NEW')->delete();  
+        DB::table('aeronaves_valores')->whereNotIn('matricula', ['CS-AQN', 'CS-AYV', 'CS-DCX', 'D-EAYV', 'G-CKIP'])->delete();
+        
+        foreach (USTestBase::$latestContaHoras as $matricula => $conta_horas) {
+            DB::table('aeronaves')->where('matricula', $matricula)->update(['conta_horas' => $conta_horas]);
+        }
+
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    private function cutMovimentos($totalMovimentos) 
+    {
+        $allIDs = DB::table('movimentos')->pluck('id')->toArray();
+        if (count($allIDs) > $totalMovimentos) {
+            $idsToKeep = array_slice($allIDs, -$totalMovimentos);
+            DB::table('movimentos')->whereNotIn('id', $idsToKeep)->delete();
+        }
     }
 
     protected function format_date_input($dateWithDbFormat) 
@@ -173,34 +218,189 @@ class USTestBase extends TestCase
         return \Carbon\Carbon::createFromFormat(USTestBase::$date_format_input, $timeWithInputFormat)->format("Y-m-d H:i:s");
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    protected function tearDown(): void
+    protected function getPilotInfo($idPiloto)
     {
-        $this->resetData();
-        parent::tearDown();
+        $user = collect(DB::table('users')->where('id', $idPiloto)->first())->toArray();
+        return array_intersect_key($user, [
+            // Chave dos elementos do array $user que serão copiados para o novo array
+            // Valores não interessam 
+            // 
+            "id" => null,
+            "num_licenca" => null,
+            "tipo_licenca" => null,
+            "validade_licenca" => null,
+            "num_certificado" => null,
+            "classe_certificado" => null, 
+            "validade_certificado" => null
+        ]);
     }
 
-    protected function resetData()
+    private $pilotos_ids = [];
+    protected function standardMovimento($idPiloto = null)
     {
-        if ($this->normalUserComFoto) {
-            $this->deletePhotoByName($this->normalUserComFoto->foto_url);
+        $createdAt = $this->faker->dateTimeBetween('-7 days', '-1 days');
+        $updatedAt = $this->faker->dateTimeBetween($createdAt);
+        if (!$this->pilotos_ids) {
+            $this->pilotos_ids = DB::table('users')->whereNull('deleted_at')->where('tipo_socio','P')->pluck('id')->toArray();
         }
 
-        DB::table('movimentos')->where('id', '>', USTestBase::$latestMovimentoID)->delete();
-        DB::table('aeronaves_pilotos')->where('piloto_id', '>', USTestBase::$latestUserID)->delete();
-        DB::table('users')->where('id', '>', USTestBase::$latestUserID)->delete();
-        DB::table('aeronaves')->whereNotIn('matricula', ['CS-AQN', 'CS-AYV', 'CS-DCX', 'D-EAYV', 'G-CKIP'])->delete();
-//      DB::table('aeronaves')->where('matricula', 'CS-XXX')->orWhere('matricula', 'CS-NEW')->delete();  
-        DB::table('aeronaves_valores')->delete();
-        
-        foreach (USTestBase::$latestContaHoras as $matricula => $conta_horas) {
-            DB::table('aeronaves')->where('matricula', $matricula)->update(['conta_horas' => $conta_horas]);
+        if (!$idPiloto) {
+            $idPiloto = $this->pilotos_ids[array_rand($this->pilotos_ids)];
         }
 
+        $pilotoInfo = $this->getPilotInfo($idPiloto);
+        $data = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $createdAt->format('Y-m-d'). ' 00:00:00');
+        $unidades_conta_horas = mt_rand(5,25);
+//        $conta_inicio = DB::table('aeronaves')->where('matricula', 'D-EAYV')->first()->conta_horas;
+        $conta_inicio = DB::table('movimentos')->where('aeronave', 'D-EAYV')->max('conta_horas_fim');
+        $conta_fim = $conta_inicio + $unidades_conta_horas; 
+        $preco_hora = DB::table('aeronaves_valores')
+                    ->where('matricula', 'D-EAYV')
+                    ->where('unidade_conta_horas', 10)
+                    ->first()->preco;
+        $duracao_minutos = 60 * intdiv($unidades_conta_horas, 10);
+        $preco_voo = ($preco_hora * intdiv($unidades_conta_horas, 10));
+        if ($unidades_conta_horas % 10 > 0) {
+            $valores_unidade = DB::table('aeronaves_valores')
+                        ->where('matricula', 'D-EAYV')
+                        ->where('unidade_conta_horas', $unidades_conta_horas % 10)
+                        ->first();
+            $duracao_minutos = (60 * intdiv($unidades_conta_horas, 10)) +  $valores_unidade->minutos;
+            $preco_voo = ($preco_hora * intdiv($unidades_conta_horas, 10)) + $valores_unidade->preco;
+        }
+        $hora = mt_rand(9,15);
+        $minuto = mt_rand(0,11) * 5;
+        $dataDescolagem = $data->copy()->addMinutes(60*$hora+$minuto);
+        $dataAterragem = $dataDescolagem->copy()->addMinutes($duracao_minutos);
+        $num_aterragens = mt_rand(13,100);
+        return  [
+            "data" => $data,
+            "hora_descolagem" => $dataDescolagem,
+            "hora_aterragem" => $dataAterragem,
+            "aeronave" => "D-EAYV",
+            "num_diario" => DB::table('movimentos')->where('aeronave', 'D-EAYV')->max('num_diario'),
+            "num_servico" => (DB::table('movimentos')->where('aeronave', 'D-EAYV')->max('num_servico'))+1,
+            "piloto_id" => $idPiloto,
+            "num_licenca_piloto" => $pilotoInfo['num_licenca'],
+            "validade_licenca_piloto" => $pilotoInfo['validade_licenca'],
+            "tipo_licenca_piloto" => $pilotoInfo['tipo_licenca'],
+            "num_certificado_piloto" => $pilotoInfo['num_certificado'],
+            "validade_certificado_piloto" => $pilotoInfo['validade_certificado'],
+            "classe_certificado_piloto" => $pilotoInfo['classe_certificado'],
+            "natureza" => "T",
+            "aerodromo_partida" => "U-POMBAL",
+            "aerodromo_chegada" => "U-LAGOS",
+            "num_aterragens" => $num_aterragens,
+            "num_descolagens" => $num_aterragens,
+            "num_pessoas" => mt_rand(9,25),
+            "conta_horas_inicio" => $conta_inicio,
+            "conta_horas_fim" => $conta_fim,
+            "tempo_voo" => $preco_voo,
+            "preco_voo" => $duracao_minutos,
+            "modo_pagamento" => "N", 
+            "num_recibo" => mt_rand(777777,999999),
+            "observacoes" => "obsercavoes de teste",
+            "confirmado" => 1,
+            "tipo_instrucao" => null,
+            "instrutor_id" => null,
+            "num_licenca_instrutor" => null,
+            "validade_licenca_instrutor" => null,
+            "tipo_licenca_instrutor" => null, 
+            "num_certificado_instrutor" => null,
+            "validade_certificado_instrutor" => null,
+            "classe_certificado_instrutor" => null,
+            "created_at" => $createdAt,
+            "updated_at" => $updatedAt,
+            "tipo_conflito" => null,
+            "justificacao_conflito" => null
+        ];
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    protected function standardMovimentoComFormatoInput($idPiloto = null)
+    {
+        $mov = $this->standardMovimento($idPiloto);
+        // Usa formato de data correto
+        $mov["data"] = $this->format_date_input($mov["data"]->format('Y-m-d'));
+        $mov["hora_descolagem"] = $this->format_time_input($mov["hora_descolagem"]->format('Y-m-d H:i:s'));
+        $mov["hora_aterragem"] = $this->format_time_input($mov["hora_aterragem"]->format('Y-m-d H:i:s'));
+        if ($mov["validade_licenca_piloto"]) {
+            $mov["validade_licenca_piloto"] = $this->format_date_input($mov["validade_licenca_piloto"]);     
+        }
+        if ($mov["validade_certificado_piloto"]) {
+            $mov["validade_certificado_piloto"] = $this->format_date_input($mov["validade_certificado_piloto"]);     
+        }        
+        if ($mov["validade_licenca_instrutor"]) {
+            $mov["validade_licenca_instrutor"] = $this->format_date_input($mov["validade_licenca_instrutor"]);     
+        }
+        if ($mov["validade_certificado_instrutor"]) {
+            $mov["validade_certificado_instrutor"] = $this->format_date_input($mov["validade_certificado_instrutor"]);     
+        }        
+
+        unset($mov["created_at"]);
+        unset($mov["updated_at"]);
+
+        return $mov;
+    }
+
+    private $instrutores_ids = [];
+    protected function instrucaoMovimento($idPiloto = null, $idInstrutor = null)
+    {
+        $mov = $this->standardMovimento($idPiloto);
+
+        if (!$idInstrutor) {
+            $this->instrutores_ids = DB::table('users')->whereNull('deleted_at')->where('tipo_socio','P')->where('instrutor',1)->pluck('id')->toArray();
+            if ($this->instrutores_ids) {
+                $idInstrutor = $this->instrutores_ids[array_rand($this->instrutores_ids)];
+            }
+        }
+
+        if (!$idInstrutor) {
+            throw new Exception("No Instructor Available");
+        }
+
+        $instrutorInfo = $this->getPilotInfo($idInstrutor);
+
+        $mov = array_merge($mov, [
+            "natureza" => "I",
+            "tipo_instrucao" => "D",
+            "instrutor_id" => $idInstrutor,
+            "num_licenca_instrutor" => $instrutorInfo['num_licenca'],
+            "validade_licenca_instrutor" => $instrutorInfo['validade_licenca'],
+            "tipo_licenca_instrutor" => $instrutorInfo['tipo_licenca'],
+            "num_certificado_instrutor" => $instrutorInfo['num_certificado'],
+            "validade_certificado_instrutor" => $instrutorInfo['validade_certificado'],
+            "classe_certificado_instrutor" => $instrutorInfo['classe_certificado']
+        ]);
+
+        return $mov;
+    }
+
+    protected function instrucaoMovimentoComFormatoInput($idPiloto = null, $idInstrutor = null)
+    {
+        $mov = $this->instrucaoMovimento($idPiloto, $idInstrutor);
+
+        // Usa formato de data correto
+        $mov["data"] = $this->format_date_input($mov["data"]->format('Y-m-d'));
+        $mov["hora_descolagem"] = $this->format_time_input($mov["hora_descolagem"]->format('Y-m-d H:i:s'));
+        $mov["hora_aterragem"] = $this->format_time_input($mov["hora_aterragem"]->format('Y-m-d H:i:s'));
+        if ($mov["validade_licenca_piloto"]) {
+            $mov["validade_licenca_piloto"] = $this->format_date_input($mov["validade_licenca_piloto"]);     
+        }
+        if ($mov["validade_certificado_piloto"]) {
+            $mov["validade_certificado_piloto"] = $this->format_date_input($mov["validade_certificado_piloto"]);     
+        }        
+        if ($mov["validade_licenca_instrutor"]) {
+            $mov["validade_licenca_instrutor"] = $this->format_date_input($mov["validade_licenca_instrutor"]);     
+        }
+        if ($mov["validade_certificado_instrutor"]) {
+            $mov["validade_certificado_instrutor"] = $this->format_date_input($mov["validade_certificado_instrutor"]);     
+        }        
+
+        unset($mov["created_at"]);
+        unset($mov["updated_at"]);
+
+        return $mov;
+    }
 
     protected function standardUser($softDeleted = false)
     {
@@ -243,18 +443,29 @@ class USTestBase extends TestCase
 
     private function addUserToDB($user)
     {
-        //return factory(User::class)->create($user);
         $id =  DB::table('users')->insertGetId($user);
         return User::withTrashed()->findOrFail($id);
     }
 
-    protected function addPilotoToAeronaves($userid, $arrayAeronaves)
+    private function addMovimentoToDB($movimento)
     {
-        foreach ($arrayAeronaves as $aeronave) {
-            DB::table('aeronaves_pilotos')->insert([
-                "piloto_id" => $userid,
-                "matricula" => $aeronave
-            ]);
+        //return factory(User::class)->create($user);
+        $id =  DB::table('movimentos')->insertGetId($movimento);
+        $newMovimento = DB::table('movimentos')->where('id', $id)->first();
+        DB::table('aeronaves')->where('matricula', 'D-EAYV')->update(['conta_horas' => $newMovimento->conta_horas_fim]);
+        return $newMovimento;
+    }
+
+    protected function addPilotoToAeronaves($userid)
+    {
+        if (DB::table('aeronaves_pilotos')->where("piloto_id", $userid)->count() == 0) {
+            $aeronaves = ['D-EAYV', 'G-CKIP', 'CS-AQN'];
+            foreach ($aeronaves as $aeronave) {
+                DB::table('aeronaves_pilotos')->insert([
+                    "piloto_id" => $userid,
+                    "matricula" => $aeronave
+                ]);
+            }
         }
     }
 
@@ -262,6 +473,45 @@ class USTestBase extends TestCase
     {
         DB::table('aeronaves')->insert($aeronave);
         return DB::table('aeronaves')->where('matricula', $aeronave['matricula'])->first();
+    }
+
+
+    protected function seedNormalMovimentos($idPiloto = null)
+    {        
+        $mov = $this->standardMovimento($idPiloto);
+        $this->normalMovimento = $this->addMovimentoToDB($mov);
+
+        $mov = $this->standardMovimento($idPiloto);
+        $this->normalMovimento2 = $this->addMovimentoToDB($mov);
+    }
+
+    protected function seedInstrucaoMovimento($idPiloto = null, $idInstrutor = null)
+    {        
+        $mov = $this->instrucaoMovimento($idPiloto, $idInstrutor);
+        $this->instrucaoMovimento = $this->addMovimentoToDB($mov);
+    }
+
+    protected function updateMovimento_data($id, $data)
+    {        
+        $mov = DB::table('movimentos')->where('id',$id)->first();
+        $mov->data = $data;
+        $mov->hora_descolagem = $data . ' ' . substr($mov->hora_descolagem, -8);
+        $mov->hora_aterragem = $data . ' ' . substr($mov->hora_aterragem, -8);
+        DB::table('movimentos')->where('id',$id)->update(get_object_vars($mov));
+    }
+
+    protected function updateMovimento_natureza($id, $natureza)
+    {        
+        $mov = DB::table('movimentos')->where('id',$id)->first();
+        $mov->natureza = $natureza;
+        DB::table('movimentos')->where('id',$id)->update(get_object_vars($mov));
+    }
+
+    protected function updateMovimento_confirmado($id, $confirmado)
+    {        
+        $mov = DB::table('movimentos')->where('id',$id)->first();
+        $mov->confirmado = $confirmado;
+        DB::table('movimentos')->where('id',$id)->update(get_object_vars($mov));
     }
 
     protected function seedNormalUsers()
@@ -299,10 +549,11 @@ class USTestBase extends TestCase
             "licenca_confirmada" => "1",
             "num_certificado" => "99-0089",
             "classe_certificado" => "Class 2",
+            "validade_certificado" => "2020-02-13",
             "certificado_confirmado" => "1",
             ]);
         $this->pilotoUser = $this->addUserToDB($pilotoUser);
-        $this->addPilotoToAeronaves($this->pilotoUser->id, ['D-EAYV','G-CKIP']);
+        $this->addPilotoToAeronaves($this->pilotoUser->id);
     }
 
     protected function seedDirecaoUser()
@@ -385,10 +636,11 @@ class USTestBase extends TestCase
             "licenca_confirmada" => "1",
             "num_certificado" => "88-0089",
             "classe_certificado" => "Class 2",
+            "validade_certificado" => "2021-04-13",
             "certificado_confirmado" => "1",
             ]);
         $this->pilotoAlunoUser = $this->addUserToDB($pilotoAlunoUser);
-        $this->addPilotoToAeronaves($this->pilotoAlunoUser->id, ['D-EAYV']);
+        $this->addPilotoToAeronaves($this->pilotoAlunoUser->id);        
     }
 
     protected function seedPilotoInstrutorUser()
@@ -407,10 +659,11 @@ class USTestBase extends TestCase
             "licenca_confirmada" => "1",
             "num_certificado" => "77-0089",
             "classe_certificado" => "Class 1",
+            "validade_certificado" => "2019-12-13",
             "certificado_confirmado" => "1",
             ]);
         $this->pilotoInstrutorUser = $this->addUserToDB($pilotoInstrutorUser);
-        $this->addPilotoToAeronaves($this->pilotoInstrutorUser->id, ['D-EAYV','G-CKIP', 'CS-AQN', 'CS-NEW']);
+        $this->addPilotoToAeronaves($this->pilotoInstrutorUser->id);
     }
 
     protected function seedPilotoDesativadoUser()
@@ -429,10 +682,11 @@ class USTestBase extends TestCase
             "licenca_confirmada" => "1",
             "num_certificado" => "66-0089",
             "classe_certificado" => "Class 2",
+            "validade_certificado" => "2019-08-13",
             "certificado_confirmado" => "1",
             ]);
         $this->pilotoDesativadoUser = $this->addUserToDB($pilotoDesativadoUser);
-        $this->addPilotoToAeronaves($this->pilotoDesativadoUser->id, ['D-EAYV','G-CKIP', 'CS-NEW']);
+        $this->addPilotoToAeronaves($this->pilotoDesativadoUser->id);
     }
 
     protected function seedPilotoDirecaoUser()
@@ -451,10 +705,11 @@ class USTestBase extends TestCase
             "licenca_confirmada" => "1",
             "num_certificado" => "55-0089",
             "classe_certificado" => "Class 1",
+            "validade_certificado" => "2020-01-13",
             "certificado_confirmado" => "1",
             ]);
         $this->pilotoDirecaoUser = $this->addUserToDB($pilotoDirecaoUser);
-        $this->addPilotoToAeronaves($this->pilotoDirecaoUser->id, ['D-EAYV','G-CKIP', 'CS-AQN']);
+        $this->addPilotoToAeronaves($this->pilotoDirecaoUser->id);
     }
 
     protected function seedEmailNaoVerificadoUser()
@@ -773,6 +1028,93 @@ class USTestBase extends TestCase
                     "tempos" => $tempos,
                     "precos" => $precos
 
+            ];
+    }
+
+    protected function getRequestArrayFromMovimento($movimento) {        
+        if ($movimento) {
+            return [
+                "id" => $movimento->id,
+                "data" => $this->format_date_input($movimento->data), 
+                "hora_descolagem" => $this->format_time_input($movimento->hora_descolagem),
+                "hora_aterragem" => $this->format_time_input($movimento->hora_aterragem),
+                "aeronave" => $movimento->aeronave,
+                "num_diario" => $movimento->num_diario,
+                "num_servico" => $movimento->num_servico,
+                "piloto_id" => $movimento->piloto_id,
+                "num_licenca_piloto" => $movimento->num_licenca_piloto,
+                "validade_licenca_piloto" => $this->format_date_input($movimento->validade_licenca_piloto),
+                "tipo_licenca_piloto" => $movimento->tipo_licenca_piloto,
+                "num_certificado_piloto" => $movimento->num_certificado_piloto,
+                "validade_certificado_piloto" => $this->format_date_input($movimento->validade_certificado_piloto),
+                "classe_certificado_piloto" => $movimento->classe_certificado_piloto,
+                "natureza" => $movimento->natureza,
+                "aerodromo_partida" => $movimento->aerodromo_partida,
+                "aerodromo_chegada" => $movimento->aerodromo_chegada,
+                "num_aterragens" => $movimento->num_aterragens,
+                "num_descolagens" => $movimento->num_descolagens,
+                "num_pessoas" => $movimento->num_pessoas, 
+                "conta_horas_inicio" => $movimento->conta_horas_inicio,
+                "conta_horas_fim" => $movimento->conta_horas_fim,
+                "tempo_voo" => $movimento->tempo_voo,
+                "preco_voo" => $movimento->preco_voo,
+                "modo_pagamento" => $movimento->modo_pagamento,
+                "num_recibo" => $movimento->num_recibo,
+                "observacoes" => $movimento->observacoes,
+                "confirmado" => $movimento->confirmado,
+                "tipo_instrucao" => $movimento->tipo_instrucao,
+                "instrutor_id" => $movimento->instrutor_id,
+                "num_licenca_instrutor" => $movimento->num_licenca_instrutor,
+                "validade_licenca_instrutor" => $this->format_date_input($movimento->validade_licenca_instrutor),
+                "tipo_licenca_instrutor" =>$movimento->tipo_licenca_instrutor,
+                "num_certificado_instrutor" => $movimento->num_certificado_instrutor,
+                "validade_certificado_instrutor" => $this->format_date_input($movimento->validade_certificado_instrutor),
+                "classe_certificado_instrutor" => $movimento->classe_certificado_instrutor,
+                "tipo_conflito" => $movimento->tipo_conflito,
+                "justificacao_conflito" => $movimento->justificacao_conflito
+                ];                
+        }
+        return [
+                "id" => "",
+                "data" => "",
+                "hora_descolagem" => "",
+                "hora_aterragem" => "",
+                "aeronave" => "",
+                "num_diario" => "",
+                "num_servico" => "",
+                "piloto_id" => "",
+                "num_licenca_piloto" => "",
+                "validade_licenca_piloto" => "",
+                "tipo_licenca_piloto" => "",
+                "num_certificado_piloto" => "",
+                "validade_certificado_piloto" => "",
+                "classe_certificado_piloto" => "",
+                "natureza" => "",
+                "aerodromo_partida" => "",
+                "aerodromo_chegada" => "",
+                "num_aterragens" => "",
+                "num_descolagens" => "",
+                "num_pessoas" => "", 
+                "conta_horas_inicio" => "",
+                "conta_horas_fim" => "",
+                "tempo_voo" => "",
+                "preco_voo" => "",
+                "modo_pagamento" => "",
+                "num_recibo" => "",
+                "observacoes" => "",
+                "confirmado" => "",
+                "tipo_instrucao" => "",
+                "instrutor_id" => "",
+                "num_licenca_instrutor" => "",
+                "validade_licenca_instrutor" => "",
+                "tipo_licenca_instrutor" => "",
+                "num_certificado_instrutor" => "",
+                "validade_certificado_instrutor" => "",
+                "classe_certificado_instrutor" => "",
+                "created_at" => "",  
+                "updated_at" => "",
+                "tipo_conflito" => "",
+                "justificacao_conflito" => "",                
             ];
     }
 

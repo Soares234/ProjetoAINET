@@ -40,7 +40,7 @@
         <em>{{ $errors->first('email') }}</em>
     @endif
 </div>
-@can('administrative',$user)
+
 <div class="form-group">
     <div><label for="inputSexo">Sexo</label></div>
     <div class="custom-control custom-radio">
@@ -62,14 +62,14 @@
         <em>{{ $errors->first('sexo') }}</em>
     @endif
 </div>
-@endcan
+
 
 <div class="form-group">
-    <label for="inputDataNascimento">Data de Nascimento</label>
+    <label for="data_nascimento">Data de Nascimento</label>
     <input
-        type="date" class="form-control"
-        name="data_nascimento" id="inputDataNascimento"
-        value="{{ old('data_nascimento', $user->data_nascimento) }}"/>
+        type="text" class="form-control"
+        name="data_nascimento" id="data_nascimento"
+        value="{{ old('data_nascimento', $user->data_nascimento)}}"/>
     @if ($errors->has('data_nascimento'))
         <em>{{ $errors->first('data_nascimento') }}</em>
     @endif
@@ -96,7 +96,7 @@
         <em>{{ $errors->first('telefone') }}</em>
     @endif
 </div>
-@can('administrative',$user)
+
 <div class="form-group">
     <label for="inputTipoSocio">Tipo de Sócio</label><br>
     <select
@@ -114,7 +114,7 @@
         <em>{{ $errors->first('tipo_socio') }}</em>
     @endif
 </div>
-@endcan
+
 
 
 @can('administrate',$user)
