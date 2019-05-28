@@ -27,7 +27,7 @@
         name="nome_informal" id="inputNomeInformal"
         placeholder="Nome Informal" value="{{ old('nome_informal', $user->nome_informal) }}" />
     @if ($errors->has('nome_informal'))
-        <em>{{ $errors->first('nome') }}</em>
+        <em>{{ $errors->first('nome_informal') }}</em>
     @endif
 </div>
 <div class="form-group">
@@ -40,11 +40,9 @@
         <em>{{ $errors->first('email') }}</em>
     @endif
 </div>
-
+@can('administrative',$user)
 <div class="form-group">
     <div><label for="inputSexo">Sexo</label></div>
-
-
     <div class="custom-control custom-radio">
         <input
             type="radio" class="custom-control-input"
@@ -64,7 +62,7 @@
         <em>{{ $errors->first('sexo') }}</em>
     @endif
 </div>
-
+@endcan
 
 <div class="form-group">
     <label for="inputDataNascimento">Data de Nascimento</label>
@@ -98,7 +96,7 @@
         <em>{{ $errors->first('telefone') }}</em>
     @endif
 </div>
-
+@can('administrative',$user)
 <div class="form-group">
     <label for="inputTipoSocio">Tipo de Sócio</label><br>
     <select
@@ -115,8 +113,9 @@
     @if ($errors->has('tipo_socio'))
         <em>{{ $errors->first('tipo_socio') }}</em>
     @endif
-
 </div>
+@endcan
+
 
 @can('administrate',$user)
     <div class="custom-control custom-checkbox">

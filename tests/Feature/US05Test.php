@@ -6,11 +6,14 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+
 class US05Test extends USTestBase
 {
     protected function setUp(): void
     {
+
         parent::setUp();
+        session()->start();
         $this->seedNormalUsers();
         $this->seedDesativadoUser();
         $this->seedEmailNaoVerificadoUser();
@@ -38,9 +41,11 @@ class US05Test extends USTestBase
 
     public function testChangePasswordFalhaComPasswordMenorQue8Caracteres()
     {
+
+        dd($this->normalUser);
         $this->actingAs($this->normalUser)->patch('/password',
                 ['old_password' => '123123123', 'password' => '1234567',  'password_confirmation' => '1234567'])
-            ->assertSessionHasErrors('password');
+            ->assertSessionHasErrors("password",$format='messages',$errorBag='default');
     }
 
     public function testChangePasswordFalhaComPasswordsDiferentes()

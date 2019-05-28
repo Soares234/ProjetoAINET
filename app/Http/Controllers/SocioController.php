@@ -41,12 +41,11 @@ class SocioController extends Controller
                                 $fail('Password não é igual há da base de dados!');
                             }
                             }],  //Tem de ser igual a has na DB
-                    'password' => ['required','min:10'],
-                    'password_confirmation' => ['same:password','min:10'],
+                    'password' => ['required','min:8'],
+                    'password_confirmation' => ['same:password','min:8'],
                 ], [
                     'old_password.required' => 'Campo Obrigatório',
                     'password.required' => 'Campo obrigatório',
-                    'password.regex' => 'A password tem de ter no minimo 8 caracteres',
                     'password_confirmation.same' => 'As password não são iguais!'
                 ]
             );
@@ -223,6 +222,7 @@ public function parseData($date, $modo){
      */
     public function update(Request $request, $id)
     {
+
         $this->authorize('administrate',Auth::user());
 
         $user= $request->validate(
@@ -245,6 +245,8 @@ public function parseData($date, $modo){
                     'telefone.numeric'=>'O numero de telefone deverá ser um número!'
                 ]
         );
+
+
 
         if(!array_key_exists ( "quota_paga", $user )){
             $user['quota_paga']=0;

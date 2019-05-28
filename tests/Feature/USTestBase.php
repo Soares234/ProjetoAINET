@@ -65,6 +65,7 @@ class USTestBase extends TestCase
 
     protected function setUp(): void
     {
+
         parent::setUp();
 
         USTestBase::$date_format_input = env('INPUT_FORMAT_DATE', 'Y-m-d H:i:s');
