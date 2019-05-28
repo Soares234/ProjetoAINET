@@ -31,17 +31,18 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <form action="/socios">
-                        <button id="navbarDropdown" class="btn btn-light" type="submit" href="/socios" >Lista de Sócios</button>
-                    </form>
-                    <form action="/aeronaves">
-                        <button id="navbarDropdown" class="btn btn-light" type="submit" href="/socios" >Lista de Aeronaves</button>
-                    </form>
-                    <form action="/movimentos">
-                        <button id="navbarDropdown" class="btn btn-light" type="submit" href="/socios" >Lista de Movimentos</button>
-                    </form>
-
+                    @auth
+                        <!-- Left Side Of Navbar -->
+                        <form action="/socios">
+                            <button id="navbarDropdown" class="btn btn-light" type="submit" href="/socios" >Lista de Sócios</button>
+                        </form>
+                        <form action="/aeronaves">
+                            <button id="navbarDropdown" class="btn btn-light" type="submit" href="/socios" >Lista de Aeronaves</button>
+                        </form>
+                        <form action="/movimentos">
+                            <button id="navbarDropdown" class="btn btn-light" type="submit" href="/socios" >Lista de Movimentos</button>
+                        </form>
+                    @endauth
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
