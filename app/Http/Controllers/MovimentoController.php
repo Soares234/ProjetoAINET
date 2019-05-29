@@ -56,15 +56,13 @@ class MovimentoController extends Controller {
                 'conta_horas_inicio'=>'required',
                 'conta_horas_fim'=>'required',
                 'aeronave'=>'required',
-                'num_diario'=>'required|integer',
-                'num_servico'=>'required|integer',
+                'num_diario'=>'required|integer|min:1',
                 'piloto_id'=>['required','integer',
                     function($attribute,$value,$fail){
                         $aux = DB::table('users')->where('id','=',$value)->get();
                         if($aux->count() == 0) {
                             $fail("Este Sócio não existe");
-                        }
-                        if($aux->first()->tipo_socio){
+                        }elseif ($aux->first()->tipo_socio != 'P'){
                             $fail("Este Sócio não é piloto");
                         }
                 }],
@@ -74,24 +72,51 @@ class MovimentoController extends Controller {
                 'num_aterragens'=>'required|integer|min:1',
                 'num_descolagens'=>'required|integer|min:1',
                 'num_pessoas'=>'required|integer|min:1',
-                'tempo_voo'=>'required|integer|min:1',
-                'preco_voo'=>'required|numeric|min:1',
+                'tempo_voo',
+                'preco_voo',
                 'modo_pagamento'=>'required',
                 'num_recibo'=>'required',
-                'tipo_instrucao'=>'required',
+                'tipo_instrucao',
                 'instrutor_id',
-                'num_licenca_instrutor',
-                'validade_licenca_instrutor',
-                'tipo_licenca_instrutor',
-                'num_certificado_instrutor',
-                'validade_certificado_instrutor',
-                'classe_certificado_instrutor',
                 'tipo_conflito',
                 'justificacao_conflito'
                 ]
         );
-        //Movimento::create($movimento);
-        //return redirect()->action('MovimentoController@index')->with('message','Movimento criado com sucesso');
+
+        //dd($movimento);
+
+        $pilotoCollection = DB::table('users')->where('id','=',$movimento['piloto_id'])->get();
+        $piloto = $pilotoCollection->first();
+
+        $movimento['num_licenca_piloto'] = $piloto->num_licenca;
+        $movimento['validade_licenca_piloto'] = $piloto->validade_licenca;
+        $movimento['tipo_licenca_piloto'] = $piloto->tipo_licenca;
+        $movimento['num_certificado_piloto'] = $piloto->num_certificado;
+        $movimento['validade_certificado_piloto'] = $piloto->validade_certificado;
+        $movimento['classe_certificado_piloto']= $piloto->classe_certificado;
+
+        $movimento['tempo_voo'] = $movimento['conta_horas_fim'] - $movimento['conta_horas_inicio'];
+
+        $aeronaveCollection = DB::table('aeronaves')->where('matricula','=',$movimento['aeronave'])->get();
+        $aeronave = $aeronaveCollection->first();
+        $movimento['preco_voo'] = $movimento['tempo_voo'] * $aeronave->preco_hora /6;
+
+        $movimento['hora_descolagem'] = $movimento['data']. ' ' .$movimento['hora_descolagem'];
+        $movimento['hora_aterragem'] = $movimento['data']. ' ' .$movimento['hora_aterragem'];
+
+        $movimentosCollection = DB::table('movimentos')->where('aeronave','=',$movimento['aeronave'])->orderByDesc('num_servico')->get();
+        if($movimentosCollection->count()==0){
+            $movimento['num_servico'] = 1;
+        }else{
+            $movimento['num_servico'] = $movimentosCollection->first()->num_servico +1;
+        }
+
+        $movimento['confirmado'] = 0;
+
+        //dd($piloto,$movimento,$movimentosCollection);
+
+        Movimento::create($movimento);
+        return redirect()->action('MovimentoController@index')->with('message','Movimento criado com sucesso');
     }
 
     /**

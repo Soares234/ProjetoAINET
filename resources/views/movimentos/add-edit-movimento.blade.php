@@ -71,6 +71,18 @@
         </div>
 
         <div class="form-group">
+            <label for="inputNumDiario">Nº de Entrada no Diário de Borde</label>
+            <input
+                type="number" class="form-control"
+                name="num_diario" id="inputPiloto"
+                placeholder="00" value="{{ old('num_diario', $movimento->num_diario) }}"
+            />
+            @if ($errors->has('num_diario'))
+                <em>{{ $errors->first('num_diario') }}</em>
+            @endif
+        </div>
+
+        <div class="form-group">
             <label for="inputNaturezaVoo">Natureza do Voo</label>
             <select
                 class="form-control"
@@ -233,6 +245,7 @@
             @endif
         @endcan
         --}}
+        <em>{{$errors}}</em>
         <div class="form-group">
             <button type="submit" class="btn btn-success" name="ok">Adicionar</button>
             <a type="submit" class="btn btn-default" name="cancel" href="/movimetos">Cancelar</a>
