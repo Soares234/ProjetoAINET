@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Aeronave;
+use App\Filtros\Filterable;
+use App\Filtros\FiltrosUsers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -86,16 +88,38 @@ public function parseData($date, $modo){
 }
     /**
      * Display a listing of the resource.
-     *
+     * @param Request $request YOLO
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = DB::table('users')->paginate(14);
-        //paginar 14 sócios por página
-        //laravel 4. pages 21 & 33
-        $title = 'Lista de Socios';
+        /*Os parâmetros possíveis são: num_socio,
+nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
+        $this->authorize('isAtivo',Auth::user());
+        $users=User::where('id','>','0');
+        if($request->input('num_socio')){ //num socio so devolve um, evitam se algum delay assim
+            $users=$users->where('num_socio',$request->input('num_socio'));
+        }
+        else {
+            if ($request->input('nome_informal') != null) {
+                $users = $users->where('nome_informal', $request->input('name'));
+            }
+            if ($request->input('email')!=null){
+                $users = $users->where('email',$request->input('email'));
+            }
+            if ($request->input('direcao')!=null){
+                $users=$users->where('',$request->input('email'));
+            }
+            if ($request->input('tipo_socio')!=null){
+                $users=$users->where('tipo_socio',$request->input('tipo_socio'));
+            }
+            if($request->input('quotas_pagas')!=null ){
 
+            }
+        }
+
+        $title = 'Lista de Socios';
+    $users=$users->get();
         return view('socios.list-socios', compact('title', 'users'));
     }
     /**
