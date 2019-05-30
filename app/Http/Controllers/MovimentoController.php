@@ -49,13 +49,20 @@ class MovimentoController extends Controller {
         //$this->authorize('administrate',Auth::user());
 
         //dd($request->data,$request->hora_descolagem,$request);
+        $contaHorasAUX = $request->input('aeronave');
         $movimento = $request->validate([
             'data'=>'required',
                 'hora_descolagem'=>'required',
                 'hora_aterragem'=>'required',
+                'aeronave'=>['required',
+                    function($atribute,$value,$fail){
+                        $aux = DB::table('aeronaves')->where('matricula','=',$value)->get();
+                        if($aux->count()==0){
+                            $fail("Esta Aeronave não existe");
+                        }
+                }],
                 'conta_horas_inicio'=>'required',
                 'conta_horas_fim'=>'required',
-                'aeronave'=>'required',
                 'num_diario'=>'required|integer|min:1',
                 'piloto_id'=>['required','integer',
                     function($attribute,$value,$fail){
@@ -82,7 +89,6 @@ class MovimentoController extends Controller {
                 'justificacao_conflito'
                 ]
         );
-
         //dd($movimento);
 
         $pilotoCollection = DB::table('users')->where('id','=',$movimento['piloto_id'])->get();
@@ -95,10 +101,36 @@ class MovimentoController extends Controller {
         $movimento['validade_certificado_piloto'] = $piloto->validade_certificado;
         $movimento['classe_certificado_piloto']= $piloto->classe_certificado;
 
-        $movimento['tempo_voo'] = $movimento['conta_horas_fim'] - $movimento['conta_horas_inicio'];
-
         $aeronaveCollection = DB::table('aeronaves')->where('matricula','=',$movimento['aeronave'])->get();
         $aeronave = $aeronaveCollection->first();
+
+        if($movimento['conta_horas_inicio']<$aeronave->conta_horas && !$request->exists('confirmado')){
+            $errors['conta_horas_inicio'] = 'conta horas inicial deveria ter um valor igual a '.$aeronave->conta_horas;
+            $errors['S'] = 1;
+            return redirect()->action('MovimentoController@create')->withErrors($errors)->withInput($movimento);
+        }
+        if($movimento['conta_horas_inicio']>$aeronave->conta_horas && !$request->exists('confirmado')){
+            $errors['conta_horas_inicio'] = 'conta horas inicial deveria ter um valor igual a '.$aeronave->conta_horas;
+            $errors['B'] = 1;
+            return redirect()->action('MovimentoController@create')->withErrors($errors)->withInput($movimento);
+        }
+
+        if($request->exists('confirmado')){
+            if($request->input('confirmado')=='S'){
+                $movimento['tipo_conflito']=$request->input('confirmado');
+            }else{
+                $movimento['tipo_conflito']=$request->input('confirmado');
+            }
+
+            $movimento['justificacao_conflito'] = $request->input('justificacao_conflito');
+        }
+        //dd($movimento);
+
+        if($movimento['conta_horas_fim']<=$movimento['conta_horas_inicio']){
+            $errors['conta_horas_fim'] = 'conta horas final tem que ter um valor superior a '.$movimento['conta_horas_inicio'];
+            return redirect()->action('MovimentoController@create')->withErrors($errors)->withInput($movimento);
+        }
+        $movimento['tempo_voo'] = $movimento['conta_horas_fim'] - $movimento['conta_horas_inicio'];
         $movimento['preco_voo'] = $movimento['tempo_voo'] * $aeronave->preco_hora /6;
 
         $movimento['hora_descolagem'] = $movimento['data']. ' ' .$movimento['hora_descolagem'];
@@ -113,7 +145,7 @@ class MovimentoController extends Controller {
 
         $movimento['confirmado'] = 0;
 
-        //dd($piloto,$movimento,$movimentosCollection);
+        //dd($movimento);
 
         Movimento::create($movimento);
         return redirect()->action('MovimentoController@index')->with('message','Movimento criado com sucesso');

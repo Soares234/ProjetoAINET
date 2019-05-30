@@ -183,6 +183,24 @@
             @if ($errors->has('conta_horas_inicio'))
                 <em>{{ $errors->first('conta_horas_inicio') }}</em>
             @endif
+
+            @if ($errors->has('S') || $errors->has('B'))
+                <br>
+                <label for="inputConflitoJustificacao">Conflito {{$errors->has('S') ? 'Sobreposição' : 'Buraco'}}
+                </label>
+                <textarea type="text" class="form-control"
+                name="justificacao_conflito" id="inputConflitoJustificacao"
+                          value="{{old('justificacao_conflito',$movimento->justificacao_conflito)}}"></textarea>
+                <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" name="confirmado" id="inputConflitoConfirmado" value={{$errors->has('S') ? 'S' : 'B'}}
+                    @if(old('confirmado', $movimento->tipo_conflito) != NULL){{ "checked" }}@endif>
+
+                    <label class="custom-control-label float-left" for="inputConflitoConfirmado">Se quiser confirmar o conflito por favor confirme a checkbox</label>
+
+                </div>
+
+            @endif
+
         </div>
 
         <div class="form-group">
