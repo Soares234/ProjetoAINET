@@ -96,20 +96,19 @@ public function parseData($date, $modo){
         /*Os parâmetros possíveis são: num_socio,
 nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
         $this->authorize('isAtivo',Auth::user());
-        $filter=DB::table('users')->where('num_socio','>','0');
+        $filter=DB::table('users')->where('deleted_at','=',null);
 
         if($request->input('num_socio')!=null){ //num socio so devolve um, evitam se algum delay assim
             $filter=$filter->where('num_socio',"=", $request->input('num_socio'));
         }
 
 
-            if ($request->input('name') != null) {
-                $filter = $filter->where('nome_informal','like',"%".$request->input('name')."%");
-
+            if ($request->input('nome_informal') != null) {
+                $filter = $filter->where('nome_informal','like',"%".$request->input('nome_informal')."%");
 
             }
             if ($request->input('email')!=null){
-                $filter = $filter->where('email','=',$request->input('email'));
+                $filter = $filter->where('email','like',"%".$request->input('email')."%");
             }
             if ($request->input('direcao')!=null){
                 $filter=$filter->where('direcao','=',$request->input('direcao'));
@@ -120,9 +119,13 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
             //Daqui para a frente sao querys so de direção
             if($request->input('quota_paga')!=null) {
                 $filter = $filter->where('quota_paga', '=', $request->input('quota_paga'));
+            }else{
+                $filter = $filter->where('quota_paga', '=', '1');
             }
             if($request->input('ativo')!=null){
                 $filter=$filter->where('ativo','=',$request->input('ativo'));
+            }else{
+                $filter=$filter->where('ativo','=','1');
             }
             //Fim de verificações
 
