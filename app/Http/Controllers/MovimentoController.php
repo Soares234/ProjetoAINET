@@ -130,8 +130,8 @@ class MovimentoController extends Controller {
             $errors['conta_horas_fim'] = 'conta horas final tem que ter um valor superior a '.$movimento['conta_horas_inicio'];
             return redirect()->action('MovimentoController@create')->withErrors($errors)->withInput($movimento);
         }
-        $movimento['tempo_voo'] = $movimento['conta_horas_fim'] - $movimento['conta_horas_inicio'];
-        $movimento['preco_voo'] = $movimento['tempo_voo'] * $aeronave->preco_hora /6;
+        $movimento['tempo_voo'] = $movimento['conta_horas_fim'] - $movimento['conta_horas_inicio'] * 6;
+        $movimento['preco_voo'] = $movimento['tempo_voo'] * $aeronave->preco_hora /60;
 
         $movimento['hora_descolagem'] = $movimento['data']. ' ' .$movimento['hora_descolagem'];
         $movimento['hora_aterragem'] = $movimento['data']. ' ' .$movimento['hora_aterragem'];
