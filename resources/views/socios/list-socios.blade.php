@@ -4,7 +4,15 @@
 @if (count($users))
     {{--    /*Os parâmetros possíveis são: num_socio,
 nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/--}}
+
     <form action="/socios" method="GET" class="form-group">
+        <div class="form-group">
+            <label for="num_socio">Filtrar por Número Sócio</label>
+            <input
+                type="text" class="form-control"
+                name="num_socio" id="num_socio"/>
+        </div>
+
         <div class="form-group">
             <label for="name">Filtrar por Nome Informal</label>
             <input
@@ -12,10 +20,21 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/--}}
                 name="name" id="name"/>
         </div>
         <div class="form-group">
-            <label for="name">Filtrar por Nome Informal</label>
+            <label for="email">Filtrar por Email</label>
             <input
                 type="text" class="form-control"
-                name="name" id="name"/>
+                name="email" id="email"/>
+        </div>
+        <div class="form-group">
+            <label for="tipoo">Tipo Sócio</label><br>
+            <select
+                class="form-control"
+                name="tipo" id="tipo">
+                <option disabled selected>Selecione um opção</option>
+                <option value="P">Piloto</option>
+                <option value="NP">Não Piloto</option>
+                <option value="A">Aeromodelista</option>
+            </select>
         </div>
 {{------------------------------------------------------Zona de checkboxes+Selects--------------------------------------------------------------------------------}}
         <div class="form-group">
@@ -53,6 +72,7 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/--}}
     @endcan
 </div>
 <table class="table table-striped">
+
     <thead>
         <tr>
             <th>Fotografia</th>
@@ -62,9 +82,6 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/--}}
             <th>Email</th>
             <th>Tipo de Sócio</th>
             <th>Numero de Licença</th>
-
-
-
         </tr>
     </thead>
     <tbody>

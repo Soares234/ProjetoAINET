@@ -99,9 +99,9 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
         $filter=DB::table('users')->where('num_socio','>','0');
 
         if($request->input('num_socio')!=null){ //num socio so devolve um, evitam se algum delay assim
-            $filter=$filter->where('num_socio',$request->input('num_socio'));
+            $filter=$filter->where('num_socio',"=", $request->input('num_socio'));
         }
-        else {
+
 
             if ($request->input('name') != null) {
                 $filter = $filter->where('nome_informal','like',"%".$request->input('name')."%");
@@ -109,13 +109,13 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
 
             }
             if ($request->input('email')!=null){
-                $filter = $filter->where('email',$request->input('email'));
+                $filter = $filter->where('email','=',$request->input('email'));
             }
             if ($request->input('direcao')!=null){
-                $filter=$filter->where('direcao',$request->input('direcao'));
+                $filter=$filter->where('direcao','=',$request->input('direcao'));
             }
-            if ($request->input('tipo_socio')!=null){
-                $filter=$filter->where('tipo_socio',$request->input('tipo_socio'));
+            if ($request->input('tipo')!=null){
+                $filter=$filter->where('tipo_socio',"=",$request->input('tipo'));
             }
             //Daqui para a frente sao querys so de direção
             if($request->input('quota_paga')!=null) {
@@ -125,7 +125,7 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
                 $filter=$filter->where('ativo','=',$request->input('ativo'));
             }
             //Fim de verificações
-        }
+
 
         $title = 'Lista de Socios';
          $users=$filter->paginate(20);
