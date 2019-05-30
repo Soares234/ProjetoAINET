@@ -3,20 +3,32 @@
 
     @if (count($movimentos))
 
-        <div><a class="btn btn-primary" href="/movimentos/create">Novo Voo</a></div>
 
 
-        <table class="table table-striped">
+        <table class="table table-striped" style="height: 20px; position:relative">
             <thead>
             <tr>
                 <th>Id</th>
                 <th>Aeronave</th>
+                <th>Data</th>
                 <th>Data de partida</th>
                 <th>Data de chegada</th>
+                <th>Tempo de Voo (minutos)</th>
                 <th>Natureza</th>
-                <th>Confirmado</th>
                 <th>Piloto</th>
+                <th>Aerodromo de partida</th>
+                <th>Aerodromo de chegada</th>
+                <th>Nº de aterragens</th>
+                <th>Nº de descolagens</th>
+                <th>Nº de diário</th>
+                <th>Nº de Serviço</th>
+                <th>Conta-horas inicial</th>
+                <th>Conta-horas final</th>
+                <th>Nº de passageiros</th>
+                <th>Tipo de Instrução</th>
                 <th>Instrutor</th>
+                <th>Confirmado</th>
+                <th>Observações</th>
             </tr>
             </thead>
             <tbody>
@@ -24,8 +36,10 @@
                 <tr>
                     <td>{{$movimento->id}}</td>
                     <td>{{$movimento->aeronave}}</td>
+                    <td>{{$movimento->data}}</td>
                     <td>{{$movimento->hora_descolagem}}</td>
                     <td>{{$movimento->hora_aterragem}}</td>
+                    <td>{{$movimento->tempo_voo}}</td>
                     <td>
                         @switch($movimento->natureza)
                             @case("T")
@@ -40,9 +54,33 @@
                             {{"Especial"}}
                         @endswitch
                     </td>
+                    <td>{{$movimento->piloto_nome_informal}}</td>
+                    <td>{{$movimento->aerodromo_partida}}</td>
+                    <td>{{$movimento->aerodromo_chegada}}</td>
+                    <td>{{$movimento->num_aterragens}}</td>
+                    <td>{{$movimento->num_descolagens}}</td>
+                    <td>{{$movimento->num_diario}}</td>
+                    <td>{{$movimento->num_servico}}</td>
+                    <td>{{$movimento->conta_horas_inicio}}</td>
+                    <td>{{$movimento->conta_horas_fim}}</td>
+                    <td>{{$movimento->num_pessoas}}</td>
+                    <td>
+                        @switch($movimento->tipo_instrucao)
+                            @case("S")
+                            {{"Solo"}}
+                            @break
+
+                            @case("D")
+                            {{"Duplo Comando"}}
+                            @break
+
+                            @default
+                            {{"---"}}
+                        @endswitch
+                    </td>
+                    <td>{{$movimento->instrutor_nome_informal}}</td>
                     <td>{{$movimento->confirmado ? "Sim" : "Não"}}</td>
-                    <td>{{$movimento->piloto_id}}</td>
-                    <td>{{$movimento->instrutor_id}}</td>
+                    <td class="inline" style="height: 30px; overflow: hidden; text-overflow: inherit; white-space: nowrap;">{{$movimento->observacoes}}</td>
                     {{-- Botoes de Editar/Eliminar --}}
                     <td>
                         <a class="btn btn-xs btn-primary inline" href="/movimentos/{{$movimento->id}}/edit">Edit</a>

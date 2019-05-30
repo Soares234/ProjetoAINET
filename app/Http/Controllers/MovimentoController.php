@@ -18,7 +18,13 @@ class MovimentoController extends Controller {
      */
     public function index() {
         $title = 'Lista de Movimentos';
-        $movimentos = DB::table('movimentos')->paginate(14);
+        $movimentos = DB::table('movimentos as mov')
+            ->leftJoin('users as t1','mov.piloto_id','=','t1.id')
+            ->leftJoin('users as t2','mov.instrutor_id','=','t2.id')
+            ->select('mov.*','t1.name as piloto_nome','t1.nome_informal as piloto_nome_informal',
+                't2.name as instrutor_nome','t2.nome_informal as instrutor_nome_informal')
+            ->paginate(14);
+        //dd($movimentos);
         return view('movimentos.list-movimentos', compact('title', 'movimentos'));
     }
 
