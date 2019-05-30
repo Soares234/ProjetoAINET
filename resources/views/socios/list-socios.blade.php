@@ -14,10 +14,10 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/--}}
         </div>
 
         <div class="form-group">
-            <label for="name">Filtrar por Nome Informal</label>
+            <label for="nome_informal">Filtrar por Nome Informal</label>
             <input
                 type="text" class="form-control"
-                name="name" id="name"/>
+                name="nome_informal" id="nome_informal"/>
         </div>
         <div class="form-group">
             <label for="email">Filtrar por Email</label>
@@ -125,8 +125,8 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/--}}
                     </td>
                     @endcan
                 </tr>
+            @endforeach
 
-        @endforeach
 </table>
     {{$users->links()}}
     {{-- Paginar os Sócios--}}
