@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Aeronave;
+use App\Filtros\Filterable;
+use App\Filtros\FiltrosUsers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -86,16 +88,47 @@ public function parseData($date, $modo){
 }
     /**
      * Display a listing of the resource.
-     *
+     * @param Request $request YOLO
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = DB::table('users')->paginate(14);
-        //paginar 14 sócios por página
-        //laravel 4. pages 21 & 33
-        $title = 'Lista de Socios';
+        /*Os parâmetros possíveis são: num_socio,
+nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
+        $this->authorize('isAtivo',Auth::user());
+        $filter=DB::table('users')->where('num_socio','>','0');
 
+        if($request->input('num_socio')!=null){ //num socio so devolve um, evitam se algum delay assim
+            $filter=$filter->where('num_socio',"=", $request->input('num_socio'));
+        }
+
+
+            if ($request->input('name') != null) {
+                $filter = $filter->where('nome_informal','like',"%".$request->input('name')."%");
+
+
+            }
+            if ($request->input('email')!=null){
+                $filter = $filter->where('email','=',$request->input('email'));
+            }
+            if ($request->input('direcao')!=null){
+                $filter=$filter->where('direcao','=',$request->input('direcao'));
+            }
+            if ($request->input('tipo')!=null){
+                $filter=$filter->where('tipo_socio',"=",$request->input('tipo'));
+            }
+            //Daqui para a frente sao querys so de direção
+            if($request->input('quota_paga')!=null) {
+                $filter = $filter->where('quota_paga', '=', $request->input('quota_paga'));
+            }
+            if($request->input('ativo')!=null){
+                $filter=$filter->where('ativo','=',$request->input('ativo'));
+            }
+            //Fim de verificações
+
+
+        $title = 'Lista de Socios';
+         $users=$filter->paginate(20);
         return view('socios.list-socios', compact('title', 'users'));
     }
     /**
