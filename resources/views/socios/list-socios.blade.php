@@ -1,15 +1,46 @@
 @extends('layouts.app')
 @section('content')
-@dd($users)
+
 @if (count($users))
+    {{--    /*Os parâmetros possíveis são: num_socio,
+nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/--}}
     <form action="/socios" method="GET" class="form-group">
-   @csrf
         <div class="form-group">
-            <label for="name">Filtrar por nome</label>
+            <label for="name">Filtrar por Nome Informal</label>
             <input
                 type="text" class="form-control"
                 name="name" id="name"/>
         </div>
+        <div class="form-group">
+            <label for="name">Filtrar por Nome Informal</label>
+            <input
+                type="text" class="form-control"
+                name="name" id="name"/>
+        </div>
+{{------------------------------------------------------Zona de checkboxes+Selects--------------------------------------------------------------------------------}}
+        <div class="form-group">
+            <label for="inputDirecao">Direção</label><br>
+            <select
+                class="form-control"
+                name="direcao" id="inputDirecao">
+                <option disabled selected>Selecione um opção</option>
+                <option value="1">Sim</option>
+                <option value="0">Não</option>
+            </select>
+        </div>
+
+        @can('administrate',Auth::user())
+            <input type="hidden" name="ativo" value="1">
+            <div class="custom-control custom-checkbox">
+                <input name="ativo" type="checkbox" class="custom-control-input" id="ativo" value="0"/>
+                <label class="custom-control-label" for="ativo">Ver Utilizadores Desativados</label>
+            </div>
+            <input type="hidden" name="quota_paga" value="1">
+            <div class="custom-control custom-checkbox">
+                <input name="quota_paga" type="checkbox" class="custom-control-input" id="quota_paga" value="0"/>
+                <label class="custom-control-label" for="quota_paga">Ver Sócios Com Contas Por Pagar</label>
+            </div>
+        @endcan
 
         <div class="form-group">
             <button type="submit" class="btn btn-success" name="ok">Adicionar</button>
@@ -80,7 +111,7 @@
 
         @endforeach
 </table>
-    {{ $users->links() }}
+    {{$users->links()}}
     {{-- Paginar os Sócios--}}
     @else
         <h2>Não foram encontrados Sócios</h2>

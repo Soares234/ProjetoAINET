@@ -96,30 +96,39 @@ public function parseData($date, $modo){
         /*Os parâmetros possíveis são: num_socio,
 nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
         $this->authorize('isAtivo',Auth::user());
-        $users=User::where('id','>','0');
-        if($request->input('num_socio')){ //num socio so devolve um, evitam se algum delay assim
-            $users=$users->where('num_socio',$request->input('num_socio'));
+        $filter=DB::table('users')->where('num_socio','>','0');
+
+        if($request->input('num_socio')!=null){ //num socio so devolve um, evitam se algum delay assim
+            $filter=$filter->where('num_socio',$request->input('num_socio'));
         }
         else {
-            if ($request->input('nome_informal') != null) {
-                $users = $users->where('nome_informal', $request->input('name'));
-            }
-            if ($request->input('email')!=null){
-                $users = $users->where('email',$request->input('email'));
-            }
-            if ($request->input('direcao')!=null){
-                $users=$users->where('',$request->input('email'));
-            }
-            if ($request->input('tipo_socio')!=null){
-                $users=$users->where('tipo_socio',$request->input('tipo_socio'));
-            }
-            if($request->input('quotas_pagas')!=null ){
+
+            if ($request->input('name') != null) {
+                $filter = $filter->where('nome_informal','like',"%".$request->input('name')."%");
+
 
             }
+            if ($request->input('email')!=null){
+                $filter = $filter->where('email',$request->input('email'));
+            }
+            if ($request->input('direcao')!=null){
+                $filter=$filter->where('direcao',$request->input('direcao'));
+            }
+            if ($request->input('tipo_socio')!=null){
+                $filter=$filter->where('tipo_socio',$request->input('tipo_socio'));
+            }
+            //Daqui para a frente sao querys so de direção
+            if($request->input('quota_paga')!=null) {
+                $filter = $filter->where('quota_paga', '=', $request->input('quota_paga'));
+            }
+            if($request->input('ativo')!=null){
+                $filter=$filter->where('ativo','=',$request->input('ativo'));
+            }
+            //Fim de verificações
         }
 
         $title = 'Lista de Socios';
-    $users=$users->get();
+         $users=$filter->paginate(20);
         return view('socios.list-socios', compact('title', 'users'));
     }
     /**
