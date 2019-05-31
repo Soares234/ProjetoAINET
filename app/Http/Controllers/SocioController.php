@@ -268,7 +268,7 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
                 'email'=>['required','email',Rule::unique('users')->ignore($id)],
                 'sexo'=>'required',
                 'data_nascimento'=>'required',
-                'nif'=>['integer','between:0,999999999'],
+                'nif'=>['integer','between:0,1000000000'],
                 'telefone'=>['between:0,20'],
                 'tipo_socio'=>'required',
                 'quota_paga'=>'min:0|max:1|between:0,1',
@@ -283,7 +283,18 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
                     if ($ficheiro!=null && (!in_array($type, array("image/png", "image/jpeg", "image/gif")))){
                         $fail("O ficheiro precisa de ser uma imagem");
                     }
-                }],
+                },
+               // 'file_certificado'=>'mimes:application/pdf',
+                //'file_licenca'=>'mimes:mimes:application/pdf, application/x-pdf,application/acrobat, applications/vnd.pdf, text/pdf, text/x-pdf',
+                'tipo_licenca'=>['required','exists:tipos_licencas,code'],
+                'validade_licenca'=>['required','date_format:d/m/Y'],
+                'num_licenca'=>['required','max:30'],
+                'classe_certificado'=>['required','exists:classes_certificados,code'],
+                'num_certificado'=>['required','max:30'],
+                'validade_certificado'=>['required','date_format:d/m/Y'],
+                'endereco'=>[]
+
+            ],
                 ['name.regex'=>'O nome não deverá conter caracteres especias nem números',
                     //'nome_informal.regex'=>'O nome não deverá conter caracteres especias nem números',
                 ]
@@ -300,11 +311,26 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
         if(!array_key_exists('ativo',$user)){
             $user['ativo']=0;
         }
-
+        if ($user['validade_licenca']!=null ||  $user['num_certificado']!=null ||  $user['num_licenca'] !=null )
+        {// A condição pode parecer assustado mas resumidamente é só o mesmo que dizer "Mudou algo do certificado, como tal faz com que o certificado/licenca fique nao confirmado
+            $user['licenca_confirmada']=0;
+        }
+        if ($user['validade_certificado']!=null ||$user['classe_certificado']!=null || $user['tipo_certificado']!=null)
+        { //Mesmo que em cima
+            $user['certificado_confirmado']=0;
+        }
 
         $userModel = User::findOrFail($id);
-
+    //parse de datas para a BD-------------
         $user['data_nascimento']=$this->parseData($user['data_nascimento']);
+        $user['validade_certificado']=$this->parseData($user['validade_certificado']);
+        $user['validade_licenca']=$this->parseData($user['validade_licenca']);
+     //-------------------------------------------------------------------
+        $pdf=$request->file('licenca');
+        if ($pdf!=null){
+            //    Storage::delete("app/docs_pilotos/licenca_".$id);
+           Storage::putFile('app/docs_piloto',$request->file('licenca'))->storeAs('licenca_'.$id);
+        }
 
         $ficheiro = $request->file('file_foto');
         if ($ficheiro!=null ) {

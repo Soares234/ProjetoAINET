@@ -122,7 +122,7 @@
             </div>
             <div class="custom-control custom-checkbox">
                 <input name="direcao" type="checkbox" class="custom-control-input" id="checkCConfirmado" @if($user->certificado_confirmado) {{'checked'}} @endif disabled/>
-                <label class="custom-control-label" for="checkCConfirmado">Certificado Confirmad</label>
+                <label class="custom-control-label" for="checkCConfirmado">Certificado Confirmado</label>
             </div>
         @endif
         <div class="custom-control custom-checkbox">

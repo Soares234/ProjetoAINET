@@ -54,7 +54,7 @@
 
 
 
-    @endif
+
         <div class="form-group">
             <label for="image">Imagem perfil</label>
             <input type="file" class="form-control" name="file_foto" id="image" accept="image/*"/>
@@ -89,9 +89,23 @@
             <input type="text" class="form-control" name="validade_licenca" id="validade_licenca" value="{{ Date('d/m/Y',strtotime($user->validade_licenca)) }}" />
             <a class="form-control custom-control-inline btn btn-outline-primary text-center"
                name="licensas_pdf" href='/pilotos/{{$user->id}}/licenca'>Download Licensa</a>
-
         </div>
 
+        <div class="form-group">
+            <label for="certificado">Upload Novo Certificado</label>
+            <input type="file" class="form-control" name="file_certificado" id="certificado" accept="application/pdf"/>
+            @if ($errors->has('certificado'))
+                <em>{{ $errors->first('certificado') }}</em>
+            @endif
+        </div>
+        <div class="form-group">
+            <label for="certificado">Upload Nova Licensa</label>
+            <input type="file" class="form-control" name="file_licenca" id="licenca" accept="application/pdf"/>
+            @if ($errors->has('licenca'))
+                <em>{{ $errors->first('licenca') }}</em>
+            @endif
+        </div>
+        @endif
         <div class="form-group">
             <button type="submit" class="btn btn-success" name="ok">Editar</button>
             <a type="submit" class="btn btn-default" name="cancel" href="/socios">Cancelar</a>
