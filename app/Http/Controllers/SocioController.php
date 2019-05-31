@@ -242,10 +242,11 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
         $this->authorize('edit',$user);
         $this->authorize('isAtivo',$user);
 
-
+        $tipos_licencas=DB::table('tipos_licencas')->get();
+        $classes_certificados=DB::table('classes_certificados')->get();
         $title = 'Editar Sócio';
 
-        return view('socios.edit-socio',compact('title','user'));
+        return view('socios.edit-socio',compact('title','user','classes_certificados','tipos_licencas'));
     }
     /**
      * Update the specified resource in storage.
