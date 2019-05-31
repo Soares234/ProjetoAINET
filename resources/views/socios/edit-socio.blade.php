@@ -10,7 +10,10 @@
 
         <div class="form-group">
             <label for="image">Imagem perfil</label>
-            <input type="file" class="form-control" name="file_foto" id="image"/>
+            <input type="file" class="form-control" name="file_foto" id="image" accept="image/*"/>
+            @if ($errors->has('file_foto'))
+                <em>{{ $errors->first('file_foto') }}</em>
+            @endif
         </div>
 
         <div class="form-group">

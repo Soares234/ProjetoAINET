@@ -274,7 +274,14 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
                 'tipo_socio'=>'required',
                 'quota_paga'=>'min:0|max:1|between:0,1',
                 'direcao'=>'min:0|max:1|between:0,1',
-                'ativo'=>'min:0|max:1|between:0,1'],
+                'ativo'=>'min:0|max:1|between:0,1',
+                'file_foto'=>function($atribute,$value,$fail){
+                    $ficheiro = $value;
+                    $type = $ficheiro->getMimeType();
+                    if ($ficheiro!=null && (!in_array($type, array("image/png", "image/jpeg", "image/gif")))){
+                        $fail("O ficheiro precisa de ser uma imagem");
+                    }
+                }],
                 ['name.regex'=>'O nome não deverá conter caracteres especias nem números',
                     //'nome_informal.regex'=>'O nome não deverá conter caracteres especias nem números',
                 ]
@@ -295,12 +302,13 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
 
         $userModel = User::findOrFail($id);
 
+        $user['data_nascimento']=$this->parseData($user['data_nascimento']);
+
         $ficheiro = $request->file('file_foto');
         $type = $ficheiro->getMimeType();
-        if ($ficheiro!=null && isset($type) && in_array($type, array("image/png", "image/jpeg", "image/gif"))) {
+        if ($ficheiro!=null ) {
             Storage::disk('public')->put('fotos/' . $userModel->foto_url , File::get($ficheiro));
         }
-        $user['data_nascimento']=$this->parseData($user['data_nascimento']);
         $userModel->fill($user);
         $userModel->save();
 
