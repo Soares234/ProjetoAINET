@@ -42,10 +42,10 @@ class MovimentoController extends Controller {
             $filters=$filters->where('confirmado','=',$request->input('confirmado'));
         }
         if($request->input('piloto')!=null){
-            $filters=$filters->where('t1.nome_informal','like',"%".$request->input('piloto')."%");
+            $filters=$filters->where('piloto_id','like',"%".$request->input('piloto')."%");
         }
         if ($request->input('instrutor')){
-            $filters=$filters->where('t2.nome_informal','like',"%".$request->input('instrutor')."%");
+            $filters=$filters->where('instrutor_id','like',"%".$request->input('instrutor')."%");
         }
         if ($request->input('data_inf')!=null){
             //Datas acima desta
@@ -56,11 +56,14 @@ class MovimentoController extends Controller {
             //datas abaixo desta, se já tiver filtrado o "acima de" vai produzir datas entre ambas
             $filters=$filters->where('data','<=',DATE('Y-m-d',strtotime($request->input('data_sup'))));
         }
+        if ($request->input('meus_movimentos')){
+            $filters=$filters->where('piloto_id','=',Auth::user()->id)->orWhere('instrutor_id','=',Auth::user()->id);
+        }
 
 
 
 
-        $movimentos=$filters->paginate(20);
+        $movimentos=$filters->paginate(250);
         return view('movimentos.list-movimentos', compact('title', 'movimentos'));
     }
 
