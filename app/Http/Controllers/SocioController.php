@@ -268,17 +268,18 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
                 'email'=>['required','email',Rule::unique('users')->ignore($id)],
                 'sexo'=>'required',
                 'data_nascimento'=>'required',
-                'nif'=>['numeric','min:9',Rule::unique('users')->ignore($id)],
-                'telefone'=>['min:6',Rule::unique('users')->ignore($id)],
-                'nif'=>['nullable','numeric','digits_between:0,9',Rule::unique('users')->ignore($id)],
-                'telefone'=>['nullable','numeric','digits_between:0,20',Rule::unique('users')->ignore($id)],
+                'nif'=>['integer','between:0,999999999'],
+                'telefone'=>['between:0,20'],
                 'tipo_socio'=>'required',
                 'quota_paga'=>'min:0|max:1|between:0,1',
                 'direcao'=>'min:0|max:1|between:0,1',
                 'ativo'=>'min:0|max:1|between:0,1',
                 'file_foto'=>function($atribute,$value,$fail){
                     $ficheiro = $value;
-                    $type = $ficheiro->getMimeType();
+                    $type=null;
+                    if($ficheiro!=null){
+                        $type = $ficheiro->getMimeType();
+                    }
                     if ($ficheiro!=null && (!in_array($type, array("image/png", "image/jpeg", "image/gif")))){
                         $fail("O ficheiro precisa de ser uma imagem");
                     }
@@ -306,9 +307,18 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
         $user['data_nascimento']=$this->parseData($user['data_nascimento']);
 
         $ficheiro = $request->file('file_foto');
-        $type = $ficheiro->getMimeType();
         if ($ficheiro!=null ) {
-            Storage::disk('public')->put('fotos/' . $userModel->foto_url , File::get($ficheiro));
+
+            if ($userModel->foto_url != null){
+                $fileToDelete = $userModel->foto_url;
+                Storage::delete($fileToDelete);
+                unlink(storage_path('app/public/fotos/'.$fileToDelete));
+            }
+
+            $path = Storage::putFile('public/fotos', $request->file('file_foto'));
+            $aux = explode('/',$path);
+
+            $userModel->foto_url = $aux[2];
         }
         $userModel->fill($user);
         $userModel->save();
