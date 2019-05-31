@@ -53,7 +53,7 @@
                             </li>
 
                         @else
-                            <img src={{asset('storage/fotos/'.Auth::user()->foto_url)}} class="img-thumbnail" alt="ImageNotFound" height=55 width=55>
+                            <img src={{asset('storage/fotos/'.Auth::user()->foto_url)}} class="img-thumbnail"  height=55 width=55>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->nome_informal }} <span class="caret"></span>

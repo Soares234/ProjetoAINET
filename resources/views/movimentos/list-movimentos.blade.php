@@ -21,13 +21,13 @@
             <div class="form-group ">
                 <label for="data_inf">Voos realizados após</label>
                 <input
-                    type="text" class="form-control"
+                    type="date" class="form-control"
                     name="data_inf" id="data_inf"/>
             </div>
             <div>
                 <label for="data_sup">Voos realizados antes de</label>
             <input
-                type="text" class="form-control "
+                type="date" class="form-control "
                 name="data_sup" id="data_sup"/>
             </div>
             <div class="form-group">
@@ -52,19 +52,22 @@
                 </select>
             </div>
             <div class="form-group ">
-                <label for="piloto">Nome piloto</label>
+                <label for="piloto">ID piloto</label>
                 <input
-                    type="text" class="form-control"
+                    type="number" class="form-control"
                     name="piloto" id="piloto"/>
             </div>
             <div class="form-group ">
-                <label for="data_inf">Nome instrutor</label>
+                <label for="instrutor">ID instrutor</label>
                 <input
-                    type="text" class="form-control"
+                    type="number" class="form-control"
                     name="instrutor" id="instrutor"/>
             </div>
-            @if(Auth::user()->tipo_socio=="")
-
+            @if(Auth::user()->tipo_socio=="P")
+                <div class="custom-control custom-checkbox">
+                    <input name="meus_movimentos" type="checkbox" class="custom-control-input" id="meus_movimentos" value="1"/>
+                    <label class="custom-control-label" for="meus_movimentos">Ver Meus Movimentos</label>
+                </div>
 
             @endif
             <div class="form-group">

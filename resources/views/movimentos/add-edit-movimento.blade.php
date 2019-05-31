@@ -20,7 +20,7 @@
             <input
                 type="time" class="form-control"
                 name="hora_descolagem" id="inputHoraDescolagem"
-                placeholder="00:00" value="{{ old('hora_descolagem', $movimento->hora_descolagem) }}"
+                placeholder="00:00" value="{{ old('hora_descolagem', Date('H:i',strtotime($movimento->hora_descolagem))) }}"
             />
             @if ($errors->has('hora_descolagem'))
                 <em>{{ $errors->first('hora_descolagem') }}</em>
@@ -32,7 +32,7 @@
             <input
                 type="time" class="form-control"
                 name="hora_aterragem" id="inputHoraAterragem"
-                placeholder="00:00" value="{{ old('hora_aterragem', $movimento->hora_aterragem) }}"
+                placeholder="00:00" value="{{ old('hora_aterragem', Date('H:i',strtotime($movimento->hora_aterragem))) }}"
             />
             @if ($errors->has('hora_aterragem'))
                 <em>{{ $errors->first('hora_aterragem') }}</em>
