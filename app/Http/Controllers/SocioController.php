@@ -75,16 +75,14 @@ public function password(){
      *
      *@return string correta
      */
-public function parseData($date, $modo){
-    if ($modo){
-        //Existem funções para isto mas menos pesado computacionalmente assim
-        $date[4] = '-';
-        $date[7] = '-';
-    }else{
-        $date[4]= '/';
-        $date[7]='/';
-    }
-    return $date;
+public function parseData($date){
+
+       $aux =explode ( "/" , $date );
+       $aux=array_reverse ( $aux );
+      return implode ("-" ,$aux);
+
+
+
 }
     /**
      * Display a listing of the resource.
@@ -269,8 +267,8 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
                 'email'=>['required','email',Rule::unique('users')->ignore($id)],
                 'sexo'=>'required',
                 'data_nascimento'=>'required',
-                'nif'=>['numeric','digits:9',Rule::unique('users')->ignore($id)],
-                'telefone'=>['digits:20',Rule::unique('users')->ignore($id)],
+                'nif'=>['nullable','numeric','digits_between:0,9',Rule::unique('users')->ignore($id)],
+                'telefone'=>['nullable','numeric','digits_between:0,20',Rule::unique('users')->ignore($id)],
                 'tipo_socio'=>'required',
                 'quota_paga'=>'min:0|max:1|between:0,1',
                 'direcao'=>'min:0|max:1|between:0,1',
@@ -294,13 +292,14 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
             $user['ativo']=0;
         }
 
-        //dd($user,$request);
+
         $userModel = User::findOrFail($id);
 
         $ficheiro = $request->file('image');
         if ($ficheiro!=null) {
             Storage::disk('public')->put('fotos/' . $userModel->foto_url , File::get($ficheiro));
         }
+        $user['data_nascimento']=$this->parseData($user['data_nascimento']);
         $userModel->fill($user);
         $userModel->save();
 

@@ -17,6 +17,7 @@ class MovimentoController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $this->authorize('isAtivo',Auth::user());
         $title = 'Lista de Movimentos';
         $movimentos = DB::table('movimentos as mov')
             ->leftJoin('users as t1','mov.piloto_id','=','t1.id')

@@ -59,7 +59,7 @@
     <input
         type="text" class="form-control"
         name="data_nascimento" id="data_nascimento"
-        value="{{ old('data_nascimento', $user->data_nascimento)}}"/>
+        value="{{old('data_nascimento',date('d/m/Y',strtotime($user->data_nascimento)))}}">
     @if ($errors->has('data_nascimento'))
         <em>{{ $errors->first('data_nascimento') }}</em>
     @endif
