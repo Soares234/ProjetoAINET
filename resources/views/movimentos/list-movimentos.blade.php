@@ -21,13 +21,13 @@
             <div class="form-group ">
                 <label for="data_inf">Voos realizados após</label>
                 <input
-                    type="text" class="form-control"
+                    type="date" class="form-control"
                     name="data_inf" id="data_inf"/>
             </div>
             <div>
                 <label for="data_sup">Voos realizados antes de</label>
             <input
-                type="text" class="form-control "
+                type="date" class="form-control "
                 name="data_sup" id="data_sup"/>
             </div>
             <div class="form-group">

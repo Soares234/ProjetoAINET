@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Licenca;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request;use \Datetime;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use App\Movimento;
@@ -48,13 +48,14 @@ class MovimentoController extends Controller {
             $filters=$filters->where('instrutor_id','like',"%".$request->input('instrutor')."%");
         }
         if ($request->input('data_inf')!=null){
-            //Datas acima desta
-            $request['data_inf']=Date('Y-m-d',strtotime($request->input('data_inf')));
-            $filters=$filters->where('data','>=',$request['data_inf']);
+            $ymd = DateTime::createFromFormat('d/m/Y', $request->input('data_inf'))->format('Y-m-d');
+            $filters=$filters->whereDate('data','>=',$ymd);
         }
         if($request->input('data_sup')!=null){
             //datas abaixo desta, se já tiver filtrado o "acima de" vai produzir datas entre ambas
-            $filters=$filters->where('data','<=',DATE('Y-m-d',strtotime($request->input('data_sup'))));
+            $ymd = DateTime::createFromFormat('d/m/Y', $request->input('data_sup'))->format('Y-m-d');
+
+            $filters=$filters->where('data','<=',$ymd);
         }
         if ($request->input('meus_movimentos')){
             $filters=$filters->where('piloto_id','=',Auth::user()->id)->orWhere('instrutor_id','=',Auth::user()->id);
@@ -63,7 +64,7 @@ class MovimentoController extends Controller {
 
 
 
-        $movimentos=$filters->paginate(250);
+        $movimentos=$filters->paginate(20);
         return view('movimentos.list-movimentos', compact('title', 'movimentos'));
     }
 
