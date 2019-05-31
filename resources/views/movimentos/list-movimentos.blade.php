@@ -80,20 +80,24 @@
                     </td>
                     <td>{{$movimento->instrutor_nome_informal}}</td>
                     <td>{{$movimento->confirmado ? "Sim" : "Não"}}</td>
-                    <td class="inline" style="height: 30px; overflow: hidden; text-overflow: inherit; white-space: nowrap;">{{$movimento->observacoes}}</td>
+                    <td class="inline"
+                        style="height: 30px; overflow: hidden; text-overflow: inherit; white-space: nowrap;">{{$movimento->observacoes}}</td>
                     {{-- Botoes de Editar/Eliminar --}}
-                    <td>
-                        <a class="btn btn-xs btn-primary inline" href="/movimentos/{{$movimento->id}}/edit">Edit</a>
+                    @if(!$movimento->confirmado)
+                        <td>
+                            <a class="btn btn-xs btn-primary inline" href="/movimentos/{{$movimento->id}}/edit">Edit</a>
 
-                        <form action="{{ action('MovimentoController@destroy', $movimento->id) }}" method="POST" role="form" class="inline">
-                            @csrf
-                            @method('delete')
+                            <form action="{{ action('MovimentoController@destroy', $movimento->id) }}" method="POST"
+                                  role="form" class="inline">
+                                @csrf
+                                @method('delete')
 
-                            <input type="hidden" name="movimento_id" value="{{$movimento->id}}">
-                            <button type="submit" class="btn btn-xs btn-danger">Delete</button>
+                                <input type="hidden" name="movimento_id" value="{{$movimento->id}}">
+                                <button type="submit" class="btn btn-xs btn-danger">Delete</button>
 
-                        </form>
-                    </td>
+                            </form>
+                        </td>
+                    @endif
                 </tr>
             @endforeach
         </table>
