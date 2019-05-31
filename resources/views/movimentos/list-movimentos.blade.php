@@ -2,8 +2,77 @@
 @section('content')
 
     @if (count($movimentos))
+{{--  //id, aeronave, data_inf, data_sup, natureza, confirmado,
+        //piloto, instrutor --}}
+        <form action="/movimentos" method="GET" class="form-group">
+            <div class="form-group">
+                <label for="id">Filtrar por ID viagem</label>
+                <input
+                    type="number" class="form-control"
+                    name="id" id="id"/>
+            </div>
+            <div class="form-group">
+                <label for="aeronave">Filtrar por Aeronave</label>
+                <input
+                    type="text" class="form-control"
+                    name="aeronave" id="aeronave"/>
+            </div>
+
+            <div class="form-group ">
+                <label for="data_inf">Voos realizados após</label>
+                <input
+                    type="text" class="form-control"
+                    name="data_inf" id="data_inf"/>
+            </div>
+            <div>
+                <label for="data_sup">Voos realizados antes de</label>
+            <input
+                type="text" class="form-control "
+                name="data_sup" id="data_sup"/>
+            </div>
+            <div class="form-group">
+                <label for="natureza">Natureza</label><br>
+                <select
+                    class="form-control"
+                    name="natureza" id="natureza">
+                    <option disabled selected>Selecione um opção</option>
+                    <option value="T">Treino</option>
+                    <option value="I">Instrução</option>
+                    <option value="E">Especial</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="confirmado">Confirmado</label><br>
+                <select
+                    class="form-control"
+                    name="confirmado" id="confirmado">
+                    <option disabled selected>Selecione um opção</option>
+                    <option value="T">Sim</option>
+                    <option value="I">Não</option>
+                </select>
+            </div>
+            <div class="form-group ">
+                <label for="piloto">Nome piloto</label>
+                <input
+                    type="text" class="form-control"
+                    name="piloto" id="piloto"/>
+            </div>
+            <div class="form-group ">
+                <label for="data_inf">Nome instrutor</label>
+                <input
+                    type="text" class="form-control"
+                    name="instrutor" id="instrutor"/>
+            </div>
+            @if(Auth::user()->tipo_socio=="")
 
 
+            @endif
+            <div class="form-group">
+                <button type="submit" class="btn btn-success" name="ok">Filtrar</button>
+                <a type="submit" class="btn btn-default" name="cancel" href="/movimentos">Cancelar</a>
+            </div>
+
+        </form>
 
         <table class="table table-striped" style="height: 20px; position:relative">
             <thead>
@@ -36,7 +105,7 @@
                 <tr>
                     <td>{{$movimento->id}}</td>
                     <td>{{$movimento->aeronave}}</td>
-                    <td>{{$movimento->data}}</td>
+                    <td>{{date('d/m/Y',strtotime($movimento->data))}}</td>
                     <td>{{$movimento->hora_descolagem}}</td>
                     <td>{{$movimento->hora_aterragem}}</td>
                     <td>{{$movimento->tempo_voo}}</td>
@@ -102,7 +171,7 @@
             @endforeach
         </table>
         {{ $movimentos->links() }}
-        {{-- Paginar os Movimentos--}}
+
     @else
         <h2>Não foram encontrados Voos</h2>
     @endif

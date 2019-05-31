@@ -33,13 +33,14 @@
         <label for="inputSexo">Sexo</label>
         <input type="text" name="sexo" class="form-control" id="inputSexo" value="{{$user->sexo}}" readonly/>
     </div>
-        <div class="form-group">
+     <div class="form-group">
             <label for="inputEmail">Email</label>
             <input type="text" name="email" class="form-control" id="inputEmail" value="{{$user->email}}" readonly/>
-        </div>
+     </div>
+
         <div class="form-group">
-            <label for="inputDataNascimento">Data de Nascimento </label>
-            <input type="text" class="form-control" name="data_nascimento" id="inputDataNascimento" value="{{ $user->data_nascimento }}" readonly/>
+            <label for="data_nascimento">Data de Nascimento </label>
+            <input id ="data_nascimento" type="text" class="form-control" name="data_nascimento" value="{{date(' m/m/Y ',strtotime($user->data_nascimento))}}" />
 
         </div>
 
@@ -68,7 +69,7 @@
             <input type="text" class="form-control" name="endereco" id="inputEndereco" value="{{ $user->endereco }}" readonly/>
 
         </div>
-   @if($user->tipo_socio=='P')
+        @if($user->tipo_socio=='P')
             <div class="form-group">
                 <label for="inputNLicenca">Número da Licença</label>
                 <input type="text" class="form-control" name="nlicensa" id="inputNLicenca" value="{{ $user->num_licenca }}" readonly />
@@ -124,9 +125,6 @@
                 <label class="custom-control-label" for="checkCConfirmado">Certificado Confirmad</label>
             </div>
         @endif
-
-
-
         <div class="custom-control custom-checkbox">
             <input name="quota_paga" type="checkbox" class="custom-control-input" id="CheckQuotas" value="1"
                    @if($user->quota_paga){{ "checked" }} @endif  disabled/>

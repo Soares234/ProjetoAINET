@@ -26,7 +26,7 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/--}}
                 name="email" id="email"/>
         </div>
         <div class="form-group">
-            <label for="tipoo">Tipo Sócio</label><br>
+            <label for="tipo">Tipo Sócio</label><br>
             <select
                 class="form-control"
                 name="tipo" id="tipo">
@@ -62,7 +62,7 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/--}}
         @endcan
 
         <div class="form-group">
-            <button type="submit" class="btn btn-success" name="ok">Adicionar</button>
+            <button type="submit" class="btn btn-success" name="ok">Filtrar</button>
             <a type="submit" class="btn btn-default" name="cancel" href="/socios">Cancelar</a>
         </div>
     </form>
