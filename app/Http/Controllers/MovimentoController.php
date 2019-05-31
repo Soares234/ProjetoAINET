@@ -176,7 +176,13 @@ class MovimentoController extends Controller {
      */
     public function edit($id)
     {
-        //
+        $title = 'Editar Movimento';
+        $movimento= Movimento::findOrFail($id);
+
+        $aeronaves = DB::table('aeronaves')->where('deleted_at','=',NULL)->get();
+        $aerodromos = DB::table('aerodromos')->where('deleted_at','=',NULL)->get();
+
+        return view('movimentos.add-edit-movimento',compact('title','movimento','aeronaves','aerodromos'));
     }
 
     /**
