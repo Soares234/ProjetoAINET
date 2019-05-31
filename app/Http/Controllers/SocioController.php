@@ -295,9 +295,9 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
 
         $userModel = User::findOrFail($id);
 
-        $ficheiro = $request->file('image');
+        $ficheiro = $request->file('file_foto');
         if ($ficheiro!=null) {
-            Storage::disk('public')->put('fotos/' . $userModel->foto_url , File::get($ficheiro));
+            Storage::disk('public')->put('fotos/'.$userModel->foto_url , File::get($ficheiro));
         }
         $user['data_nascimento']=$this->parseData($user['data_nascimento']);
         $userModel->fill($user);

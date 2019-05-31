@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Licenca;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use App\Movimento;
 use App\Aeronave;
@@ -16,16 +17,50 @@ class MovimentoController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index(Request $request) {
+        //id, aeronave, data_inf, data_sup, natureza, confirmado,
+        //piloto, instrutor
+
         $this->authorize('isAtivo',Auth::user());
         $title = 'Lista de Movimentos';
-        $movimentos = DB::table('movimentos as mov')
+        $filters = DB::table('movimentos as mov')
             ->leftJoin('users as t1','mov.piloto_id','=','t1.id')
             ->leftJoin('users as t2','mov.instrutor_id','=','t2.id')
             ->select('mov.*','t1.name as piloto_nome','t1.nome_informal as piloto_nome_informal',
-                't2.name as instrutor_nome','t2.nome_informal as instrutor_nome_informal')
-            ->paginate(14);
-        //dd($movimentos);
+                't2.name as instrutor_nome','t2.nome_informal as instrutor_nome_informal');
+
+        if($request->input('id')!=null){
+            $filters=$filters->where('mov.id','=',$request->input('id'));
+        }
+        if($request->input('aeronave')!=null){
+            $filters=$filters->where('aeronave','=',$request->input('aeronave'));
+        }
+        if($request->input('natureza')!=null){
+            $filters=$filters->where('natureza','=',$request->input('natureza'));
+        }
+        if($request->input('confirmado')!=null){
+            $filters=$filters->where('confirmado','=',$request->input('confirmado'));
+        }
+        if($request->input('piloto')!=null){
+            $filters=$filters->where('t1.nome_informal','like',"%".$request->input('piloto')."%");
+        }
+        if ($request->input('instrutor')){
+            $filters=$filters->where('t2.nome_informal','like',"%".$request->input('instrutor')."%");
+        }
+        if ($request->input('data_inf')!=null){
+            //Datas acima desta
+            $request['data_inf']=Date('Y-m-d',strtotime($request->input('data_inf')));
+            $filters=$filters->where('data','>=',$request['data_inf']);
+        }
+        if($request->input('data_sup')!=null){
+            //datas abaixo desta, se já tiver filtrado o "acima de" vai produzir datas entre ambas
+            $filters=$filters->where('data','<=',DATE('Y-m-d',strtotime($request->input('data_sup'))));
+        }
+
+
+
+
+        $movimentos=$filters->paginate(20);
         return view('movimentos.list-movimentos', compact('title', 'movimentos'));
     }
 
