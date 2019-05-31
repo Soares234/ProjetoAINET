@@ -269,16 +269,14 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
                 'email'=>['required','email',Rule::unique('users')->ignore($id)],
                 'sexo'=>'required',
                 'data_nascimento'=>'required',
-                'nif'=>['numeric','digits:9',Rule::unique('users')->ignore($id)],
-                'telefone'=>['digits:20',Rule::unique('users')->ignore($id)],
+                'nif'=>['numeric','min:9',Rule::unique('users')->ignore($id)],
+                'telefone'=>['min:6',Rule::unique('users')->ignore($id)],
                 'tipo_socio'=>'required',
                 'quota_paga'=>'min:0|max:1|between:0,1',
                 'direcao'=>'min:0|max:1|between:0,1',
                 'ativo'=>'min:0|max:1|between:0,1'],
                 ['name.regex'=>'O nome não deverá conter caracteres especias nem números',
                     //'nome_informal.regex'=>'O nome não deverá conter caracteres especias nem números',
-                    'nif.numeric'=>'O nif deverá ser apenas numérico',
-                    'telefone.numeric'=>'O numero de telefone deverá ser um número!'
                 ]
         );
 
@@ -297,8 +295,9 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
         //dd($user,$request);
         $userModel = User::findOrFail($id);
 
-        $ficheiro = $request->file('image');
-        if ($ficheiro!=null) {
+        $ficheiro = $request->file('file_foto');
+        $type = $ficheiro->getMimeType();
+        if ($ficheiro!=null && isset($type) && in_array($type, array("image/png", "image/jpeg", "image/gif"))) {
             Storage::disk('public')->put('fotos/' . $userModel->foto_url , File::get($ficheiro));
         }
         $userModel->fill($user);
