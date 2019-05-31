@@ -63,6 +63,10 @@
                     type="text" class="form-control"
                     name="instrutor" id="instrutor"/>
             </div>
+            @if(Auth::user()->tipo_socio=="")
+
+
+            @endif
             <div class="form-group">
                 <button type="submit" class="btn btn-success" name="ok">Filtrar</button>
                 <a type="submit" class="btn btn-default" name="cancel" href="/movimentos">Cancelar</a>
