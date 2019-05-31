@@ -80,13 +80,13 @@
         </div>
         <div class="form-group custom-control-inline">
             <label for="validade_certificado" class="custom-control-inline">Validade Certificado</label>
-            <input type="text" class="form-control" name="validade_certificado" id="validade_certificado" value="{{$user->validade_certificado}}" />
+            <input type="text" class="form-control" name="validade_certificado" id="validade_certificado" value="{{Date('d/m/Y',strtotime($user->validade_certificado))}}" />
                 <a class="form-control custom-control-inline btn btn-outline-primary text-center"
-                   name="certificado_pdf" href='/pilotos/{{$user->id}}/certicado'>Download Certificado</a>
+                   name="certificado_pdf" href='/pilotos/{{$user->id}}/certificado'>Download Certificado</a>
         </div>
         <div class="form-group custom-control-inline">
-            <label for="validade_licenca" class="custom-control-inline">Validade Licensa</label>
-            <input type="text" class="form-control" name="validade_licenca" id="validade_licenca" value="{{ $user->validade_licenca }}" />
+            <label for="validade_licenca" class="custom-control-inline">Validade Licença</label>
+            <input type="text" class="form-control" name="validade_licenca" id="validade_licenca" value="{{ Date('d/m/Y',strtotime($user->validade_licenca)) }}" />
             <a class="form-control custom-control-inline btn btn-outline-primary text-center"
                name="licensas_pdf" href='/pilotos/{{$user->id}}/licenca'>Download Licensa</a>
 
