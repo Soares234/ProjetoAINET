@@ -129,7 +129,7 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
 
 
         $title = 'Lista de Socios';
-         $users=$filter->paginate(20);
+         $users=$filter->paginate(250);
         return view('socios.list-socios', compact('title', 'users'));
     }
     /**

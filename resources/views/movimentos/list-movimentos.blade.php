@@ -36,7 +36,7 @@
                 <tr>
                     <td>{{$movimento->id}}</td>
                     <td>{{$movimento->aeronave}}</td>
-                    <td>{{$movimento->data}}</td>
+                    <td>{{date('d/m/Y',strtotime($movimento->data))}}</td>
                     <td>{{$movimento->hora_descolagem}}</td>
                     <td>{{$movimento->hora_aterragem}}</td>
                     <td>{{$movimento->tempo_voo}}</td>

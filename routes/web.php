@@ -23,6 +23,7 @@ Route::get('/email/verify/{id}','VerificationController@verify');
 
 Route::get('/password','SocioController@password')->middleware('auth');
 
+Route::resource('movimentos','MovimentoController')->middleware('auth');
 
 
 Route::post('/socios','SocioController@store')->middleware('auth');
@@ -33,7 +34,6 @@ Route::patch('/password','SocioController@passwordUpdate')->middleware('auth');
 
 Route::resource('socios','SocioController')->middleware('auth');
 
-Route::resource('movimentos','MovimentoController')->middleware('auth');
 
 Route::get('/pilotos/{id}/licenca','PilotoController@getLicenca');
 

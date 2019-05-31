@@ -70,7 +70,7 @@ class MovimentoController extends Controller {
                 }],
                 'conta_horas_inicio'=>'required',
                 'conta_horas_fim'=>'required',
-                'num_diario'=>'required|integer|min:1',
+                'num_diario'=>'integer|min:1',
                 'piloto_id'=>['required','integer',
                     function($attribute,$value,$fail){
                         $aux = DB::table('users')->where('id','=',$value)->get();
