@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
+    <em>{{$errors}}</em>
     @if (count($pilotos_autorizados))
 
         <label class="display-4" for="tableAutorizados">Lista de pilotos autorizados a voar</label>
@@ -66,12 +67,14 @@
                                 @csrf
                                 @method('post')
 
+                                <input type="hidden" name="piloto_id" value="{{$piloto->id}}">
+                                <input type="hidden" name="matricula" value="{{$matricula}}">
                                 <button type="submit" class="btn btn-xs btn-success">Adicionar Autorização</button>
 
                             </form>
                         </td>
                     </tr>
-            @endif
+                @endif
             @endforeach
         </table>
     @else

@@ -193,7 +193,7 @@ class AeronaveController extends Controller
     public function removePilotoFromAeronave(Request $request)
     {
 
-        $this->authorize('administrate',Auth::user());
+        $this->authorize('administrate', Auth::user());
 
         $piloto_para_retirar = $request->validate([
                 'id' => 'required|exists:aeronaves_pilotos,id',
@@ -206,17 +206,34 @@ class AeronaveController extends Controller
 
         $aeronavesPilotoModel->delete();
 
-        return redirect()->action('AeronaveController@indexPilotosAutorizados',$piloto_para_retirar['matricula']);
+        return redirect()->action('AeronaveController@indexPilotosAutorizados', $piloto_para_retirar['matricula']);
 
 
     }
 
-    /*function ($atribute, $value, $fail) {
+    public function addPilotoToAeronave(Request $request)
+    {
+
+        $this->authorize('administrate', Auth::user());
+
+        $piloto_para_adicionar = $request->validate([
+                'matricula' => 'required|exists:aeronaves,matricula',
+                'piloto_id' => ['required' , 'exists:users,id',
+                    function ($atribute, $value, $fail) {
                         $user = User::findOrFail($value);
 
                         if($user->tipo_socio != 'P'){
                             $fail("sócio não é piloto");
                         }
-                    }*/
+
+                    }
+                ]
+            ]
+        );
+
+        AeronavesPilotos::create($piloto_para_adicionar);
+
+        return redirect()->action('AeronaveController@indexPilotosAutorizados', $piloto_para_adicionar['matricula']);
+    }
 
 }
