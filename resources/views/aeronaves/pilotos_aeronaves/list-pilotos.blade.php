@@ -20,7 +20,7 @@
                         <td>{{$piloto->piloto_id}}</td>
                         <td>{{$piloto->nome_informal}}</td>
                         <td>
-                            {{--<form action="{{ action('AeronaveController@removePilotoFromAeronave', $piloto->matricula,$piloto->piloto_id) }}"
+                            <form action="{{ action('AeronaveController@removePilotoFromAeronave', $piloto->matricula,$piloto->piloto_id) }}"
                                   method="POST" role="form" class="inline">
                                 @csrf
                                 @method('delete')
@@ -29,7 +29,7 @@
                                 <input type="hidden" name="piloto_id" value="{{$piloto->piloto_id}}">
                                 <button type="submit" class="btn btn-xs btn-danger">Remover Autorização</button>
 
-                            </form>--}}
+                            </form>
                         </td>
                     </tr>
                 @endif
