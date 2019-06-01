@@ -156,8 +156,8 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
              'email'=>'required|email|unique:users',
              'sexo'=>'required',
              'data_nascimento'=>'required',
-             'nif'=>'required|numeric|unique:users',
-             'telefone'=>'required|numeric|unique:users',
+             'nif'=>'required',
+             'telefone'=>'required',
              'tipo_socio'=>'required',
                 'quota_paga'=>'min:0|max:1|between:0,1|integer',
                 'direcao'=>'min:0|max:1|between:0,1|integer',
@@ -257,7 +257,8 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
     public function update(Request $request, $id)
     {
 
-        $this->authorize('edit',Auth::user());
+        $this->authorize('edit',User::findOrFail($id));
+        $this->authorize('isAtivo',Auth::user());
 
         $user= $request->validate(
             [
@@ -267,8 +268,8 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
                 'email'=>['required','email',Rule::unique('users')->ignore($id)],
                 'sexo'=>'required',
                 'data_nascimento'=>'required',
-                'nif'=>['integer','between:0,999999999'],
-                'telefone'=>['between:0,20'],
+                'nif'=>'integer|between:0,999999999',
+                'telefone'=>'required|between:0,20',
                 'tipo_socio'=>'required',
                 'quota_paga'=>'min:0|max:1|between:0,1',
                 'direcao'=>'min:0|max:1|between:0,1',

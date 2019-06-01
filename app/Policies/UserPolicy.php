@@ -27,7 +27,7 @@ class UserPolicy
     }
 
     public function edit (User $loggedUser, User $user){
-        return ($loggedUser->id == $user->id) || ($loggedUser->direcao == 1);
+        return ($loggedUser->id == $user->id && $this->isAtivo($loggedUser)) || ($loggedUser->direcao == 1);
     }
 
     public function administrate(User $loggedUser){
