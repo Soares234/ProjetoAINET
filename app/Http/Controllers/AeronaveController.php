@@ -238,15 +238,37 @@ class AeronaveController extends Controller
 
     public function indexPilotosAutorizados($id){
 
-        $pilotos_aeronaves = DB::table('aeronaves_pilotos as ap')
-            ->join('aeronaves as t1','ap.matricula','=','t1.matricula')
-            ->join('users as t2','ap.piloto_id','=','t2.id')
-            ->where('ap.matricula','=',$id)
-            ->select('ap.*','t1.deleted_at as deleted_at','t2.nome_informal as nome_informal')
+        $title = "Lista de Pilotos para a " . $id;
+        $matricula = $id;
+
+        $pilotos_autorizados_AUX = DB::table('aeronaves_pilotos as ap')
+            ->join('aeronaves as t1', 'ap.matricula', '=', 't1.matricula')
+            ->join('users as t2', 'ap.piloto_id', '=', 't2.id')
+            ->where('ap.matricula', '=', $id)
+            ->select('ap.*', 't1.deleted_at as deleted_at', 't2.nome_informal as nome_informal')
+            ->orderBy('t2.id')
             ->get();
 
-        $title = "Lista de Pilotos para a ".$id;
-        return view('aeronaves.pilotos_aeronaves.list-pilotos',compact('title','pilotos_aeronaves'));
+        $pilotos_nao_autorizados_AUX = DB::table('users as pilotos')
+            ->where('tipo_socio', '=', 'P')
+            ->orderBy('id')
+            ->get();
+
+        $pilotos_autorizados = $pilotos_autorizados_AUX->all();
+        $pilotos_nao_autorizados = $pilotos_nao_autorizados_AUX->all();
+
+
+        foreach ($pilotos_nao_autorizados as $iNaoAuto => $naoAuto) {
+            foreach ($pilotos_autorizados as $iAuto => $auto) {
+                if ($naoAuto->id == $auto->piloto_id) {
+                    unset($pilotos_nao_autorizados[$iNaoAuto]);
+                }
+            }
+        }
+
+        return view('aeronaves.pilotos_aeronaves.list-pilotos',
+            compact('title', 'pilotos_autorizados', 'pilotos_nao_autorizados', 'matricula'));
+
     }
     public function removePilotoFromAeronave(Request $request)
     {
