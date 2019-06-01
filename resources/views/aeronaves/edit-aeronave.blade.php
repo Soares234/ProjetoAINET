@@ -3,7 +3,7 @@
 
     <form action="{{ action('AeronaveController@update', $aeronave->matricula) }}" method="POST" class="form-group">
 
-        @method('patch')
+        @method('PUT')
         @csrf
 
         @include('aeronaves.add-edit-aeronave')
