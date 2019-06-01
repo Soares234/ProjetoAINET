@@ -6,6 +6,7 @@ use App\AeronavesPilotos;
 use App\Movimento;
 use Illuminate\Http\Request;
 use App\Aeronave;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AeronaveController extends Controller
@@ -30,6 +31,8 @@ class AeronaveController extends Controller
      */
     public function create()
     {
+        $this->authorize('administrate',Auth::user());
+        $this->authorize('isAtivo',Auth::user());
         $title = 'Adicionar nova Aeronave';
         $aeronave= new Aeronave();
 
@@ -44,6 +47,8 @@ class AeronaveController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('administrate',Auth::user());
+        $this->authorize('isAtivo',Auth::user());
         $matricula = $request->matricula;
 
 
@@ -51,7 +56,7 @@ class AeronaveController extends Controller
 
         $aeronave = $request->validate(
             ['matricula' => 'required|unique:aeronaves|regex:/^[A-Z]{1,2}-[A-Z]{3,4}$/u',
-             'marca'=> 'required|max:40|regex:/^[\pL\s]+$/u',
+             'marca'=> 'required|max:40',
              'modelo'=>'required|max:40|regex:/^[-\pL\s0-9]+$/u',
              'num_lugares'=>'required|integer|between:1,100',
              'conta_horas'=>'required|integer|min:0',
@@ -88,6 +93,8 @@ class AeronaveController extends Controller
      */
     public function edit($matricula)
     {
+        $this->authorize('administrate',Auth::user());
+        $this->authorize('isAtivo',Auth::user());
         $title = 'Editar Aeronave';
         $aeronave = Aeronave::findOrFail($matricula);
 
@@ -104,8 +111,12 @@ class AeronaveController extends Controller
      */
     public function update(Request $request, $matricula)
     {
+        $this->authorize('administrate',Auth::user());
+        $this->authorize('isAtivo',Auth::user());
         $aeronave = $request->validate(
-            ['marca'=> 'required|max:40|regex:/^[\pL\s]+$/u',
+
+            ['marca'=>['required','max:40'],
+                'matricula'=>'required|max:8',
                 'modelo'=>'required|max:40|regex:/^[-\pL\s0-9]+$/u',
                 'num_lugares'=>'required|integer|between:1,100',
                 'conta_horas'=>'required|integer|min:0',
@@ -130,7 +141,8 @@ class AeronaveController extends Controller
      */
     public function destroy($matricula)
     {
-
+        $this->authorize('administrate',Auth::user());
+        $this->authorize('isAtivo',Auth::user());
         //$aeronave = Movimento::find($matricula)->movimentos;
 
         $numero_de_aeronaves = Movimento::where('aeronave', '=', $matricula)->count();
