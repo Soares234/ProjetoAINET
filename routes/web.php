@@ -15,7 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Route::middleware('auth')->group(function () {});
+Route::get('/aeronaves/{aeronave}/pilotos','AeronaveController@indexPilotosAutorizados')->middleware('auth');
+Route::post('/aeronaves/{aeronave}/pilotos/{piloto_id}','AeronaveController@addPilotoToAeronave')->middleware('auth');
+Route::delete('/aeronaves/{aeronave}/pilotos/{piloto_id}','AeronaveController@removePilotoFromAeronave')->middleware('auth');
 
 Route::resource('aeronaves','AeronaveController')->middleware('auth');
 
@@ -33,9 +35,9 @@ Route::patch('/password','SocioController@passwordUpdate')->middleware('auth');
 
 Route::resource('socios','SocioController')->middleware('auth');
 
-Route::get('/pilotos/{id}/licenca','PilotoController@getLicenca');
+Route::get('/pilotos/{id}/licenca','PilotoController@getLicenca')->middleware('auth');
 
-Route::get('/pilotos/{id}/certificado','PilotoController@getCertificado');
+Route::get('/pilotos/{id}/certificado','PilotoController@getCertificado')->middleware('auth');
 
 Auth::routes(['verify' => true]);
 

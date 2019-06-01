@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\AeronavesPilotos;
 use App\Movimento;
 use Illuminate\Http\Request;
 use App\Aeronave;
+use Illuminate\Support\Facades\DB;
 
 class AeronaveController extends Controller
 {
@@ -148,5 +150,18 @@ class AeronaveController extends Controller
 
         //User::destroy($id);
         //return redirect()->action('SocioController@index')->with('message','User deleted successfully');
+    }
+
+    public function indexPilotosAutorizados($id){
+
+        $pilotos_aeronaves = DB::table('aeronaves_pilotos as ap')
+            ->join('aeronaves as t1','ap.matricula','=','t1.matricula')
+            ->join('users as t2','ap.piloto_id','=','t2.id')
+            ->where('ap.matricula','=',$id)
+            ->select('ap.*','t1.deleted_at as deleted_at','t2.nome_informal as nome_informal')
+            ->get();
+
+        $title = "Lista de Pilotos para a ".$id;
+        return view('aeronaves.pilotos_aeronaves.list-pilotos',compact('title','pilotos_aeronaves'));
     }
 }
