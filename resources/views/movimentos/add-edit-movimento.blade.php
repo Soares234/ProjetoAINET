@@ -2,14 +2,14 @@
 @section('content')
     <form action="/movimentos" method="POST" class="form-group">
         @csrf
-        @method("POST");
+        @method("POST")
 
         <div class="form-group">
             <label for="inputDataVoo">Data do Voo</label>
             <input
-                type="date" class="form-control"
+                type="text" class="form-control"
                 name="data" id="inputData"
-                placeholder="01/01/2019" value="{{ old('data', $movimento->data) }}"
+                placeholder="01/01/2019" value="{{ old('data',Date( 'd/m/Y',strtotime($movimento->data))) }}"
             />
             @if ($errors->has('data'))
                 <em>{{ $errors->first('data') }}</em>
@@ -21,7 +21,7 @@
             <input
                 type="time" class="form-control"
                 name="hora_descolagem" id="inputHoraDescolagem"
-                placeholder="00:00" value="{{ old('hora_descolagem', Date('H:i',strtotime($movimento->hora_descolagem))) }}"
+                placeholder="00:00" value="{{ old('hora_descolagem', Date('H:i:s',strtotime($movimento->hora_descolagem))) }}"
             />
             @if ($errors->has('hora_descolagem'))
                 <em>{{ $errors->first('hora_descolagem') }}</em>
@@ -33,14 +33,15 @@
             <input
                 type="time" class="form-control"
                 name="hora_aterragem" id="inputHoraAterragem"
-                placeholder="00:00" value="{{ old('hora_aterragem', Date('H:i',strtotime($movimento->hora_aterragem))) }}"
+                placeholder="00:00" value="{{ old('hora_aterragem', Date('H:i:s',strtotime($movimento->hora_aterragem))) }}"
             />
             @if ($errors->has('hora_aterragem'))
                 <em>{{ $errors->first('hora_aterragem') }}</em>
             @endif
         </div>
-        <input type="hidden" name="tempo_voo" value="0"/>
-        <input type="hidden" name="preco_voo" value="0" />
+
+        <input type="hidden" name="tempo_voo" />
+        <input type="hidden" name="preco_voo"  />
         <div class="form-group">
             <label for="inputAeronave">Aeronave</label>
 
@@ -87,8 +88,8 @@
                 name="num_servico" id="num_servico"
                 placeholder="00000" value="{{ old('num_servico', $movimento->num_servico) }}"
             />
-            @if ($errors->has('piloto_id'))
-                <em>{{ $errors->first('piloto_id') }}</em>
+            @if ($errors->has('num_servico'))
+                <em>{{ $errors->first('num_servico') }}</em>
             @endif
         </div>
 
@@ -311,7 +312,7 @@
 
         <div class="form-group">
             <button type="submit" class="btn btn-success" name="ok">Adicionar</button>
-            <a type="submit" class="btn btn-default" name="cancel" href="/movimetos">Cancelar</a>
+            <a type="submit" class="btn btn-default" name="cancel" href="/movimentos">Cancelar</a>
         </div>
     </form>
 @endsection

@@ -13,6 +13,12 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
 class MovimentoController extends Controller {
+    public function parseData($date){
+
+        $aux =explode ( "/" , $date );
+        $aux=array_reverse ( $aux );
+        return implode ("-" ,$aux);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -98,7 +104,7 @@ class MovimentoController extends Controller {
         //dd($request->data,$request->hora_descolagem,$request);
         $contaHorasAUX = $request->input('aeronave');
         $movimento = $request->validate([
-            'data'=>'required|date_format:d/m/Y',
+                'data'=>'required|date_format:d/m/Y',
                 'hora_descolagem'=>'required|date_format:H:i:s',
                 'hora_aterragem'=>'required|date_format:H:i:s',
                 'aeronave'=>['required',
@@ -107,20 +113,12 @@ class MovimentoController extends Controller {
                         if($aux->count()==0){
                             $fail("Esta Aeronave não existe");
                         }
-                }],
+                    }],
                 'conta_horas_inicio'=>'required|integer|min:0',
                 'conta_horas_fim'=>'required|integer|min:0|gt:conta_horas_inicio',
                 'num_diario'=>'integer|min:1',
                 'num_servico'=>'required|integer',
-                'piloto_id'=>['required','integer',
-                    function($attribute,$value,$fail){
-                        $aux = DB::table('users')->where('id','=',$value)->get();
-                        if($aux->count() == 0) {
-                            $fail("Este Sócio não existe");
-                        }elseif ($aux->first()->tipo_socio != 'P'){
-                            $fail("Este Sócio não é piloto");
-                        }
-                }],
+                'piloto_id'=>['required','integer','exists:aeronaves_pilotos,piloto_id'],
                 'natureza'=>['required',Rule::in('T','E','I')],
                 'aerodromo_partida'=>'required|exists:aerodromos,code',
                 'aerodromo_chegada'=>'required|exists:aerodromos,code',
@@ -133,22 +131,11 @@ class MovimentoController extends Controller {
                 'modo_pagamento'=>['required',Rule::in('N','M','T','P')],
                 'num_recibo'=>'required|max:20',
                 'tipo_instrucao'=>['required_if:natureza,==,I',Rule::in('D','S',null)],
-           /*    'instrutor_id'=>["required_if:natureza,==,I",'nullable',function($attribute,$value,$fail){
-                    $aux=DB::table('users')->where('id','=',$value)->select('instrutor')->first();
-                    $aux2=DB::table('aeronaves_pilotos')->where('piloto_id','=',$value)->get();
-                    if ($aux2==null){
-                        $fail('O id nao corresponde a um piloto!');
-                    }
-                    if ($aux==null || $aux==0){
-                        $fail('O id corresponde a um piloto não instrutor!');
-                    }
-                }],*/
+                'instrutor_id'=>["required_if:natureza,==,I",'nullable','exists:users,id,tipo_socio,P,instrutor,1'],
                 'tipo_conflito',
                 'justificacao_conflito'
-                ]
+            ]
         );
-        //dd($movimento);
-
         $pilotoCollection = DB::table('users')->where('id','=',$movimento['piloto_id'])->get();
         $piloto = $pilotoCollection->first();
 
@@ -182,30 +169,33 @@ class MovimentoController extends Controller {
 
             $movimento['justificacao_conflito'] = $request->input('justificacao_conflito');
         }
-        //dd($movimento);
+
 
         if($movimento['conta_horas_fim']<=$movimento['conta_horas_inicio']){
             $errors['conta_horas_fim'] = 'conta horas final tem que ter um valor superior a '.$movimento['conta_horas_inicio'];
             return redirect()->action('MovimentoController@create')->withErrors($errors)->withInput($movimento);
         }
-        $movimento['tempo_voo'] = $movimento['conta_horas_fim'] - $movimento['conta_horas_inicio'] * 6;
+        $movimento['tempo_voo'] =( $movimento['conta_horas_fim'] - $movimento['conta_horas_inicio'] )* 6;
         $movimento['preco_voo'] = $movimento['tempo_voo'] * $aeronave->preco_hora /60;
 
         $movimento['hora_descolagem'] = $movimento['data']. ' ' .$movimento['hora_descolagem'];
         $movimento['hora_aterragem'] = $movimento['data']. ' ' .$movimento['hora_aterragem'];
 
-        $movimentosCollection = DB::table('movimentos')->where('aeronave','=',$movimento['aeronave'])->orderByDesc('num_servico')->get();
+      /*  $movimentosCollection = DB::table('movimentos')->where('aeronave','=',$movimento['aeronave'])->orderByDesc('num_servico')->get();
         if($movimentosCollection->count()==0){
             $movimento['num_servico'] = 1;
         }else{
             $movimento['num_servico'] = $movimentosCollection->first()->num_servico +1;
-        }
-
+        }*/
+        dd($movimento['tempo_voo'],$movimento['preco_voo']);
         $movimento['confirmado'] = 0;
 
         //dd($movimento);
-
-        Movimento::create($movimento);
+        $movimento['data']=$this->parseData($movimento['data']);
+        $movimento['hora_descolagem']=Date('Y-m-d H:i:s',strtotime($movimento['hora_descolagem']));
+        $movimento['hora_aterragem']=Date('Y-m-d H:i:s',strtotime($movimento['hora_aterragem']));
+        dd($movimento);
+        $movimento=Movimento::create($movimento);
         return redirect()->action('MovimentoController@index')->with('message','Movimento criado com sucesso');
     }
 
@@ -228,13 +218,12 @@ class MovimentoController extends Controller {
      */
     public function edit($id)
     {
+        $this->authorize('view',Auth::user());
         $title = 'Editar Movimento';
         $movimento= Movimento::findOrFail($id);
-
         $aeronaves = DB::table('aeronaves')->where('deleted_at','=',NULL)->get();
         $aerodromos = DB::table('aerodromos')->where('deleted_at','=',NULL)->get();
-
-        return view('movimentos.add-edit-movimento',compact('title','movimento','aeronaves','aerodromos'));
+        return view('movimentos.edit-movimento',compact('title','movimento','aeronaves','aerodromos'));
     }
 
     /**

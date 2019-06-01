@@ -18,7 +18,7 @@ Route::get('/', function () {
 Route::get('/aeronaves/{aeronave}/pilotos','AeronaveController@indexPilotosAutorizados')->middleware('auth');
 Route::post('/aeronaves/{aeronave}/pilotos/{piloto_id}','AeronaveController@addPilotoToAeronave')->middleware('auth');
 Route::delete('/aeronaves/{aeronave}/pilotos/{piloto_id}','AeronaveController@removePilotoFromAeronave')->middleware('auth');
-
+Route::put('/aeronaves/{aeronave}','AeronaveController@update')->middleware('auth');
 Route::resource('aeronaves','AeronaveController')->middleware('auth');
 
 Route::get('/email/verify/{id}','VerificationController@verify');
