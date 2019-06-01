@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-    @if (count($pilotos_aeronaves))
+    @if (count($pilotos_autorizados))
 
         <table class="table table-striped">
             <thead>
@@ -12,7 +12,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach ($pilotos_aeronaves as $piloto)
+            @foreach ($pilotos_autorizados as $piloto)
 
                 @if ($piloto->deleted_at == null)
                     <tr>
@@ -20,12 +20,11 @@
                         <td>{{$piloto->piloto_id}}</td>
                         <td>{{$piloto->nome_informal}}</td>
                         <td>
-                            <form action="{{ action('AeronaveController@removePilotoFromAeronave', $piloto->matricula,$piloto->piloto_id) }}"
+                            <form action="/aeronaves/{{$piloto->matricula}}/pilotos/{{$piloto->piloto_id}}"
                                   method="POST" role="form" class="inline">
                                 @csrf
                                 @method('delete')
 
-                                <input type="hidden" name="matricula" value="{{$piloto->matricula}}">
                                 <input type="hidden" name="piloto_id" value="{{$piloto->piloto_id}}">
                                 <button type="submit" class="btn btn-xs btn-danger">Remover Autorização</button>
 
@@ -36,6 +35,6 @@
             @endforeach
         </table>
     @else
-        <h2>Não foram encontradas Aeronaves</h2>
+        <h2>Não foram encontrados pilotos autorizados a voar esta aeronave</h2>
     @endif
 @endsection

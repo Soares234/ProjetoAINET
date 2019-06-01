@@ -154,7 +154,7 @@ class AeronaveController extends Controller
 
     public function indexPilotosAutorizados($id){
 
-        $pilotos_aeronaves = DB::table('aeronaves_pilotos as ap')
+        $pilotos_autorizados = DB::table('aeronaves_pilotos as ap')
             ->join('aeronaves as t1','ap.matricula','=','t1.matricula')
             ->join('users as t2','ap.piloto_id','=','t2.id')
             ->where('ap.matricula','=',$id)
@@ -162,6 +162,6 @@ class AeronaveController extends Controller
             ->get();
 
         $title = "Lista de Pilotos para a ".$id;
-        return view('aeronaves.pilotos_aeronaves.list-pilotos',compact('title','pilotos_aeronaves'));
+        return view('aeronaves.pilotos_aeronaves.list-pilotos',compact('title','pilotos_autorizados'));
     }
 }

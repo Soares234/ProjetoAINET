@@ -28,6 +28,8 @@
                     <td>{{$aeronave->conta_horas}}</td>
                     <td>{{$aeronave->preco_hora}}</td>
                     <td>
+                        <a class="btn btn-xs btn-secondary inline" href="/aeronaves/{{$aeronave->matricula}}/pilotos">Autorizações de Voo</a>
+
                         <a class="btn btn-xs btn-primary" href="/aeronaves/{{$aeronave->matricula}}/edit">Edit</a>
 
                         <form action="{{ action('AeronaveController@destroy', $aeronave->matricula) }}" method="POST" role="form" class="inline">
