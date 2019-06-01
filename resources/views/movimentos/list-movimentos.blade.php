@@ -24,6 +24,7 @@
                     type="date" class="form-control"
                     name="data_inf" id="data_inf"/>
             </div>
+
             <div>
                 <label for="data_sup">Voos realizados antes de</label>
             <input
