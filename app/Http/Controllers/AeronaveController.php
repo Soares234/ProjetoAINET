@@ -49,7 +49,8 @@ class AeronaveController extends Controller
     public function store(Request $request)
     {
         $matricula = $request->matricula;
-
+        $this->authorize('administrate',Auth::user());
+        $this->authorize('isAtivo',Auth::user());
 
         //dd($request);
 

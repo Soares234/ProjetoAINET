@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('content')
 
-    <em>{{$errors}}</em>
     @if (count($pilotos_autorizados))
 
         <label class="display-4" for="tableAutorizados">Lista de pilotos autorizados a voar</label>
