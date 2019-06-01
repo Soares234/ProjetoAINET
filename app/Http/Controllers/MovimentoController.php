@@ -81,8 +81,8 @@ class MovimentoController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        //$this->authorize('administrate',Auth::user());
-
+        $this->authorize('administrate',Auth::user());
+        $this->authorize('isAtivo',Auth::user());
         $title = 'Adicionar Novo Movimento';
         $movimento= new Movimento();
 
@@ -187,14 +187,14 @@ class MovimentoController extends Controller {
         }else{
             $movimento['num_servico'] = $movimentosCollection->first()->num_servico +1;
         }*/
-        dd($movimento['tempo_voo'],$movimento['preco_voo']);
+
         $movimento['confirmado'] = 0;
 
         //dd($movimento);
         $movimento['data']=$this->parseData($movimento['data']);
         $movimento['hora_descolagem']=Date('Y-m-d H:i:s',strtotime($movimento['hora_descolagem']));
         $movimento['hora_aterragem']=Date('Y-m-d H:i:s',strtotime($movimento['hora_aterragem']));
-        dd($movimento);
+
         $movimento=Movimento::create($movimento);
         return redirect()->action('MovimentoController@index')->with('message','Movimento criado com sucesso');
     }

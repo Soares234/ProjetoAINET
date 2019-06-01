@@ -9,6 +9,7 @@ use App\Aeronave;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\AeronavesValores;
 
 class AeronaveController extends Controller
 {
@@ -60,7 +61,8 @@ class AeronaveController extends Controller
              'modelo'=>'required|max:40|regex:/^[-\pL\s0-9]+$/u',
              'num_lugares'=>'required|integer|between:1,100',
              'conta_horas'=>'required|integer|min:0',
-             'preco_hora'=>'required|numeric|min:0',                'precos.1' => 'required|numeric|min:1',
+             'preco_hora'=>'required|numeric|min:0',
+               /* 'precos.1' => 'required|numeric|min:1',
                 'precos.2' => 'required|numeric|min:1',
                 'precos.3' => 'required|numeric|min:1',
                 'precos.4' => 'required|numeric|min:1',
@@ -79,28 +81,42 @@ class AeronaveController extends Controller
                 'tempos.7' => 'required|integer|min:1',
                 'tempos.8' => 'required|integer|min:1',
                 'tempos.9' => 'required|integer|min:1',
-                'tempos.10' => 'required|integer|min:1'],
+                'tempos.10' => 'required|integer|min:1'*/],
             ['matricula.regex' => 'Matricula deverá ser do seguinte formato AB(C)-WXY(Z), 
             em que o valor entre parenteses é opcional',
                 'marca.regex' => 'Marca só poderá conter Letras e espaços',
                 'modelo.regex' => 'Modelo poderá conter Letras, número e hífens (-)',
                 'num_lugares.between' => 'Número de lugares deverá ser entre 1 e 100']
         );
+          /*  $auxTempos=$aeronave['tempos'] ;
+            $auxprecos=$aeronave['precos'];
+            unset($aeronave['tempos'] );
+            unset($aeronave['precos']);*/
 
-        for ($i=1;$i<=10;$i++) {
-            DB::table('aeronaves__valores')->insert([
-                ['matricula' => $matricula],
-                ['unidade_conta_horas' => $aeronave['conta_horas']],
-                ['minutos'=>$aeronave['tempos.'.$i]],
-                ['preco'=>$aeronave['precos.'.$i]]
-            ]);
-            $aux='tempos.'.$i;
-            unset($aeronave,$aux);
-            $aux='precos.'.$i;
-        }
+
+
         //dd($request);
 
-        Aeronave::create($aeronave);
+       $aeronave= Aeronave::create($aeronave);
+    /*    for ($i=1;$i<=10;$i++) {
+            /*  DB::table('aeronaves_valores')->insert([
+                  ['matricula' => $matricula],
+                  ['unidade_conta_horas' => $aeronave['conta_horas']],
+                  ['minutos'=>$aeronave['tempos'][$i]],
+                  ['preco'=>$aeronave['precos'][$i]]
+              ]);*/
+
+        /*    $aeronavesValores['matricula']=$aeronave->matricula;
+            $aeronavesValores['unidade_conta_horas']=$aeronave->conta_horas;
+            $aeronavesValores['preco']=$auxTempos[$i];
+            $aeronavesValores['minutos']=$auxprecos[$i];
+
+            AeronavesValores::create($aeronavesValores);
+
+        }
+        unset($aeronave['tempos']);
+        unset($aeronave['precos']);*/
+
         return redirect()->action('AeronaveController@index')->with('message','Aeronave criada com sucesso');
     }
 
@@ -150,8 +166,8 @@ class AeronaveController extends Controller
                 'modelo' => 'required|max:40|regex:/^[-\pL\s0-9]+$/u',
                 'num_lugares' => 'required|integer|between:1,100',
                 'conta_horas' => 'required|integer|min:0',
-                'preco_hora' => 'required|numeric|min:0',
-                'precos.1' => 'required|numeric|min:1',
+                'preco_hora' => 'required|numeric|min:0'
+               /* 'precos.1' => 'required|numeric|min:1',
                 'precos.2' => 'required|numeric|min:1',
                 'precos.3' => 'required|numeric|min:1',
                 'precos.4' => 'required|numeric|min:1',
@@ -170,27 +186,16 @@ class AeronaveController extends Controller
                 'tempos.7' => 'required|integer|min:1',
                 'tempos.8' => 'required|integer|min:1',
                 'tempos.9' => 'required|integer|min:1',
-                'tempos.10' => 'required|integer|min:1'],
+                'tempos.10' => 'required|integer|min:1'*/],
             ['marca.regex' => 'Marca só poderá conter Letras e espaços',
                 'modelo.regex' => 'Modelo poderá conter Letras, número e hífens (-)',
                 'num_lugares.between' => 'Número de lugares deverá ser entre 1 e 100']
         );
 
 
-        $listaValores = DB::table('aeronaves_valores')->where('matricula', '=', $matricula)->get();
+      //  $listaValores = DB::table('aeronaves_valores')->where('matricula', '=', $matricula)->get();
 
-        $i = 1;
-        foreach ($listaValores as &$lista) {
-            $lista->minutos = $aeronave['tempos.' . $i];
-            $lista->preco = $aeronave['precos.' . $i];
-            $tempos = 'tempos.' . $i;
-            unset($aeronave, $tempos);
-            $precos = 'precos' . $i;
-            unset($aeronave, $precos);
-            dd($lista);
-            $lista->save();
-            $i++;
-        }
+
 
 
         $aeronaveModel = Aeronave::findOrFail($matricula);

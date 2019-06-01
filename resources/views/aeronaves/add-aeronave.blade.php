@@ -4,7 +4,7 @@
     <form action="/aeronaves" method="POST" class="form-group">
 
 
-        @dd($errors)
+
         @csrf
 
         <div class="form-group">
