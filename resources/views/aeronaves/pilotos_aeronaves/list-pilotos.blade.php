@@ -26,7 +26,10 @@
                                 @csrf
                                 @method('delete')
 
+
+                                <input type="hidden" name="id" value="{{$piloto->id}}">
                                 <input type="hidden" name="piloto_id" value="{{$piloto->piloto_id}}">
+                                <input type="hidden" name="matricula" value="{{$piloto->matricula}}">
                                 <button type="submit" class="btn btn-xs btn-danger">Remover Autorização</button>
 
                             </form>
