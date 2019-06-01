@@ -184,6 +184,8 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
 
         $user['num_socio'] = $last_user_numb + 1;
 
+        $user['data_nascimento'] = $this->parseData($user['data_nascimento']);
+
         if (!array_key_exists("quota_paga", $user)) {
             $user['quota_paga'] = 0;
         }
@@ -287,18 +289,18 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
                     if ($ficheiro != null) {
                         $type = $ficheiro->getMimeType();
                     }
-                    if ($ficheiro != null && (!in_array($type, array("image/png", "image/jpeg", "image/gif")))) {
+                    if ($ficheiro != null && !(in_array($type, array("image/png", "image/jpeg", "image/gif")))) {
                         $fail("O ficheiro precisa de ser uma imagem");
                     }
                 },
                 // 'file_certificado'=>'mimes:application/pdf',
                 //'file_licenca'=>'mimes:mimes:application/pdf, application/x-pdf,application/acrobat, applications/vnd.pdf, text/pdf, text/x-pdf',
-                'tipo_licenca' => ['required', 'exists:tipos_licencas,code'],
-                'validade_licenca' => ['required', 'date_format:d/m/Y'],
-                'num_licenca' => ['required', 'max:30'],
-                'classe_certificado' => ['required', 'exists:classes_certificados,code'],
-                'num_certificado' => ['required', 'max:30'],
-                'validade_certificado' => ['required', 'date_format:d/m/Y'],
+                'tipo_licenca' => ['nullable', 'exists:tipos_licencas,code'],
+                'validade_licenca' => ['nullable', 'date_format:d/m/Y'],
+                'num_licenca' => ['nullable', 'max:30'],
+                'classe_certificado' => ['nullable', 'exists:classes_certificados,code'],
+                'num_certificado' => ['nullable', 'max:30'],
+                'validade_certificado' => ['nullable', 'date_format:d/m/Y'],
                 'endereco' => []
 
             ],
@@ -317,25 +319,33 @@ nome_informal, email, tipo, direcao, quotas_pagas, ativo.*/
         if (!array_key_exists('ativo', $user)) {
             $user['ativo'] = 0;
         }
+
+        if($request->exists('validade_licenca') || $request->exists('tipo_licenca') || $request->exists('num_licenca')){
+            $user['licenca_confirmada'] = 0;
+            $user['validade_licenca'] = $this->parseData($user['validade_licenca']);
+        }
+        if($request->exists('validade_certificado') || $request->exists('classe_certificado') || $request->exists('tipo_certificado')){
+            $user['certificado_confirmado'] = 0;
+            $user['validade_certificado'] = $this->parseData($user['validade_certificado']);
+        }
+/*
         if ($user['validade_licenca'] != null || $user['num_certificado'] != null || $user['num_licenca'] != null) {// A condição pode parecer assustado mas resumidamente é só o mesmo que dizer "Mudou algo do certificado, como tal faz com que o certificado/licenca fique nao confirmado
             $user['licenca_confirmada'] = 0;
         }
         if ($user['validade_certificado'] != null || $user['classe_certificado'] != null || $user['tipo_certificado'] != null) { //Mesmo que em cima
             $user['certificado_confirmado'] = 0;
         }
-
+*/
         $userModel = User::findOrFail($id);
         //parse de datas para a BD-------------
         $user['data_nascimento'] = $this->parseData($user['data_nascimento']);
-        $user['validade_certificado'] = $this->parseData($user['validade_certificado']);
-        $user['validade_licenca'] = $this->parseData($user['validade_licenca']);
+
         //-------------------------------------------------------------------
         $pdf = $request->file('licenca');
         if ($pdf != null) {
             //    Storage::delete("app/docs_pilotos/licenca_".$id);
             Storage::putFile('app/docs_piloto', $request->file('licenca'))->storeAs('licenca_' . $id);
         }
-
         $ficheiro = $request->file('file_foto');
         if ($ficheiro != null) {
             if ($userModel->foto_url != null) {
