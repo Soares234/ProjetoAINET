@@ -35,7 +35,7 @@ class UserPolicy
     }
 
     public function isPiloto(User $user){
-        return $user->piloto == 1;
+        return $user->tipo_socio == "P";
     }
 
 }

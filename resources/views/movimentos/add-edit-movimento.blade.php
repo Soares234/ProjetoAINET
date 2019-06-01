@@ -308,7 +308,7 @@
             @endif
         @endcan
         --}}
-        <em>{{$errors}}</em>
+
         <div class="form-group">
             <button type="submit" class="btn btn-success" name="ok">Adicionar</button>
             <a type="submit" class="btn btn-default" name="cancel" href="/movimetos">Cancelar</a>
