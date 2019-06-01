@@ -24,6 +24,7 @@
                     type="date" class="form-control"
                     name="data_inf" id="data_inf"/>
             </div>
+
             <div>
                 <label for="data_sup">Voos realizados antes de</label>
             <input
@@ -76,7 +77,9 @@
             </div>
 
         </form>
-
+@can('isPiloto',Auth::user())
+    <a class="btn btn-primary inline" href="/movimentos/create">Novo Movimento</a>
+@endcan
         <table class="table table-striped" style="height: 20px; position:relative">
             <thead>
             <tr>

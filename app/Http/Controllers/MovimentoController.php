@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Licenca;
+use function foo\func;
 use Illuminate\Http\Request;use \Datetime;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -97,9 +98,9 @@ class MovimentoController extends Controller {
         //dd($request->data,$request->hora_descolagem,$request);
         $contaHorasAUX = $request->input('aeronave');
         $movimento = $request->validate([
-            'data'=>'required',
-                'hora_descolagem'=>'required',
-                'hora_aterragem'=>'required',
+            'data'=>'required|date_format:d/m/Y',
+                'hora_descolagem'=>'required|date_format:H:i:s',
+                'hora_aterragem'=>'required|date_format:H:i:s',
                 'aeronave'=>['required',
                     function($atribute,$value,$fail){
                         $aux = DB::table('aeronaves')->where('matricula','=',$value)->get();
@@ -107,9 +108,10 @@ class MovimentoController extends Controller {
                             $fail("Esta Aeronave não existe");
                         }
                 }],
-                'conta_horas_inicio'=>'required',
-                'conta_horas_fim'=>'required',
+                'conta_horas_inicio'=>'required|integer|min:0',
+                'conta_horas_fim'=>'required|integer|min:0|gt:conta_horas_inicio',
                 'num_diario'=>'integer|min:1',
+                'num_servico'=>'required|integer',
                 'piloto_id'=>['required','integer',
                     function($attribute,$value,$fail){
                         $aux = DB::table('users')->where('id','=',$value)->get();
@@ -119,18 +121,28 @@ class MovimentoController extends Controller {
                             $fail("Este Sócio não é piloto");
                         }
                 }],
-                'natureza'=>'required',
-                'aerodromo_partida'=>'required',
-                'aerodromo_chegada'=>'required',
+                'natureza'=>['required',Rule::in('T','E','I')],
+                'aerodromo_partida'=>'required|exists:aerodromos,code',
+                'aerodromo_chegada'=>'required|exists:aerodromos,code',
                 'num_aterragens'=>'required|integer|min:1',
                 'num_descolagens'=>'required|integer|min:1',
                 'num_pessoas'=>'required|integer|min:1',
-                'tempo_voo',
-                'preco_voo',
-                'modo_pagamento'=>'required',
-                'num_recibo'=>'required',
-                'tipo_instrucao',
-                'instrutor_id',
+                'tempo_voo'=>'required|integer|min:0',
+                'observacoes',
+                'preco_voo'=>'required|numeric|min:0',
+                'modo_pagamento'=>['required',Rule::in('N','M','T','P')],
+                'num_recibo'=>'required|max:20',
+                'tipo_instrucao'=>['required_if:natureza,==,I',Rule::in('D','S',null)],
+           /*    'instrutor_id'=>["required_if:natureza,==,I",'nullable',function($attribute,$value,$fail){
+                    $aux=DB::table('users')->where('id','=',$value)->select('instrutor')->first();
+                    $aux2=DB::table('aeronaves_pilotos')->where('piloto_id','=',$value)->get();
+                    if ($aux2==null){
+                        $fail('O id nao corresponde a um piloto!');
+                    }
+                    if ($aux==null || $aux==0){
+                        $fail('O id corresponde a um piloto não instrutor!');
+                    }
+                }],*/
                 'tipo_conflito',
                 'justificacao_conflito'
                 ]

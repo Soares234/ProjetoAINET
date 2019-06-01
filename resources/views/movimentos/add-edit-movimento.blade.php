@@ -2,6 +2,7 @@
 @section('content')
     <form action="/movimentos" method="POST" class="form-group">
         @csrf
+        @method("POST");
 
         <div class="form-group">
             <label for="inputDataVoo">Data do Voo</label>
@@ -38,7 +39,8 @@
                 <em>{{ $errors->first('hora_aterragem') }}</em>
             @endif
         </div>
-
+        <input type="hidden" name="tempo_voo" value="0"/>
+        <input type="hidden" name="preco_voo" value="0" />
         <div class="form-group">
             <label for="inputAeronave">Aeronave</label>
 
@@ -50,9 +52,7 @@
                     <option {{ old('aeronave', $movimento->aeronave)==$aeronave->matricula ? "selected" : ''}}
                             value={{$aeronave->matricula}} >{{$aeronave->matricula}} - {{$aeronave->marca}} {{$aeronave->modelo}}</option>
                 @endforeach
-
             </select>
-
             @if ($errors->has('aeronave'))
                 <em>{{ $errors->first('aeronave') }}</em>
             @endif
@@ -64,6 +64,28 @@
                 type="number" class="form-control"
                 name="piloto_id" id="inputPiloto"
                 placeholder="00000" value="{{ old('piloto_id', $movimento->piloto_id) }}"
+            />
+            @if ($errors->has('piloto_id'))
+                <em>{{ $errors->first('piloto_id') }}</em>
+            @endif
+        </div>
+        <div class="form-group">
+            <label for="instrutor_id">Instrutor</label>
+            <input
+                type="number" class="form-control"
+                name="instrutor_id" id="instrutor_id"
+                placeholder="00000" value="{{ old('instrutor_id', $movimento->instrutor_id) }}"
+            />
+            @if ($errors->has('instrutor_id'))
+                <em>{{ $errors->first('instrutor_id') }}</em>
+            @endif
+        </div>
+        <div class="form-group">
+            <label for="num_servico">Número Serviço</label>
+            <input
+                type="number" class="form-control"
+                name="num_servico" id="num_servico"
+                placeholder="00000" value="{{ old('num_servico', $movimento->num_servico) }}"
             />
             @if ($errors->has('piloto_id'))
                 <em>{{ $errors->first('piloto_id') }}</em>
@@ -96,6 +118,20 @@
             </select>
             @if ($errors->has('natureza'))
                 <em>{{ $errors->first('natureza') }}</em>
+            @endif
+        </div>
+        <div class="form-group">
+            <label for="tipo_instrucao">Tipo de Instrução</label>
+            <select
+                class="form-control"
+                name="tipo_instrucao" id="tipo_inscricao">
+
+                <option disabled selected>Selecione um opção</option>
+                <option {{ old('tipo_instrucao', $movimento->natureza)=='D' ? "selected" : ''}} value="D">Duplo Comando</option>
+                <option {{ old('tipo_instrucao', $movimento->natureza)=='S' ? "selected" : ''}} value="S">Solo</option>
+            </select>
+            @if ($errors->has('tipo_instrucao'))
+                <em>{{ $errors->first('tipo_instrucao') }}</em>
             @endif
         </div>
 
@@ -251,6 +287,15 @@
                 <em>{{ $errors->first('num_recibo') }}</em>
             @endif
         </div>
+        <div class="form-group">
+            <label for="observacoes">Observações</label>
+            <textarea
+                class="form-control"
+                name="observacoes" id="observacoes">{{old('observacoes', $movimento->observacoes) }}</textarea>
+            @if ($errors->has('observacoes'))
+                <em>{{ $errors->first('observacoes') }}</em>
+            @endif
+        </div>
         {{-- Checkbox para marcar, caso o ja tenha sido confirmado (Em implementacao)
         @can('administrate',$user)
             <div class="custom-control custom-checkbox">
@@ -263,7 +308,7 @@
             @endif
         @endcan
         --}}
-        <em>{{$errors}}</em>
+
         <div class="form-group">
             <button type="submit" class="btn btn-success" name="ok">Adicionar</button>
             <a type="submit" class="btn btn-default" name="cancel" href="/movimetos">Cancelar</a>
