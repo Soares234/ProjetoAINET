@@ -52,3 +52,20 @@
         <em>{{ $errors->first('preco_hora') }}</em>
     @endif
 </div>
+<table class="table table-striped" style="height: 20px; position:relative">
+    <thead>
+    <tr>
+        <th> </th>
+        <th>Preço</th>
+        <th>Minutos</th>
+    </tr>
+    </thead>
+    @for ($i = 1; $i <=10; $i++)
+        <tr>
+            <td>{{'Preco '.$i}}</td>
+            <td><input type="numeric" name="{{'precos['.$i.']'}}" /> <em>@if($errors->has('precos'.$i)){{$errors->first('precos.'.$i)}}@endif</em></td>
+            <td><input type="numeric" name={{'tempos['.$i.']'}}></td>
+        </tr>
+    @endfor
+</table>
+
